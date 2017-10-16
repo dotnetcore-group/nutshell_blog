@@ -4,18 +4,18 @@
  * 机器名称：ASUS_PC
  * 公司名称：
  * 命名空间：Nutshell.Blog.Model
- * 文件名：User
+ * 文件名：Favorites
  * 版本号：V1.0.0.0
- * 唯一标识：9c62119e-144d-4c1d-b53e-fa9575cbb038
+ * 唯一标识：7a566883-4b2c-4629-bd58-2b99bccac689
  * 创建人：曾安德
  * 电子邮箱：zengande@qq.com
- * 创建时间：2017-10-16 12:29:32
+ * 创建时间：2017-10-16 15:17:26
  * 
  * 描述：
  * 
  * ===============================================================================
  * 修改标记
- * 修改时间：2017-10-16 12:29:32
+ * 修改时间：2017-10-16 15:17:26
  * 修改人：曾安德
  * 版本号：V1.0.0.0
  * 描述：
@@ -31,31 +31,26 @@ using System.Threading.Tasks;
 
 namespace Nutshell.Blog.Model
 {
-    [Table("sys_user")]
-    public class User
+    [Table("favorites")]
+    public class Favorites
     {
-        public User()
+        public Favorites()
         {
-            state = true;
+            Collection_Time = DateTime.Now;
         }
 
-        [Key]
+        [Key, Column(Order = 1), ForeignKey("User")]
         public int User_Id { get; set; }
 
-        [Required]
-        [StringLength(10, MinimumLength = 4)]
-        public string Login_Name { get; set; }
+        [Key, Column(Order = 2), ForeignKey("Article")]
+        public int Article_Id { get; set; }
 
-        [Required]
-        [StringLength(64, MinimumLength = 6)]
-        public string Login_Password { get; set; }
+        public DateTime? Collection_Time { get; set; }
 
-        public bool? state { get; set; }
+        [StringLength(200)]
+        public string Remark { get; set; }
 
-        public UserInfo UserInfo { get; set; }
-
-        public virtual ICollection<Article> Articles { get; set; }
-        public virtual ICollection<Discussion> Discussions { get; set; }
-        public virtual ICollection<Favorites> Favorites { get; set; }
+        public virtual User User { get; set; }
+        public virtual Article Article { get; set; }
     }
 }

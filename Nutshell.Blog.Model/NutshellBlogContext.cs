@@ -35,7 +35,16 @@ namespace Nutshell.Blog.Model
         public NutshellBlogContext() : base("name=NutshellBlogEntities") { }
 
         public DbSet<User> User { get; set; }
-
         public DbSet<UserInfo> UserInfo { get; set; }
+        public DbSet<Article> Article { get; set; }
+        public DbSet<Discussion> Discussion { get; set; }
+        public DbSet<Favorites> Favorites { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            
+        }
     }
 }

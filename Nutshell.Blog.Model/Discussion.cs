@@ -4,18 +4,18 @@
  * 机器名称：ASUS_PC
  * 公司名称：
  * 命名空间：Nutshell.Blog.Model
- * 文件名：User
+ * 文件名：Discussion
  * 版本号：V1.0.0.0
- * 唯一标识：9c62119e-144d-4c1d-b53e-fa9575cbb038
+ * 唯一标识：b855d64c-1305-41b9-a814-0aaa7083cd46
  * 创建人：曾安德
  * 电子邮箱：zengande@qq.com
- * 创建时间：2017-10-16 12:29:32
+ * 创建时间：2017-10-16 15:02:23
  * 
  * 描述：
  * 
  * ===============================================================================
  * 修改标记
- * 修改时间：2017-10-16 12:29:32
+ * 修改时间：2017-10-16 15:02:23
  * 修改人：曾安德
  * 版本号：V1.0.0.0
  * 描述：
@@ -31,31 +31,32 @@ using System.Threading.Tasks;
 
 namespace Nutshell.Blog.Model
 {
-    [Table("sys_user")]
-    public class User
+    [Table("discussion")]
+    public class Discussion
     {
-        public User()
-        {
-            state = true;
-        }
-
         [Key]
+        public int Id { get; set; }
+
+        [StringLength(200)]
+        public string Content { get; set; }
+
+        public DateTime? Discussion_Time { get; set; }
+
+        [ForeignKey("User")]
         public int User_Id { get; set; }
 
-        [Required]
-        [StringLength(10, MinimumLength = 4)]
-        public string Login_Name { get; set; }
+        [ForeignKey("Article")]
+        public int Article_Id { get; set; }
 
-        [Required]
-        [StringLength(64, MinimumLength = 6)]
-        public string Login_Password { get; set; }
+        [ForeignKey("ParentDiscussion")]
+        public int? Reply_Id { get; set; }
 
-        public bool? state { get; set; }
+        public virtual ICollection<Discussion> Reply { get; set; }
+        
+        public virtual Discussion ParentDiscussion { get; set; }
 
-        public UserInfo UserInfo { get; set; }
+        public User User { get; set; }
 
-        public virtual ICollection<Article> Articles { get; set; }
-        public virtual ICollection<Discussion> Discussions { get; set; }
-        public virtual ICollection<Favorites> Favorites { get; set; }
+        public Article Article { get; set; }
     }
 }

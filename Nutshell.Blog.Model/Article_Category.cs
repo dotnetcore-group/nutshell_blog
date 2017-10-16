@@ -4,18 +4,18 @@
  * 机器名称：ASUS_PC
  * 公司名称：
  * 命名空间：Nutshell.Blog.Model
- * 文件名：User
+ * 文件名：Article_Category
  * 版本号：V1.0.0.0
- * 唯一标识：9c62119e-144d-4c1d-b53e-fa9575cbb038
+ * 唯一标识：6a47719b-68fd-4ff1-9c96-89f9bf19935e
  * 创建人：曾安德
  * 电子邮箱：zengande@qq.com
- * 创建时间：2017-10-16 12:29:32
+ * 创建时间：2017-10-16 15:34:56
  * 
  * 描述：
  * 
  * ===============================================================================
  * 修改标记
- * 修改时间：2017-10-16 12:29:32
+ * 修改时间：2017-10-16 15:34:56
  * 修改人：曾安德
  * 版本号：V1.0.0.0
  * 描述：
@@ -31,31 +31,18 @@ using System.Threading.Tasks;
 
 namespace Nutshell.Blog.Model
 {
-    [Table("sys_user")]
-    public class User
+    [Table("sys_article_category")]
+    public class Article_Category
     {
-        public User()
-        {
-            state = true;
-        }
-
         [Key]
-        public int User_Id { get; set; }
+        public int Cate_Id { get; set; }
 
-        [Required]
-        [StringLength(10, MinimumLength = 4)]
-        public string Login_Name { get; set; }
+        public string Cate_Name { get; set; }
 
-        [Required]
-        [StringLength(64, MinimumLength = 6)]
-        public string Login_Password { get; set; }
+        [ForeignKey("Categories")]
+        public int? Parent_Id { get; set; }
 
-        public bool? state { get; set; }
-
-        public UserInfo UserInfo { get; set; }
-
+        public virtual ICollection<Article_Category> Categories { get; set; }
         public virtual ICollection<Article> Articles { get; set; }
-        public virtual ICollection<Discussion> Discussions { get; set; }
-        public virtual ICollection<Favorites> Favorites { get; set; }
     }
 }

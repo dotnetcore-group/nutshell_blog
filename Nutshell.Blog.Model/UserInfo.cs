@@ -31,6 +31,7 @@ using System.Threading.Tasks;
 
 namespace Nutshell.Blog.Model
 {
+    [Table("sys_userinfo")]
     public class UserInfo
     {
         public UserInfo()

@@ -4,18 +4,18 @@
  * 机器名称：ASUS_PC
  * 公司名称：
  * 命名空间：Nutshell.Blog.Model
- * 文件名：User
+ * 文件名：Article
  * 版本号：V1.0.0.0
- * 唯一标识：9c62119e-144d-4c1d-b53e-fa9575cbb038
+ * 唯一标识：9aed547f-5447-47fd-b167-77d43aa5ebc0
  * 创建人：曾安德
  * 电子邮箱：zengande@qq.com
- * 创建时间：2017-10-16 12:29:32
+ * 创建时间：2017-10-16 14:50:40
  * 
  * 描述：
  * 
  * ===============================================================================
  * 修改标记
- * 修改时间：2017-10-16 12:29:32
+ * 修改时间：2017-10-16 14:50:40
  * 修改人：曾安德
  * 版本号：V1.0.0.0
  * 描述：
@@ -31,31 +31,39 @@ using System.Threading.Tasks;
 
 namespace Nutshell.Blog.Model
 {
-    [Table("sys_user")]
-    public class User
+    [Table("article")]
+    public class Article
     {
-        public User()
+        public Article()
         {
-            state = true;
+            Creation_Time = DateTime.Now;
+            //Article_State = 1;
         }
 
         [Key]
-        public int User_Id { get; set; }
+        public int Article_Id { get; set; }
 
-        [Required]
-        [StringLength(10, MinimumLength = 4)]
-        public string Login_Name { get; set; }
+        [StringLength(20)]
+        public string Title { get; set; }
 
-        [Required]
-        [StringLength(64, MinimumLength = 6)]
-        public string Login_Password { get; set; }
+        [StringLength(int.MaxValue)]
+        public string Content { get; set; }
 
-        public bool? state { get; set; }
+        [StringLength(100)]
+        public string Introduction { get; set; }
 
-        public UserInfo UserInfo { get; set; }
+        public DateTime? Creation_Time { get; set; }
 
-        public virtual ICollection<Article> Articles { get; set; }
+        public DateTime? Edit_Time { get; set; }
+
+        //public int? Article_State { get; set; }
+
+        [ForeignKey("Author")]
+        public int? Author_Id { get; set; }
+
+        public virtual User Author { get; set; }
         public virtual ICollection<Discussion> Discussions { get; set; }
         public virtual ICollection<Favorites> Favorites { get; set; }
+        public virtual ICollection<Article_Category> Categories { get; set; }
     }
 }

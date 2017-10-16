@@ -27,6 +27,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nutshell.Blog.Repository", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nutshell.Blog.IReposotory", "Nutshell.Blog.IReposotory\Nutshell.Blog.IReposotory.csproj", "{4D01793A-4D09-48B4-AABB-973CDC30AE66}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nutshell.Blog.Common", "Nutshell.Blog.Common\Nutshell.Blog.Common.csproj", "{597D5E2D-6D37-4FE1-83FE-81AAA4208B93}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nutshell.Blog.Common.Tests", "Nutshell.Blog.Common.Tests\Nutshell.Blog.Common.Tests.csproj", "{260854AD-91AC-4D77-BF1C-AEDDC268561A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +65,14 @@ Global
 		{4D01793A-4D09-48B4-AABB-973CDC30AE66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D01793A-4D09-48B4-AABB-973CDC30AE66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D01793A-4D09-48B4-AABB-973CDC30AE66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{597D5E2D-6D37-4FE1-83FE-81AAA4208B93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{597D5E2D-6D37-4FE1-83FE-81AAA4208B93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{597D5E2D-6D37-4FE1-83FE-81AAA4208B93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{597D5E2D-6D37-4FE1-83FE-81AAA4208B93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{260854AD-91AC-4D77-BF1C-AEDDC268561A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{260854AD-91AC-4D77-BF1C-AEDDC268561A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{260854AD-91AC-4D77-BF1C-AEDDC268561A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{260854AD-91AC-4D77-BF1C-AEDDC268561A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,5 +85,7 @@ Global
 		{8B4C50FB-A28C-4663-BDCC-7AF7D1163E3F} = {8D0C1562-4647-4EFB-9B54-8A5116EA74A3}
 		{D6BAAA4B-8680-4DCF-872F-060804F32EAF} = {EC084E6E-79A0-4578-8B3F-E3EE64EE9F94}
 		{4D01793A-4D09-48B4-AABB-973CDC30AE66} = {EC084E6E-79A0-4578-8B3F-E3EE64EE9F94}
+		{597D5E2D-6D37-4FE1-83FE-81AAA4208B93} = {56D21FEF-86F6-408B-AA33-112F3F71F935}
+		{260854AD-91AC-4D77-BF1C-AEDDC268561A} = {6A8A35EE-F176-4750-8509-48535ADFC0E0}
 	EndGlobalSection
 EndGlobal

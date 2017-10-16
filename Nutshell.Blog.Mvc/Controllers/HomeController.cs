@@ -7,12 +7,11 @@ using System.Web.Mvc;
 
 namespace Nutshell.Blog.Mvc.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
-        IUserService userService;
         public HomeController(IUserService userService)
         {
-            this.userService = userService;
+            base.userService = userService;
         }
 
         // GET: Home
