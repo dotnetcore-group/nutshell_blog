@@ -27,9 +27,15 @@ namespace Nutshell.Blog.Mvc
                 defaults: new { controller = "Account", action = "Home" }
             );
             routes.MapRoute(
+                name: "ArticleList",
+                url: "all/{index}",
+                defaults: new { controller = "Home", action = "All", index = UrlParameter.Optional },
+                constraints: new { }
+            );
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Home", action = "All", id = 1 }
             );
         }
     }

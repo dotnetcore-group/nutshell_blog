@@ -6,7 +6,7 @@
 
 
 @section style{
-
+    <link href="~/Content/style/paging.css" rel="stylesheet" />
     <link href="~/Content/style/index.css" rel="stylesheet" />
 }
 
@@ -40,7 +40,7 @@
                 <li><a href="">首页</a></li>
                 <li><a href="">新闻</a></li>
                 <li><a href="">收藏</a></li>
-                <li><a href="">搜索</a></li>
+                <li><a href="/article/search">搜索</a></li>
             </ul>
         </nav>
     </div>
@@ -74,7 +74,7 @@
                         </li>
                     }
 
-                    for (int i = 0; i < 20; i++)
+                    for (int i = 0; i < 0; i++)
                     {
                         <li class="list-item">
                             <h5 class="item-title">
@@ -96,9 +96,7 @@
                     }
                 }
             </ul>
-            <div class="list-pager">
-                <p>分页</p>
-            </div>
+            <div class="list-pager page_div" id="page"></div>
         </div>
     </div>
     <div class="body-left">
@@ -150,4 +148,18 @@
     </ul>
     <p class="copyright">Email : contact@cyqdata.com Copyright © 2010-2020 Powered by <a href="/">NthBlog - 果壳园</a> All Rights Reserved</p>
 </footer>
-
+@section script{
+    <script src="~/Content/scripts/jquery-1.8.0.min.js"></script>
+    <script src="~/Content/scripts/paging.js"></script>
+    <script>
+        //分页
+        $("#page").paging({
+            pageNo: @ViewBag.Index,
+            totalPage: @ViewBag.Page,
+            totalSize: @ViewBag.Total,
+            callback: function (num) {
+                location="/all/"+num;
+            }
+        })
+    </script>
+}

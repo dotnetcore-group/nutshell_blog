@@ -125,12 +125,12 @@ namespace Nutshell.Blog.Mvc.Controllers
 
         public ActionResult Detail(string author, int? id)
         {
-            if (!id.HasValue)
+            if (!id.HasValue || string.IsNullOrEmpty(author))
             {
                 return HttpNotFound();
             }
+            var article = articleService.LoadEntity(a => a.Article_Id == id && a.Author.Login_Name.Equals(author, StringComparison.CurrentCultureIgnoreCase));
             ViewBag.Author = author;
-            var article = articleService.LoadEntity(a => a.Article_Id == id);
             if (article == null)
             {
                 return HttpNotFound();

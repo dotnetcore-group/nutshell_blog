@@ -43,13 +43,22 @@ namespace Nutshell.Blog.Model
         [Key]
         public int Article_Id { get; set; }
 
-        [MaxLength(20)]
+        [MaxLength(50)]
+        [Required]
         public string Title { get; set; }
 
         [MaxLength(int.MaxValue)]
+        [Required]
         public string Content { get; set; }
 
-        [MaxLength(100)]
+        /// <summary>
+        /// 与content一致，保留html代码
+        /// content只保留纯文字
+        /// </summary>
+        [MaxLength(int.MaxValue)]
+        public string Body { get; set; }
+
+        [MaxLength(200)]
         public string Introduction { get; set; }
 
         public DateTime? Creation_Time { get; set; }

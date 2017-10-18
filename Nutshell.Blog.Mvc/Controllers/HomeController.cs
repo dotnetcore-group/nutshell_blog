@@ -17,10 +17,19 @@ namespace Nutshell.Blog.Mvc.Controllers
         }
 
         // GET: Home
-        public ActionResult Index()
+        public ActionResult All(string index)
         {
-            var articles = articleService.LoadEntities(a => true)?.ToList();
+            int pageIndex = Convert.ToInt32(index ?? "1");
+            int pageSize = 20;
+            int totalCount = 0;
+
+            var articles = articleService.LoadPageEntities(pageIndex, pageSize, out totalCount, a => true, a => a.Creation_Time)?.ToList();
+
             ViewBag.Account = GetCurrentAccount();
+
+            ViewBag.Index = pageIndex;
+            ViewBag.Page = 1 + (totalCount / pageSize);
+            ViewBag.Total = totalCount;
             return View(articles);
         }
     }

@@ -130,7 +130,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\images\nut_64 - 复制.png" />
+    <Content Include="Content\scripts\paging.js" />
     <Content Include="Content\style\account.css" />
+    <Content Include="Content\style\paging.css" />
     <Content Include="favicon.ico" />
     <Content Include="Content\images\nut_64.png" />
     <Content Include="Content\style\font-awesome.css.map" />
@@ -178,7 +180,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\All.cshtml" />
     <Content Include="Views\Article\Post.cshtml" />
     <Content Include="Views\Article\Search.cshtml" />
     <Content Include="Views\Article\Detail.cshtml" />
