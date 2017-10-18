@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Nutshell.Blog.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -14,7 +15,10 @@ namespace Nutshell.Blog.Mvc
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
+            FilterConfig.Register(GlobalFilters.Filters);
+
             AutofacConfig.Register();
+            LuceneIndexManager.GetInstance().StartThread();
         }
     }
 }

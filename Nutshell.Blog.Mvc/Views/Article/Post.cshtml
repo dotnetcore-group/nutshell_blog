@@ -1,0 +1,48 @@
+﻿
+@{
+    Layout = null;
+}
+@model Nutshell.Blog.Model.Article
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Post</title>
+</head>
+<body>
+    <div>
+        @using (Ajax.BeginForm("postarticle", null, new AjaxOptions { HttpMethod = "Post", OnSuccess = "success", OnFailure = "failure" }, new { @class = "form-auth-small" }))
+        {
+            @Html.ValidationSummary(true)
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                @Html.LabelFor(model => model.Title, new { @class = "control-label sr-only" })
+                @Html.TextBoxFor(model => model.Title, new { @class = "form-control", placeholder = "标题", id = "txtTitle" })
+                @Html.ValidationMessageFor(m => m.Title, null, new { @class = "error" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Introduction, new { @class = "control-label sr-only" })
+                @Html.TextAreaFor(u => u.Introduction, new { @class = "form-control", placeholder = "简介", id = "txtContent" })
+                @Html.ValidationMessageFor(m => m.Introduction, null, new { @class = "error" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Content, new { @class = "control-label sr-only" })
+                @Html.TextAreaFor(u => u.Content, new { @class = "form-control", placeholder = "内容", id = "txtContent" })
+                @Html.ValidationMessageFor(m => m.Content, null, new { @class = "error" })
+            </div>
+            <input type="submit" class="btn btn-primary btn-lg btn-block" id="btnLogin" value="登录" />
+        }
+    </div>
+    <script src="~/Content/scripts/jquery-1.8.0.min.js"></script>
+    <script src="~/Content/scripts/jquery-validation/jquery.validate.min.js"></script>
+    <script src="~/Content/scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Content/scripts/jquery-validation/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        function success(data) {
+            alert(data);
+        }
+    </script>
+</body>
+</html>

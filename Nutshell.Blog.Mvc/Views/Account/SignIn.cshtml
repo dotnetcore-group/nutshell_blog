@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "用户登录 - 果壳园";
+    @model Nutshell.Blog.Model.ViewModel.UserLogin
+}
+
+<div>
+    @using (Ajax.BeginForm("signin", new AjaxOptions { HttpMethod = "Post" , OnSuccess="success"}))
+    {
+        @Html.LabelFor(model => model.UserName)
+        @Html.TextBoxFor(model => model.UserName)
+        @Html.ValidationMessageFor(model => model.UserName)
+
+        @Html.LabelFor(model => model.Password)
+        @Html.PasswordFor(model => model.Password)
+        @Html.ValidationMessageFor(model => model.Password)
+
+        @Html.CheckBoxFor(model => model.RememberMe)
+        @Html.LabelFor(model => model.RememberMe)
+        @Html.ValidationMessageFor(model => model.RememberMe)
+
+        <input type="submit" value="登录"/>
+    }
+</div>
+
+@section script{
+    <script src="~/Content/scripts/jquery-1.8.0.min.js"></script>
+    <script src="~/Content/scripts/jquery-validation/jquery.validate.min.js"></script>
+    <script src="~/Content/scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Content/scripts/jquery-validation/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        function success(date) {
+            console.log(data);
+        }
+    </script>
+}

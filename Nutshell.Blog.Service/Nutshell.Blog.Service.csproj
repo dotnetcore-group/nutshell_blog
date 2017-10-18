@@ -40,11 +40,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArticleService.cs" />
     <Compile Include="BaseService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Nutshell.Blog.Common\Nutshell.Blog.Common.csproj">
+      <Project>{597d5e2d-6d37-4fe1-83fe-81aaa4208b93}</Project>
+      <Name>Nutshell.Blog.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nutshell.Blog.Core\Nutshell.Blog.Core.csproj">
+      <Project>{b3fe965c-515d-4157-a56b-8e6f5d8973b5}</Project>
+      <Name>Nutshell.Blog.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Nutshell.Blog.IReposotory\Nutshell.Blog.IReposotory.csproj">
       <Project>{4d01793a-4d09-48b4-aabb-973cdc30ae66}</Project>
       <Name>Nutshell.Blog.IReposotory</Name>
@@ -57,6 +66,9 @@
       <Project>{e3d7da59-99b7-4efb-98cf-739fb2796a21}</Project>
       <Name>Nutshell.Blog.Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

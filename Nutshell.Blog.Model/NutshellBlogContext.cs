@@ -39,6 +39,7 @@ namespace Nutshell.Blog.Model
         public DbSet<Article> Article { get; set; }
         public DbSet<Discussion> Discussion { get; set; }
         public DbSet<Favorites> Favorites { get; set; }
+        public DbSet<CustomCategory> CustomCategory { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

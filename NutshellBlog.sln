@@ -31,6 +31,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nutshell.Blog.Common", "Nut
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nutshell.Blog.Common.Tests", "Nutshell.Blog.Common.Tests\Nutshell.Blog.Common.Tests.csproj", "{260854AD-91AC-4D77-BF1C-AEDDC268561A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nutshell.Blog.Core", "Nutshell.Blog.Core\Nutshell.Blog.Core.csproj", "{B3FE965C-515D-4157-A56B-8E6F5D8973B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nutshell.Blog.Core.Tests", "Nutshell.Blog.Core.Tests\Nutshell.Blog.Core.Tests.csproj", "{A248BE3F-135A-4505-93D0-6B8638E25FD3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +77,14 @@ Global
 		{260854AD-91AC-4D77-BF1C-AEDDC268561A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{260854AD-91AC-4D77-BF1C-AEDDC268561A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{260854AD-91AC-4D77-BF1C-AEDDC268561A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3FE965C-515D-4157-A56B-8E6F5D8973B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3FE965C-515D-4157-A56B-8E6F5D8973B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3FE965C-515D-4157-A56B-8E6F5D8973B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3FE965C-515D-4157-A56B-8E6F5D8973B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A248BE3F-135A-4505-93D0-6B8638E25FD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A248BE3F-135A-4505-93D0-6B8638E25FD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A248BE3F-135A-4505-93D0-6B8638E25FD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A248BE3F-135A-4505-93D0-6B8638E25FD3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,5 +99,7 @@ Global
 		{4D01793A-4D09-48B4-AABB-973CDC30AE66} = {EC084E6E-79A0-4578-8B3F-E3EE64EE9F94}
 		{597D5E2D-6D37-4FE1-83FE-81AAA4208B93} = {56D21FEF-86F6-408B-AA33-112F3F71F935}
 		{260854AD-91AC-4D77-BF1C-AEDDC268561A} = {6A8A35EE-F176-4750-8509-48535ADFC0E0}
+		{B3FE965C-515D-4157-A56B-8E6F5D8973B5} = {56D21FEF-86F6-408B-AA33-112F3F71F935}
+		{A248BE3F-135A-4505-93D0-6B8638E25FD3} = {6A8A35EE-F176-4750-8509-48535ADFC0E0}
 	EndGlobalSection
 EndGlobal

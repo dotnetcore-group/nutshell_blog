@@ -1,0 +1,88 @@
+﻿
+@{
+    ViewBag.Title = "用户注册 - 果壳园";
+    @model Nutshell.Blog.Model.ViewModel.UserRegister
+}
+
+@section style{
+    <link href="~/Content/style/account.css" rel="stylesheet" />
+}
+<header>
+    <a href="/">返回主页</a>
+</header>
+<div class="main">
+    <h2 class="title">注册新用户</h2>
+    <div class="left">
+        @using (Ajax.BeginForm("register", new AjaxOptions { HttpMethod = "Post", OnSuccess = "success", OnBegin = "begin", OnFailure = "failure" }))
+        {
+            <div class="ctrl-group">
+                @Html.LabelFor(model => model.UserName)
+                <div>
+                    @Html.TextBoxFor(model => model.UserName)
+                </div>
+                @Html.ValidationMessageFor(model => model.UserName, null, new { @class = "error" })
+            </div>
+            <div class="ctrl-group">
+                @Html.LabelFor(model => model.Nickname)
+                <div>
+                    @Html.TextBoxFor(model => model.Nickname)
+                </div>
+                @Html.ValidationMessageFor(model => model.Nickname, null, new { @class = "error" })
+            </div>
+            <div class="ctrl-group" style="margin-top:35px;">
+                @Html.LabelFor(model => model.Password)
+                <div>
+                    @Html.PasswordFor(model => model.Password)
+                </div>
+                @Html.ValidationMessageFor(model => model.Password, null, new { @class = "error" })
+            </div>
+            <div class="ctrl-group">
+                @Html.LabelFor(model => model.Repassword)
+                <div>
+                    @Html.PasswordFor(model => model.Repassword)
+                </div>
+                @Html.ValidationMessageFor(model => model.Repassword, null, new { @class = "error" })
+            </div>
+            <div style="border:none;text-align:center;margin:20px 0px 20px 0px;">
+                <input type="submit" id="btnRegister" value="注册" />
+                <p style="font-size:14px;padding-left:55px;">*点击 “注册” 按钮，即表示您同意并愿意遵守 <a href="#" style="text-decoration:underline;font-size:14px;color:#4688f1"> 用户协议</a>。</p>
+            </div>
+        }
+
+    </div>
+    <div class="right">
+        <img src="http://account.cnblogs.com/images/registersideimg.png?v=SuVn_GWSEJByGrNm06GT-sxx_RW9nUtfd625myn_CsE">
+    </div>
+</div>
+
+@section script{
+
+    <script src="~/Content/scripts/jquery-1.8.0.min.js"></script>
+    <script src="~/Content/scripts/jquery-validation/jquery.validate.min.js"></script>
+    <script src="~/Content/scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Content/scripts/jquery-validation/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        function success(data) {
+            console.log(data);
+            loaded();
+        }
+        function begin() {
+            loadding();
+
+
+
+            //return false;
+        }
+        function failure() {
+            loaded();
+        }
+        function loadding() {
+            $("#btnRegister").attr("disabled", true);
+            $("#btnRegister").val("正在注册");
+        }
+        function loaded() {
+            $("#btnRegister").removeAttr("disabled");
+            $("#btnRegister").val("注册");
+        }
+    </script>
+}

@@ -37,7 +37,7 @@ namespace Nutshell.Blog.Model
         [Key]
         public int Id { get; set; }
 
-        [StringLength(200)]
+        [MaxLength(200)]
         public string Content { get; set; }
 
         public DateTime? Discussion_Time { get; set; }

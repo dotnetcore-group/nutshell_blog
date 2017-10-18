@@ -1,0 +1,22 @@
+﻿
+@{
+    Layout = null;
+}
+@model Nutshell.Blog.Model.Article
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@Model.Title - @(Model.Author?.Nickname) - 果壳园</title>
+</head>
+<body>
+    <div>
+        @{
+            @Model.Title
+            <br/>
+            @ViewBag.Author
+        }
+    </div>
+</body>
+</html>

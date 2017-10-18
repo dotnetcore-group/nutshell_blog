@@ -47,7 +47,7 @@ namespace Nutshell.Blog.Model
 
         public DateTime? Collection_Time { get; set; }
 
-        [StringLength(200)]
+        [MaxLength(200)]
         public string Remark { get; set; }
 
         public virtual User User { get; set; }

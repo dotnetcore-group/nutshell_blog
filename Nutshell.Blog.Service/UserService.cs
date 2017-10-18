@@ -21,6 +21,7 @@
  * 描述：
  * 
  *********************************************************************************/
+using Nutshell.Blog.Common;
 using Nutshell.Blog.IReposotory;
 using Nutshell.Blog.IService;
 using Nutshell.Blog.Model;
@@ -39,6 +40,26 @@ namespace Nutshell.Blog.Service
         {
             base.baseDal = userRepository;
             currentRepository = userRepository;
+        }
+
+        public User ValidationUser(string userName, string password, out string msg)
+        {
+            var user = currentRepository.LoadEntity(u=>u.Login_Name.Equals(userName, StringComparison.CurrentCultureIgnoreCase));
+            if (user != null)
+            {
+                if (user.Login_Password.Equals(password.Md5_Base64()))
+                {
+                    msg = "登录成功！";
+                }
+                else {
+                    msg = "用户名或密码错误！";
+                }
+            }
+            else
+            {
+                msg = "该用户不存在！";
+            }
+            return user;
         }
     }
 }

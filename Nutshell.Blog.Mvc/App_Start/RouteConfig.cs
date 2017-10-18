@@ -13,6 +13,19 @@ namespace Nutshell.Blog.Mvc
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.LowercaseUrls = true;
+
+            routes.MapRoute(
+                name: "ArticleDetail",
+                url: "{author}/p/{id}.html",
+                defaults: new { controller = "Article", action = "Detail", id = UrlParameter.Optional },
+                constraints: new { }
+            );
+            routes.MapRoute(
+                name: "UserCenter",
+                url: "{author}",
+                defaults: new { controller = "Account", action = "Home" }
+            );
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

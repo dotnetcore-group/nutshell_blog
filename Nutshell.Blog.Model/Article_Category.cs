@@ -34,6 +34,11 @@ namespace Nutshell.Blog.Model
     [Table("sys_article_category")]
     public class Article_Category
     {
+        public Article_Category()
+        {
+            Sort = 0;
+        }
+
         [Key]
         public int Cate_Id { get; set; }
 
@@ -41,6 +46,8 @@ namespace Nutshell.Blog.Model
 
         [ForeignKey("Categories")]
         public int? Parent_Id { get; set; }
+
+        public int Sort { get; set; }
 
         public virtual ICollection<Article_Category> Categories { get; set; }
         public virtual ICollection<Article> Articles { get; set; }

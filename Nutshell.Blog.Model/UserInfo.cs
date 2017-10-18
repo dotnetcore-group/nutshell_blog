@@ -37,24 +37,20 @@ namespace Nutshell.Blog.Model
         public UserInfo()
         {
             Registration_Time = DateTime.Now;
-            Nickname = string.Format("用户{0}", new Random().Next(10000, 100000));
             Sex = "保密";
         }
 
         [Key, ForeignKey("User")]
         public int User_Id { get; set; }
-
-        [StringLength(10)]
-        public string Nickname { get; set; }
-
-        [StringLength(2)]
+        
+        [MaxLength(2)]
         public string Sex { get; set; }
 
         public DateTime? Birthday { get; set; }
 
         public DateTime Registration_Time { get; set; }
 
-        [StringLength(50)]
+        [MaxLength(50)]
         public string Photo { get; set; }
 
         public virtual User User { get; set; }

@@ -7,17 +7,21 @@ using System.Web.Mvc;
 
 namespace Nutshell.Blog.Mvc.Controllers
 {
+    [AllowAnonymous]
     public class HomeController : BaseController
     {
-        public HomeController(IUserService userService)
+        public HomeController(IArticleService articleService, IUserService userService)
         {
             base.userService = userService;
+            base.articleService = articleService;
         }
 
         // GET: Home
         public ActionResult Index()
         {
-            return View();
+            var articles = articleService.LoadEntities(a => true)?.ToList();
+            ViewBag.Account = GetCurrentAccount();
+            return View(articles);
         }
     }
 }

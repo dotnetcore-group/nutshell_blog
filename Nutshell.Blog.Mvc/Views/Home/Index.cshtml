@@ -1,17 +1,153 @@
 ﻿
 @{
-    Layout = null;
+    ViewBag.Title = "果壳园 - 技术分享博客园";
+    @model IList<Nutshell.Blog.Model.Article>
 }
 
-<!DOCTYPE html>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-</head>
-<body>
-    <div> 
+@section style{
+
+    <link href="~/Content/style/index.css" rel="stylesheet" />
+}
+
+<header class="header">
+    <div class="header-top">
+        <p class="header-top-left">果壳中的新世界</p>
+        <p class="header-top-right">
+
+            @{
+                var account = ViewBag.Account as Nutshell.Blog.Model.ViewModel.Account;
+                if (account != null)
+                {
+                    <a href="/@account.UserName">@account.Nickname</a>
+                    <a href='/account/loginout'>退出</a>
+                }
+                else
+                {
+                    @("[")<a href='/account/register'>注册</a>@("·")<a href='/account/signin'>登录</a>@("]")
+                }
+            }
+
+
+        </p>
+
+        <div class="header-logo">
+
+        </div>
+
+        <nav class="header-nav">
+            <ul>
+                <li><a href="">首页</a></li>
+                <li><a href="">新闻</a></li>
+                <li><a href="">收藏</a></li>
+                <li><a href="">搜索</a></li>
+            </ul>
+        </nav>
     </div>
-</body>
-</html>
+</header>
+
+
+
+<div class="body">
+    <div class="body-main">
+        <div class="body-list">
+            <ul>
+                @{
+                    foreach (var article in Model)
+                    {
+                        <li class="list-item">
+                            <h5 class="item-title">
+                                <a target="_blank" href="/@(article.Author?.Login_Name)/p/@(article.Article_Id).html">@article.Title</a>
+                            </h5>
+                            <div class="item-body">
+                                <img class="item-pic" src="~/Content/images/nut_64.png" alt="" />
+                                <p class="item-desc">
+                                    @article.Introduction
+                                </p>
+                            </div>
+                            <div class="item-footer">
+                                <a target="_blank" href="/@(article.Author?.Login_Name)" class="item-author">@(article.Author?.Nickname)</a>
+                                <span class="item-time">@article.Creation_Time</span>
+                                <span class="">评论(5)</span>
+                                <span class="">浏览(18)</span>
+                            </div>
+                        </li>
+                    }
+
+                    for (int i = 0; i < 20; i++)
+                    {
+                        <li class="list-item">
+                            <h5 class="item-title">
+                                <a href="/article/detail/5.html">一个想法（续三）：一份IT技术联盟创业计划书，开启众筹创业征程</a>
+                            </h5>
+                            <div class="item-body">
+                                <img class="item-pic" src="~/Content/images/nut_64.png" alt="" />
+                                <p class="item-desc">
+                                    不久前，我发布了一个调试工具：发布：.NET开发人员必备的可视化调试工具（你值的拥有）不久前，我发布了一个调试工具：发布：.NET开发人员必备的可视化调试工具（你值的拥有）效果是这样的：之后，有小部分用户反映，工具不生效~~~然后，建议小部分用户换个电脑环境试试，就好了~~~于是...
+                                </p>
+                            </div>
+                            <div class="item-footer">
+                                <a href="" class="item-author">曾安德</a>
+                                <span class="item-time">2017年10月17日20:34:17</span>
+                                <span class="">评论(5)</span>
+                                <span class="">浏览(18)</span>
+                            </div>
+                        </li>
+                    }
+                }
+            </ul>
+            <div class="list-pager">
+                <p>分页</p>
+            </div>
+        </div>
+    </div>
+    <div class="body-left">
+        <h5>网站导航</h5>
+        <ul class="nav-left">
+            <li>
+                <a href="#">.Net技术</a>
+                <span class="tag-total">(15689)</span>
+            </li>
+            <li>
+                <a href="#">Web前端</a><span class="tag-total">(1598)</span>
+            </li>
+            <li>
+                <a href="#">网站安全</a><span class="tag-total">(9875)</span>
+            </li>
+            <li>
+                <a href="#">Android开发</a><span class="tag-total">(6598)</span>
+            </li>
+            <li>
+                <a href="#">经验分享</a><span class="tag-total">(156)</span>
+            </li>
+        </ul>
+
+    </div>
+
+    <div class="body-right">
+        右侧导航
+    </div>
+</div>
+
+<footer class="footer">
+    <ul class="friend-links">
+        <li>友情链接：</li>
+        <li>
+            <a href="">博客园</a>
+        </li>
+        <li>
+            <a href="">博客园</a>
+        </li>
+        <li>
+            <a href="">博客园</a>
+        </li>
+        <li>
+            <a href="">博客园</a>
+        </li>
+        <li>
+            <a href="">博客园</a>
+        </li>
+    </ul>
+    <p class="copyright">Email : contact@cyqdata.com Copyright © 2010-2020 Powered by <a href="/">NthBlog - 果壳园</a> All Rights Reserved</p>
+</footer>
+

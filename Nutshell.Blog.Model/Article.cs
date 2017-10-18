@@ -43,13 +43,13 @@ namespace Nutshell.Blog.Model
         [Key]
         public int Article_Id { get; set; }
 
-        [StringLength(20)]
+        [MaxLength(20)]
         public string Title { get; set; }
 
-        [StringLength(int.MaxValue)]
+        [MaxLength(int.MaxValue)]
         public string Content { get; set; }
 
-        [StringLength(100)]
+        [MaxLength(100)]
         public string Introduction { get; set; }
 
         public DateTime? Creation_Time { get; set; }
@@ -65,5 +65,6 @@ namespace Nutshell.Blog.Model
         public virtual ICollection<Discussion> Discussions { get; set; }
         public virtual ICollection<Favorites> Favorites { get; set; }
         public virtual ICollection<Article_Category> Categories { get; set; }
+        public virtual CustomCategory CustomCategory { get; set; }
     }
 }

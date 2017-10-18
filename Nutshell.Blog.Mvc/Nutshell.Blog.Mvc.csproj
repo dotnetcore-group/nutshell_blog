@@ -51,6 +51,10 @@
       <HintPath>..\packages\Autofac.Mvc5.4.0.2\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Lucene.Net, Version=3.0.3.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Bin\Lucene.Net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.0.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.0.6\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
       <Private>True</Private>
@@ -125,14 +129,44 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\images\nut_64 - 复制.png" />
+    <Content Include="Content\style\account.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="Content\images\nut_64.png" />
+    <Content Include="Content\style\font-awesome.css.map" />
+    <Content Include="Content\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\fonts\FontAwesome.otf" />
+    <None Include="Content\scripts\jquery-1.8.0.intellisense.js" />
+    <Content Include="Content\style\font-awesome.css" />
+    <Content Include="Content\style\font-awesome.min.css" />
+    <Content Include="Content\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\scripts\jquery-1.8.0.js" />
+    <Content Include="Content\scripts\jquery-1.8.0.min.js" />
+    <Content Include="Content\scripts\jquery-validation\jquery.validate.js" />
+    <Content Include="Content\scripts\jquery-validation\jquery.validate.min.js" />
+    <Content Include="Content\scripts\jquery-validation\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Content\scripts\jquery.cookie.js" />
+    <Content Include="Content\scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Content\scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Content\scripts\klorofil-common.js" />
+    <Content Include="Content\style\index.css" />
     <Content Include="Global.asax" />
+    <Content Include="Resources\Theme\lightwhite.css" />
+    <Content Include="Resources\Theme\lightyellow.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\AutofacConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ArticleController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Filters\CheckUserLoginAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -145,6 +179,14 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Article\Post.cshtml" />
+    <Content Include="Views\Article\Search.cshtml" />
+    <Content Include="Views\Article\Detail.cshtml" />
+    <Content Include="Views\Account\SignIn.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Account\Home.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -157,6 +199,14 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Nutshell.Blog.Common\Nutshell.Blog.Common.csproj">
+      <Project>{597d5e2d-6d37-4fe1-83fe-81aaa4208b93}</Project>
+      <Name>Nutshell.Blog.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nutshell.Blog.Core\Nutshell.Blog.Core.csproj">
+      <Project>{b3fe965c-515d-4157-a56b-8e6f5d8973b5}</Project>
+      <Name>Nutshell.Blog.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Nutshell.Blog.IService\Nutshell.Blog.IService.csproj">
       <Project>{8b4c50fb-a28c-4663-bdcc-7af7d1163e3f}</Project>
       <Name>Nutshell.Blog.IService</Name>

@@ -1,0 +1,21 @@
+﻿
+@{
+    Layout = null;
+}
+@model Nutshell.Blog.Model.User
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@Model.Nickname - 果壳园</title>
+    <link rel="stylesheet" href="@ViewBag.Theme"/>
+</head>
+<body>
+    <h1>@Model.Nickname</h1>
+    <div>
+        <p>主题名：@Model.Theme.ThemeName</p>
+        <p>资源位置:@ViewBag.Theme</p>
+    </div>
+</body>
+</html>

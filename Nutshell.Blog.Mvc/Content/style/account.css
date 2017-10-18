@@ -1,0 +1,91 @@
+﻿.main {
+            position: relative;
+            margin: 50px auto;
+            width: 750px;
+        }
+
+            .main .title {
+                font-weight: 400;
+                font-size: 20px;
+                padding: 3px 0px;
+                border-bottom: 1px solid #e9e9e9;
+                margin-bottom: 50px;
+            }
+
+        .ctrl-group {
+            padding: 5px 20px;
+            position: relative;
+            margin: 0px 0px 12px 0px;
+        }
+
+            .ctrl-group label {
+                font-size: 13px;
+                padding-right:15px;
+                width: 55px;
+                display: inline-block;
+                text-align: justify;
+				text-justify: inter-ideograph; /*为了兼容IE*/
+				text-align-last: justify;/* ie9*/
+				-moz-text-align-last: justify;/*ff*/
+				-webkit-text-align-last: justify;/*chrome 20+*/
+            }
+
+            .ctrl-group input[type=text], .ctrl-group input[type=password] {
+                border: none;
+                width: 300px;
+                margin: 5px;
+            }
+
+                .ctrl-group input[type=text]:focus, .ctrl-group input[type=password]:focus {
+                    outline: none;
+                }
+
+            #btnRegister {
+                height: 34px;
+                width: 98px;
+                border-radius: 3px;
+                border: none;
+                background: #327df5;
+                color: #ffffff;
+                cursor: pointer;
+                margin:15px 0px 15px 55px;
+            }
+
+            .ctrl-group div {
+                border: 1px solid #d3d3d3;
+                display: inline-block;
+            }
+
+        .error {
+            position: absolute;
+            bottom: -14px;
+            right: 23px;
+            font-size: 12px;
+            display: block;
+            color: #a94442;
+        }
+
+        .main > div {
+            float: left;
+            display: inline-block;
+        }
+
+        .left {
+            width: 430px;
+        }
+
+        .right {
+            margin: 15px;
+            width: 285px;
+            border-left: 1px solid #cecece;
+        }
+
+            .right img {
+                margin: -20px 20px;
+                width: 85%;
+                border-radius: 20px;
+                overflow: hidden;
+            }
+        .justify {
+            display:inline-block;
+        }
