@@ -20,10 +20,10 @@ namespace Nutshell.Blog.Mvc.Controllers
         public ActionResult All(string index)
         {
             int pageIndex = Convert.ToInt32(index ?? "1");
-            int pageSize = 20;
+            int pageSize = 10;
             int totalCount = 0;
 
-            var articles = articleService.LoadPageEntities(pageIndex, pageSize, out totalCount, a => true, a => a.Creation_Time)?.ToList();
+            var articles = articleService.LoadPageEntities(pageIndex, pageSize, out totalCount, a => true, a => a.Creation_Time, false)?.ToList();
 
             ViewBag.Account = GetCurrentAccount();
 

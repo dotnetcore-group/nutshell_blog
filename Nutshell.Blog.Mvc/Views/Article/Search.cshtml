@@ -12,7 +12,27 @@
 </head>
 <body>
     <div>
-
+        <input type="text" id="txtWord" />
+        <button id="btnSearch">搜索</button>
     </div>
+    <ul id="articleList">
+        
+    </ul>
+    <script src="~/Content/scripts/jquery-1.8.0.min.js"></script>
+    <script>
+        $(function () {
+            $("#btnSearch").click(function () {
+                $.post("/article/search", { words : $("#txtWord").val()},function(data){
+                    var articles = data.articles;
+                    if (articles.length > 0) {
+                        for (var i = 0; i < articles.length; i++) {
+                            console.log(articles[i]);
+                            $("#articleList").append('<li>' + articles[i].Title + '</li>');
+                        }
+                    }
+                })
+            });
+        })
+    </script>
 </body>
 </html>

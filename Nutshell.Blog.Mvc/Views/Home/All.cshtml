@@ -38,8 +38,7 @@
         <nav class="header-nav">
             <ul>
                 <li><a href="">首页</a></li>
-                <li><a href="">新闻</a></li>
-                <li><a href="">收藏</a></li>
+                <li><a href="/">新闻</a></li>
                 <li><a href="/article/search">搜索</a></li>
             </ul>
         </nav>
@@ -53,25 +52,38 @@
         <div class="body-list">
             <ul>
                 @{
-                    foreach (var article in Model)
+                    if (Model.Count > 0)
                     {
-                        <li class="list-item">
-                            <h5 class="item-title">
-                                <a target="_blank" href="/@(article.Author?.Login_Name)/p/@(article.Article_Id).html">@article.Title</a>
-                            </h5>
-                            <div class="item-body">
-                                <img class="item-pic" src="~/Content/images/nut_64.png" alt="" />
-                                <p class="item-desc">
-                                    @article.Introduction
-                                </p>
-                            </div>
-                            <div class="item-footer">
-                                <a target="_blank" href="/@(article.Author?.Login_Name)" class="item-author">@(article.Author?.Nickname)</a>
-                                <span class="item-time">@article.Creation_Time</span>
-                                <span class="">评论(5)</span>
-                                <span class="">浏览(18)</span>
-                            </div>
-                        </li>
+                        foreach (var article in Model)
+                        {
+                            <li class="list-item">
+                                <div>
+                                    <h5 class="item-title">
+                                        <a target="_blank" href="/@(article.Author?.Login_Name)/p/@(article.Article_Id).html">@article.Title</a>
+                                    </h5>
+                                    <div class="item-body">
+                                        <a href="/@(article.Author?.Login_Name)">
+                                            <img class="item-pic" src='@(article.Author.Photo ??  "/upload/photos/default.png")' alt="加载失败……" />
+                                        </a>
+                                        <p class="item-desc">
+                                            @article.Introduction
+                                        </p>
+                                    </div>
+                                    <div class="item-footer">
+                                        <a target="_blank" href="/@(article.Author?.Login_Name)" class="item-author">@(article.Author?.Nickname)</a>
+                                        <span class="item-time">@article.Creation_Time</span>
+                                        <span class="fa fa-commenting-o"> 评论(@article.Discussions.Count)</span>
+                                        <span class="fa fa-eye"> 浏览(18)</span>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        <div style="padding:50px 0px;">
+                            <p style="text-align: center;">暂无数据！</p>
+                        </div>
                     }
 
                     for (int i = 0; i < 0; i++)
@@ -158,7 +170,11 @@
             totalPage: @ViewBag.Page,
             totalSize: @ViewBag.Total,
             callback: function (num) {
-                location="/all/"+num;
+                if(num!=1){
+                    location="/all/"+num;
+                }else{
+                    location='/';
+                }
             }
         })
     </script>

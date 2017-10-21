@@ -46,9 +46,17 @@ namespace Nutshell.Blog.Mvc.Controllers
 
         void ValidatedUser(Account account)
         {
-            var sessionid = Guid.NewGuid().ToString();
-            MemcacheHelper.Set(sessionid, SerializerHelper.SerializeToString(account), DateTime.Now.AddMinutes(20));
-            Response.Cookies[Keys.SessionId].Value = sessionid;
+            try
+            {
+                var sessionid = Guid.NewGuid().ToString();
+                MemcacheHelper.Set(sessionid, SerializerHelper.SerializeToString(account), DateTime.Now.AddMinutes(20));
+                Response.Cookies[Keys.SessionId].Value = sessionid;
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
         }
 
         public ActionResult Register()
@@ -76,10 +84,10 @@ namespace Nutshell.Blog.Mvc.Controllers
         [CheckUserLogin]
         public ActionResult Home(string author)
         {
-            ViewBag.User = author;
             var userInfo = userService.LoadEntity(u => u.Login_Name.Equals(author, StringComparison.CurrentCultureIgnoreCase));
             if (userInfo != null)
             {
+                ViewBag.User = author;
                 ViewBag.Theme = userInfo.Theme.Resources;
                 return View(userInfo);
             }

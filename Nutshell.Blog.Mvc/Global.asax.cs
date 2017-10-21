@@ -18,7 +18,8 @@ namespace Nutshell.Blog.Mvc
             FilterConfig.Register(GlobalFilters.Filters);
 
             AutofacConfig.Register();
-            LuceneIndexManager.GetInstance().StartThread();
+            //LuceneIndexManager.GetInstance().StartThread();
+            PanGuLuceneHelper.Instance.StartThread();
         }
     }
 }

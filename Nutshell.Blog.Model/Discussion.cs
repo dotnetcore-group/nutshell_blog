@@ -42,6 +42,9 @@ namespace Nutshell.Blog.Model
 
         public DateTime? Discussion_Time { get; set; }
 
+        [MaxLength(10)]
+        public string UserName { get; set; }
+
         [ForeignKey("User")]
         public int User_Id { get; set; }
 

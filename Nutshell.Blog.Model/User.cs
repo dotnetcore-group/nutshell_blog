@@ -61,6 +61,9 @@ namespace Nutshell.Blog.Model
         [MaxLength(10)]
         public string Nickname { get; set; }
 
+        [MaxLength(100)]
+        public string Photo { get; set; }
+
         public virtual ICollection<Article> Articles { get; set; }
         public virtual ICollection<Discussion> Discussions { get; set; }
         public virtual ICollection<Favorites> Favorites { get; set; }

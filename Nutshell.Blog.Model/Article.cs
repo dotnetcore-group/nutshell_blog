@@ -48,7 +48,6 @@ namespace Nutshell.Blog.Model
         public string Title { get; set; }
 
         [MaxLength(int.MaxValue)]
-        [Required]
         public string Content { get; set; }
 
         /// <summary>
@@ -56,6 +55,7 @@ namespace Nutshell.Blog.Model
         /// content只保留纯文字
         /// </summary>
         [MaxLength(int.MaxValue)]
+        [Required]
         public string Body { get; set; }
 
         [MaxLength(200)]

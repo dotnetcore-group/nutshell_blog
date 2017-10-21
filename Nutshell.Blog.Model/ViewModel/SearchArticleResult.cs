@@ -31,9 +31,9 @@ namespace Nutshell.Blog.Model.ViewModel
 {
     public class SearchArticleResult
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
-        public DateTime? Creation_Time { get; set; }
+        public string Creation_Time { get; set; }
     }
 }

@@ -50,7 +50,7 @@ namespace Nutshell.Blog.Model
 
         public DateTime Registration_Time { get; set; }
 
-        [MaxLength(50)]
+        [MaxLength(100)]
         public string Photo { get; set; }
 
         public virtual User User { get; set; }

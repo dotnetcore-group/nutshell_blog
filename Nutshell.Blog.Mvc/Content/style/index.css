@@ -2,6 +2,7 @@
     padding: 0px;
     margin: 0px;
     box-sizing: border-box;
+    font-family:'Microsoft YaHei UI'
 }
 
 ul, li {
@@ -108,8 +109,6 @@ body {
 
 .body-main .body-list {
     position: relative;
-    height: 100%;
-    /*box-shadow: 3px 0px 3px 4px rgba(0,0,0,0.5), -3px 0 -31px 4px rgba(0,0,0,0.5);*/
     box-shadow: 5px 0px 5px -5px rgba(0,0,0,0.2), -5px 0px 5px -5px rgba(0,0,0,0.2);
 }
 
@@ -154,7 +153,7 @@ body {
 
 .list-item {
     border-bottom: 1px dashed #c8c1c1;
-    padding: 20px 20px 20px 45px;
+    padding: 15px 20px 15px 35px;
     position: relative;
 }
 
@@ -178,7 +177,8 @@ body {
 
 .list-item .item-footer {
     font-size: 12px;
-    padding-top: 5px;
+    margin-top:28px;
+    position:relative;
 }
 
 .item-body img.item-pic {
@@ -190,10 +190,10 @@ body {
 
 .item-body p.item-desc {
     line-height: 23px;
-    position: absolute;
-    left: 115px;
-    display: inline-block;
-    padding-right: 20px;
+    padding-right: 80px;
+    position: relative;
+    left: 70px;
+    margin-top: -70px;
 }
 
 .item-footer a, span {

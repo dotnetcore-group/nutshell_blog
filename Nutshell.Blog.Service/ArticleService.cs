@@ -49,7 +49,8 @@ namespace Nutshell.Blog.Service
 
             if (res)
             {
-                LuceneIndexManager.GetInstance().AddQueue(art.Article_Id.ToString(), art.Title, art.Content, "作者", art.Creation_Time);
+                //LuceneIndexManager.GetInstance().AddQueue(art.Article_Id.ToString(), art.Title, art.Content, "作者", art.Creation_Time);
+                PanGuLuceneHelper.Instance.AddQueue(art.Article_Id.ToString(), art.Title, art.Content, "作者", art.Creation_Time);
             }
 
             return art;

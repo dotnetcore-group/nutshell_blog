@@ -9,30 +9,22 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Post</title>
+    <link href="~/Content/kindeditor/themes/default/default.css" rel="stylesheet" />
+    <link href="~/Content/kindeditor/plugins/code/prettify.css" rel="stylesheet" />
+    <script src="~/Content/kindeditor/kindeditor-all-min.js"></script>
+    <script src="~/Content/kindeditor/lang/zh-CN.js"></script>
+    <script src="~/Content/kindeditor/plugins/code/prettify.js"></script>
 </head>
 <body>
     <div>
-        @using (Ajax.BeginForm("postarticle", null, new AjaxOptions { HttpMethod = "Post", OnSuccess = "success", OnFailure = "failure" }, new { @class = "form-auth-small" }))
-        {
-            @Html.ValidationSummary(true)
-            @Html.AntiForgeryToken()
-            <div class="form-group">
-                @Html.LabelFor(model => model.Title, new { @class = "control-label sr-only" })
-                @Html.TextBoxFor(model => model.Title, new { @class = "form-control", placeholder = "标题", id = "txtTitle" })
-                @Html.ValidationMessageFor(m => m.Title, null, new { @class = "error" })
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(model => model.Introduction, new { @class = "control-label sr-only" })
-                @Html.TextAreaFor(u => u.Introduction, new { @class = "form-control", placeholder = "简介", id = "txtContent" })
-                @Html.ValidationMessageFor(m => m.Introduction, null, new { @class = "error" })
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(model => model.Content, new { @class = "control-label sr-only" })
-                @Html.TextAreaFor(u => u.Content, new { @class = "form-control", placeholder = "内容", id = "txtContent" })
-                @Html.ValidationMessageFor(m => m.Content, null, new { @class = "error" })
-            </div>
-            <input type="submit" class="btn btn-primary btn-lg btn-block" id="btnLogin" value="登录" />
-        }
+        <form id="article">
+
+            <input type="text" id="txtTitle" />
+
+            <textarea id="txtBody" cols="100"></textarea>
+
+            <input type="submit" value="提交" id="btnSubmit" />
+        </form>
     </div>
     <script src="~/Content/scripts/jquery-1.8.0.min.js"></script>
     <script src="~/Content/scripts/jquery-validation/jquery.validate.min.js"></script>
@@ -40,9 +32,49 @@
     <script src="~/Content/scripts/jquery-validation/jquery.validate.unobtrusive.min.js"></script>
 
     <script>
-        function success(data) {
-            alert(data);
-        }
+        var editor_body = null;
+        //function before() {
+        //    if (editor_body != null) {
+        //        var content = editor_body.text();
+        //        console.log(content);
+        //        $("#content").val(content);
+        //    }
+        //}
+        KindEditor.ready(function (K) {
+            editor_body = K.create("#txtBody", {
+                resizeType: 1,
+                allowPreviewEmoticons: false,
+                allowImageUpload: false,
+                items: [
+                    'source','fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+                    'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+                    'insertunorderedlist', '|', 'emoticons', 'image', 'link'],
+                afterCreate: function () {
+                    var self = this;
+                    $("#btnSubmit").click(function () {
+                        console.log(html);
+                        //return false;
+                    })
+                }
+            })
+        });
+
+        $(function () {
+            $("#btnSubmit").click(function () {
+                var $title = $("#txtTitle");
+                var $body = $("#txtBody");
+                if (editor_body != null) {
+                    var title = $title.val();
+                    var body = editor_body.html();
+                    if (title.trim().length > 0 && body.length > 0) {
+                        $.post("/article/postArticle", { Title: title, Body: body, Content: editor_body.text() }, function (data) {
+                            console.log(data);
+                        })
+                    }
+                }
+                return false;
+            })
+        })
     </script>
 </body>
 </html>
