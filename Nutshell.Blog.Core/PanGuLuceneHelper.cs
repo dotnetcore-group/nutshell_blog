@@ -31,6 +31,7 @@ using Lucene.Net.Store;
 using Nutshell.Blog.Core.Model;
 using Nutshell.Blog.Model.ViewModel;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
@@ -43,7 +44,9 @@ namespace Nutshell.Blog.Core
 {
     public class PanGuLuceneHelper
     {
-        readonly Queue<IndexContent> queue = new Queue<IndexContent>();
+
+        readonly ConcurrentQueue<IndexContent> queue = new ConcurrentQueue<IndexContent>();
+        //static object myLock = new object();
 
         private PanGuLuceneHelper() { }
 
@@ -148,7 +151,6 @@ namespace Nutshell.Blog.Core
                 Creation_Time = creation_time,
                 LuceneType = LuceneType.Add
             };
-
             queue.Enqueue(indexContent);
         }
 
@@ -168,8 +170,12 @@ namespace Nutshell.Blog.Core
             {
                 if (queue.Count > 0)
                 {
-                    var indexContent = queue.Dequeue();
-                    CreateIndex(indexContent);
+                    IndexContent indexContent = null;
+                    queue.TryDequeue(out indexContent);
+                    if (indexContent != null)
+                    {
+                        CreateIndex(indexContent);
+                    }
                 }
                 else
                 {
@@ -219,7 +225,7 @@ namespace Nutshell.Blog.Core
             try
             {
                 //false表示追加（true表示删除之前的重新写入）
-                writer = new IndexWriter(directory_luce, analyzer, !isExists, IndexWriter.MaxFieldLength.UNLIMITED);
+                writer = new IndexWriter(directory_luce, analyzer, !isExists, IndexWriter.MaxFieldLength.LIMITED);
                 if (indexContent == null)
                 {
                     return false;
@@ -251,9 +257,9 @@ namespace Nutshell.Blog.Core
 
         public string CreateHightLight(string keywords, string content)
         {
-            PanGu.HighLight.SimpleHTMLFormatter simpleHTMLFormatter = new PanGu.HighLight.SimpleHTMLFormatter("<font color='red'>", "</font>");
+            PanGu.HighLight.SimpleHTMLFormatter simpleHTMLFormatter = new PanGu.HighLight.SimpleHTMLFormatter("<font color='#dd4b39'>", "</font>");
             PanGu.HighLight.Highlighter highlighter = new PanGu.HighLight.Highlighter(simpleHTMLFormatter, new PanGu.Segment());
-            highlighter.FragmentSize = 50;
+            highlighter.FragmentSize = 150;
             return highlighter.GetBestFragment(keywords, content);
         }
 
@@ -278,12 +284,72 @@ namespace Nutshell.Blog.Core
                 foreach (var scoreDoc in scoreDocs)
                 {
                     var doc = searcher.Doc(scoreDoc.Doc);
+                    var title = CreateHightLight(keyword, doc.Get("Title"));
+                    if (string.IsNullOrWhiteSpace(title))
+                    {
+                        title = doc.Get("Title");
+                    }
                     articles.Add(new SearchArticleResult
                     {
                         Id = doc.Get("Id"),
                         Creation_Time = doc.Get("CreationTime"),
-                        Title = CreateHightLight(keyword, doc.Get("Title")),
+                        Title = title,
                         Content = CreateHightLight(keyword, doc.Get("Content"))
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            return articles;
+        }
+
+        public List<SearchArticleResult> Search(string keyword, int PageIndex, int PageSize, out int TotalCount)
+        {
+            string[] fieds = { "Title", "Content" };
+            QueryParser queryParser = null;
+            queryParser = new MultiFieldQueryParser(version, fieds, analyzer);
+            Query query = queryParser.Parse(keyword);
+
+            TopScoreDocCollector collector = TopScoreDocCollector.Create(PageIndex * PageSize, false);
+            IndexSearcher searcher = new IndexSearcher(directory_luce, true);
+            searcher.Search(query, collector);
+            if (collector == null || collector.TotalHits == 0)
+            {
+                TotalCount = 0;
+                return null;
+            }
+            int start = PageSize * (PageIndex - 1);
+            //结束数  
+            int limit = PageSize;
+            List<SearchArticleResult> articles = new List<SearchArticleResult>();
+            ScoreDoc[] hits = collector.TopDocs(start, limit).ScoreDocs;
+            TotalCount = collector.TotalHits;
+            //var scoreDocs = docs.ScoreDocs;
+            try
+            {
+                foreach (var scoreDoc in hits)
+                {
+                    var doc = searcher.Doc(scoreDoc.Doc);
+                    var title = CreateHightLight(keyword, doc.Get("Title"));
+                    var content = CreateHightLight(keyword, doc.Get("Content"));
+                    if (string.IsNullOrWhiteSpace(title))
+                    {
+                        title = doc.Get("Title");
+                    }
+                    if (string.IsNullOrWhiteSpace(content))
+                    {
+                        var tem = doc.Get("Content");
+                        content = tem.Length>=190? tem.Substring(0,190): tem;
+                    }
+                    articles.Add(new SearchArticleResult
+                    {
+                        Id = doc.Get("Id"),
+                        Creation_Time = doc.Get("CreationTime"),
+                        Title = title,
+                        Content = content
                     });
                 }
             }

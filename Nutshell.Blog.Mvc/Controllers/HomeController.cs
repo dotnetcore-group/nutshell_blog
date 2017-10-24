@@ -7,7 +7,6 @@ using System.Web.Mvc;
 
 namespace Nutshell.Blog.Mvc.Controllers
 {
-    [AllowAnonymous]
     public class HomeController : BaseController
     {
         public HomeController(IArticleService articleService, IUserService userService)

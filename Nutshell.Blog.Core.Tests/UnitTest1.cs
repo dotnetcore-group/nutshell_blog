@@ -43,7 +43,7 @@ namespace Nutshell.Blog.Core.Tests
                 var articles = db.Article.Where(a => true).ToList();
                 foreach (var articel in articles)
                 {
-                    PanGuLuceneHelper.Instance.AddQueue(articel.Article_Id.ToString(), articel.Title, articel.Content, "", articel.Creation_Time);
+                    PanGuLuceneHelper.Instance.AddQueue(articel.Article_Id.ToString(), articel.Title, articel.Content, "作者", articel.Creation_Time);
                 }
             }
             PanGuLuceneHelper.Instance.StartThread();

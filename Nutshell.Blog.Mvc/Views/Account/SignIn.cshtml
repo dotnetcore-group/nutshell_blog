@@ -29,8 +29,12 @@
     <script src="~/Content/scripts/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/Content/scripts/jquery-validation/jquery.validate.unobtrusive.min.js"></script>
     <script>
-        function success(date) {
-            location = "/";
+        function success(data) {
+            if (data.res) {
+                location = "/";
+            } else {
+                alert(data.msg);
+            }
         }
     </script>
 }

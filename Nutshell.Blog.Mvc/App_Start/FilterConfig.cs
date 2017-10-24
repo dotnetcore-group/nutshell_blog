@@ -11,7 +11,7 @@ namespace Nutshell.Blog.Mvc
     {
         public static void Register(GlobalFilterCollection filters)
         {
-            filters.Add(new CheckUserLoginAttribute());
+            //filters.Add(new CheckUserLoginAttribute());
         }
     }
 }

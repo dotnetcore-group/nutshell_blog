@@ -11,7 +11,6 @@ using System.Web.Mvc;
 
 namespace Nutshell.Blog.Mvc.Controllers
 {
-    [AllowAnonymous]
     public class AccountController : BaseController
     {
         public AccountController(IUserService userService)
@@ -39,6 +38,7 @@ namespace Nutshell.Blog.Mvc.Controllers
                     // 将用户信息存入memcache
                     // 返回客户端一个session id
                     ValidatedUser(userinfo.ToAccount());
+                    res = true;
                 }
             }
             return Json(new { res, msg });
@@ -105,7 +105,7 @@ namespace Nutshell.Blog.Mvc.Controllers
             var user = userService.LoadEntity(u => u.Login_Name.Equals(UserName, StringComparison.CurrentCultureIgnoreCase));
             return user == null ? Json(true) : Json(false);
         }
-
+        
         public ActionResult LoginOut()
         {
             var cookie = Request.Cookies[Keys.SessionId];

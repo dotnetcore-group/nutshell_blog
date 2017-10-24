@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 
 namespace Nutshell.Blog.Mvc.Filters
@@ -16,7 +17,6 @@ namespace Nutshell.Blog.Mvc.Filters
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            base.OnActionExecuting(filterContext);
             var request = filterContext.HttpContext.Request;
             var response = filterContext.HttpContext.Response;
 
@@ -44,7 +44,20 @@ namespace Nutshell.Blog.Mvc.Filters
                 }
             }
 
+            if (request.IsAjaxRequest())
+            {
+                filterContext.Result = new AjaxUnauthorizedResult();
+                return;
+            }
             filterContext.Result = new RedirectResult("/account/signin");
+            base.OnActionExecuting(filterContext);
+        }
+    }
+    class AjaxUnauthorizedResult : JavaScriptResult
+    {
+        public AjaxUnauthorizedResult()
+        {
+            Script = "alert('尚未登录！');location='/account/signin'";
         }
     }
 }

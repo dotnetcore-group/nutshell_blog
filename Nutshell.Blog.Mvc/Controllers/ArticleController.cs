@@ -1,52 +1,65 @@
-﻿using Lucene.Net.Documents;
-using Lucene.Net.Index;
-using Lucene.Net.Search;
-using Lucene.Net.Store;
-using Nutshell.Blog.Core;
+﻿using Nutshell.Blog.Core;
 using Nutshell.Blog.IService;
 using Nutshell.Blog.Model;
 using Nutshell.Blog.Model.ViewModel;
 using Nutshell.Blog.Mvc.Filters;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
-using System.Linq;
-using System.Web;
+using System.Diagnostics;
+using System.Net;
 using System.Web.Mvc;
 
 namespace Nutshell.Blog.Mvc.Controllers
 {
+    [CheckUserLogin]
     public class ArticleController : BaseController
     {
-        int showWords = 800;
         public ArticleController(IArticleService artService)
         {
             articleService = artService;
         }
 
-        [HttpPost]
+        [HttpGet]
         [AllowAnonymous]
-        public JsonResult Search(string words)
+        public ActionResult Search(string q)
         {
-            List<SearchArticleResult> list = null;
-            //var wordList = PanGuLuceneHelper.Instance.PanGuSplitWord(words);
-            list = PanGuLuceneHelper.Instance.Search(words);
-            return Json(new { articles = list }, JsonRequestBehavior.AllowGet);
-        }
-
-        [AllowAnonymous]
-        public ActionResult Search()
-        {
-            var words = Request["words"];
-            if (words != null)
+            var pageIndex = Convert.ToInt32(Request["pageIndex"] ?? "1");
+            var pageSize = 10;
+            var totalCount = 0;
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+            // 页码
+            ViewBag.Index = pageIndex;
+            if (string.IsNullOrWhiteSpace(q))
             {
-                return Search(words);
+                ViewBag.Count = 0;
+                ViewBag.Time = 0;
+                ViewBag.Page = 1;
+                return View();
             }
-            return View();
+
+            List<SearchArticleResult> list = null;
+            try
+            {
+                list = PanGuLuceneHelper.Instance.Search(q, pageIndex, pageSize, out totalCount);
+            }
+            catch (Exception e)
+            {
+                //return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, e.Message);
+            }
+
+            // 结果数
+            ViewBag.Count = totalCount;
+            // 搜索词
+            ViewBag.Query = q;
+            // 总页数
+            ViewBag.Page = 1 + (totalCount / pageSize);
+            watch.Stop();
+            // 搜索所需时间
+            ViewBag.Time = watch.ElapsedMilliseconds;
+            return View(list);
         }
 
-        [CheckUserLogin]
         public ActionResult Post()
         {
             return View();
@@ -54,7 +67,6 @@ namespace Nutshell.Blog.Mvc.Controllers
 
         [HttpPost]
         [ValidateInput(false)]
-        [CheckUserLogin]
         public JsonResult PostArticle(Article article)
         {
             var art = "";
@@ -85,7 +97,6 @@ namespace Nutshell.Blog.Mvc.Controllers
             return View(article);
         }
 
-        [CheckUserLogin]
         public JsonResult Comment(string content)
         {
             return Json(content);

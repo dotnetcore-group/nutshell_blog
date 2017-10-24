@@ -2,36 +2,216 @@
 @{
     Layout = null;
 }
-
+@model List<Nutshell.Blog.Model.ViewModel.SearchArticleResult>
 <!DOCTYPE html>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Search</title>
+    <title>搜索 - 果壳园</title>
+    <link href="~/Content/style/reset.css" rel="stylesheet" />
+    <link href="~/Content/style/font-awesome.min.css" rel="stylesheet" />
+    <style>
+        a {
+        }
+
+        .container {
+            position: relative;
+        }
+
+        .header {
+        }
+
+        .footer {
+            line-height: 25px;
+            margin-top: 25px;
+            border-top: 2px solid #d9e1f7;
+        }
+
+            .footer p {
+                font-size: 12px;
+                text-align: right;
+                padding-right: 15px;
+            }
+
+        .header-top {
+            line-height: 25px;
+        }
+
+            .header-top .go-home {
+                font-size: 12px;
+                padding-left: 10px;
+                text-decoration: underline;
+                color: #12c;
+            }
+
+        .search-container {
+        }
+
+            .search-container div {
+                width: 456px;
+                height: 35px;
+                position: relative;
+                margin: 0px auto;
+                padding-left: 5px;
+            }
+
+        #txtWord {
+            width: 350px;
+            border: 0px;
+            height: 33px;
+            background: none;
+            font-size: 15px;
+            border: 1px solid #7e9db9;
+            border-right: 0px;
+            padding: 0px 5px;
+            position: absolute;
+            left: 0px;
+        }
+
+            #txtWord:focus {
+                outline: none;
+            }
+
+        #btnSearch {
+            width: 100px;
+            height: 35px;
+            border: none;
+            background: #2384ee;
+            color: #FFFFFF;
+            position: absolute;
+            right: 0px;
+            top: 0px;
+        }
+
+        .header-bottom {
+            margin-top: 20px;
+            height: 25px;
+            background: #d5ddf3;
+            border-top: 1px solid #36c;
+        }
+
+            .header-bottom p {
+                font-size: 12px;
+                text-align: right;
+                padding-right: 15px;
+                line-height: 25px;
+            }
+
+        .body {
+            position: relative;
+            margin: 0px auto;
+            width: 60%;
+            min-width: 800px;
+        }
+
+        .article-item {
+            padding-top: 20px;
+        }
+
+            .article-item .item-title {
+                font-size: 15px;
+                margin-bottom: 8px;
+                text-decoration: underline;
+                color: #12c;
+            }
+
+            .article-item .item-content {
+                font-size: 13px;
+                line-height: 21px;
+            }
+
+            .article-item .item-link {
+                color: green;
+                font-size: 13px;
+            }
+
+            .article-item .item-desc {
+                font-size: 13px;
+                line-height: 25px;
+            }
+
+        .item-desc a {
+            text-decoration: underline;
+            color: #12c;
+        }
+        .no-result h3{
+            text-align:center;
+            line-height:135px;
+        }
+    </style>
+    <link href="~/Content/style/paging.css" rel="stylesheet" />
 </head>
 <body>
-    <div>
-        <input type="text" id="txtWord" />
-        <button id="btnSearch">搜索</button>
-    </div>
-    <ul id="articleList">
-        
-    </ul>
-    <script src="~/Content/scripts/jquery-1.8.0.min.js"></script>
-    <script>
-        $(function () {
-            $("#btnSearch").click(function () {
-                $.post("/article/search", { words : $("#txtWord").val()},function(data){
-                    var articles = data.articles;
-                    if (articles.length > 0) {
-                        for (var i = 0; i < articles.length; i++) {
-                            console.log(articles[i]);
-                            $("#articleList").append('<li>' + articles[i].Title + '</li>');
-                        }
+    <div class="container">
+        <div class="header">
+            <div class="header-top">
+                <a href="/" class="go-home fa fa-angle-double-left">&nbsp;回到首页</a>
+            </div>
+            <div class="search-container">
+                <form method="get" action="/article/search">
+                    <div>
+                        <input placeholder="输入你要搜索的关键字" type="text" value="@ViewBag.Query" name="q" id="txtWord" maxlength="100" />
+                        <input type="submit" value="搜索" id="btnSearch" />
+                    </div>
+                </form>
+            </div>
+            <div class="header-bottom">
+                <p>
+                    找到相关内容
+                    @ViewBag.Count
+                    篇，用时
+                    @ViewBag.Time
+                    毫秒
+                </p>
+            </div>
+        </div>
+        <div class="body">
+
+            @if (Model != null && Model.Count() > 0)
+            {
+                <ul class="articleList">
+                    @foreach (var item in Model)
+                    {
+                        <li class="article-item">
+                            <div>
+                                <a href="@item.Id" class="item-title">@Html.Raw(HttpUtility.HtmlDecode(item.Title))</a>
+                                <p class="item-content">@Html.Raw(HttpUtility.HtmlDecode(item.Content)) ……</p>
+                                <p class="item-desc">
+                                    <a href="/zengande">曾安德</a>
+                                    <span class="fa fa-clock-o"> @item.Creation_Time</span>
+                                </p>
+                                <p class="item-link">http://localhost:54727/zengande/p/457.html</p>
+                            </div>
+                        </li>
                     }
-                })
-            });
+                </ul>
+            }
+            else
+            {
+                <div class="no-result">
+                    <h3>未查询到结果！</h3>
+                </div>
+            }
+
+            <div class="list-pager page_div" id="page"></div>
+        </div>
+        <div class="footer">
+            <p>&copy; 2017 <a href="/">果壳园</a></p>
+        </div>
+    </div>
+
+    <script src="~/Content/scripts/jquery-1.8.0.min.js"></script>
+    <script src="~/Content/scripts/paging.js"></script>
+    <script>
+        //分页
+        $("#page").paging({
+            pageNo: @ViewBag.Index,
+            totalPage: @ViewBag.Page,
+            totalSize: @ViewBag.Count,
+            callback: function (num) {
+                location="/article/search?q=@ViewBag.Query&pageIndex="+num;
+            }
         })
     </script>
 </body>

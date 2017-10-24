@@ -129,7 +129,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\images\nut_64 - 复制.png" />
     <Content Include="Content\kindeditor\kindeditor-all-min.js" />
     <Content Include="Content\kindeditor\kindeditor-all.js" />
     <Content Include="Content\kindeditor\lang\ar.js" />
@@ -333,6 +332,7 @@
     <Content Include="Content\scripts\paging.js" />
     <Content Include="Content\style\account.css" />
     <Content Include="Content\style\paging.css" />
+    <Content Include="Content\style\reset.css" />
     <Content Include="favicon.ico" />
     <Content Include="Content\images\nut_64.png" />
     <Content Include="Content\style\font-awesome.css.map" />

@@ -35,7 +35,8 @@ namespace Nutshell.Blog.Mvc
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "All", id = 1 }
+                defaults: new { controller = "Home", action = "All", id = 1 },
+                namespaces: new string[] { "Nutshell.Blog.Mvc.Controllers" }
             );
         }
     }

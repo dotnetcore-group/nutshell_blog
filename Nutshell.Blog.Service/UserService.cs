@@ -47,12 +47,22 @@ namespace Nutshell.Blog.Service
             var user = currentRepository.LoadEntity(u=>u.Login_Name.Equals(userName, StringComparison.CurrentCultureIgnoreCase));
             if (user != null)
             {
-                if (user.Login_Password.Equals(password.Md5_Base64()))
+                if (user.State == 3)
                 {
-                    msg = "登录成功！";
+                    if (user.Login_Password.Equals(password.Md5_Base64()))
+                    {
+                        msg = "登录成功！";
+                    }
+                    else
+                    {
+                        user = null;
+                        msg = "用户名或密码错误！";
+                    }
                 }
-                else {
-                    msg = "用户名或密码错误！";
+                else
+                {
+                    user = null;
+                    msg = "该用户状态异常！";
                 }
             }
             else
