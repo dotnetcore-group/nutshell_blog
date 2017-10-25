@@ -56,6 +56,7 @@ namespace Nutshell.Blog.Model.ViewModel
         [DisplayName("昵称")]
         [StringLength(10, MinimumLength = 2, ErrorMessage = "昵称至少2位，至多10位！")]
         [Required(ErrorMessage = "请输入昵称！")]
+        [Remote("NotExitesNickname", "Account", ErrorMessage = "该昵称已被占用！", HttpMethod = "Post")]
         public string Nickname { get; set; }
     }
 }

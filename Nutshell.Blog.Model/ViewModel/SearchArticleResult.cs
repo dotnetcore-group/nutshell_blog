@@ -35,5 +35,7 @@ namespace Nutshell.Blog.Model.ViewModel
         public string Title { get; set; }
         public string Content { get; set; }
         public string Creation_Time { get; set; }
+        public string Author_Nick { get; set; }
+        public string Author_Name { get; set; }
     }
 }

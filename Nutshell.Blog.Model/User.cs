@@ -38,8 +38,9 @@ namespace Nutshell.Blog.Model
     {
         public User()
         {
-            State = 3;
-            Nickname = string.Format("用户{0}", new Random().Next(10000, 100000));
+            IsLock = false;
+            Photo = "/upload/photos/default.png";
+            Registration_Time = DateTime.Now;
         }
 
         [Key]
@@ -54,24 +55,32 @@ namespace Nutshell.Blog.Model
         [MaxLength(64)]
         public string Login_Password { get; set; }
 
-        public int State { get; set; }
+        [MaxLength(2)]
+        public string Sex { get; set; }
 
-        public UserInfo UserInfo { get; set; }
+        public DateTime? Birthday { get; set; }
+
+        public DateTime Registration_Time { get; set; }
+
+        [MaxLength(50)]
+        [DisplayName("个性签名")]
+        public string Words { get; set; }
 
         [MaxLength(10)]
+        [Index(IsUnique = true)]
+        [Required]
         public string Nickname { get; set; }
 
         [MaxLength(100)]
         public string Photo { get; set; }
+
+        public bool IsLock { get; set; }
 
         public virtual ICollection<Article> Articles { get; set; }
         public virtual ICollection<Discussion> Discussions { get; set; }
         public virtual ICollection<Favorites> Favorites { get; set; }
         public virtual ICollection<CustomCategory> CustomCategories { get; set; }
         public virtual Theme Theme { get; set; }
-        public virtual ICollection<Role> Roles { get; set; }
-        [ForeignKey("State")]
-        public virtual Dictionaries Dictionary { get; set; }
 
         public Account ToAccount()
         {
@@ -79,8 +88,7 @@ namespace Nutshell.Blog.Model
             {
                 User_Id = this.User_Id,
                 UserName = this.Login_Name,
-                Nickname = this.Nickname,
-                ThemeId = Theme.Id
+                Nickname = this.Nickname
             };
         }
     }

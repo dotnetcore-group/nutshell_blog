@@ -28,6 +28,7 @@ using Nutshell.Blog.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -47,7 +48,7 @@ namespace Nutshell.Blog.Service
             var user = currentRepository.LoadEntity(u=>u.Login_Name.Equals(userName, StringComparison.CurrentCultureIgnoreCase));
             if (user != null)
             {
-                if (user.State == 3)
+                if (!user.IsLock)
                 {
                     if (user.Login_Password.Equals(password.Md5_Base64()))
                     {

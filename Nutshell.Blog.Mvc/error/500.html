@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>错误页面</title>
+    <link href="../html/css/dandelion.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div id="da-wrapper" class="fluid">
+        <div id="da-content">
+            <div class="da-container clearfix">
+                <div id="da-error-wrapper" style="width: 80%">
+                    <div id="da-error-pin"></div>
+                    <div id="da-error-code">
+                        error <span>500</span>
+                    </div>
+                    <h1 class="da-error-heading">哎哟喂！页面出错了！</h1>
+                    <p style=""><a href="javascript:showErrInfo();">查看详细错误信息~</a></p>
+                    <p><a href="javascript:history.go(-1)">返回</a></p>
+
+                    <!--<div id="div_mesg" style="height: 150px; width: 100%; display: block; overflow: auto">
+                    </div>-->
+                    <!--<%--background-color:transparent; border:0;  无边框透明--%>-->
+                    <textarea id="div_mesg" disabled style="height: auto; width: 100%;  background-color: transparent; border: 0;"></textarea>
+                </div>
+            </div>
+        </div>
+        <div id="da-footer">
+            <div class="da-container clearfix">
+                <p></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../Scripts/jquery-1.8.2.js"></script>
+    <script>
+        $.extend({
+            getUrlVars: function () {
+                var vars = [], hash;
+                var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+                for (var i = 0; i < hashes.length; i++) {
+                    hash = hashes[i].split('=');
+                    vars.push(hash[0]);
+                    vars[hash[0]] = hash[1];
+                }
+                return vars;
+            },
+            getUrlVar: function (name) {
+                return $.getUrlVars()[name];
+            }
+        });
+
+        // 调用
+        //var allVars = $.getUrlVars();
+        //var byName = $.getUrlVar('name');
+
+        function showErrInfo() {
+            var byName = $.getUrlVar('err');
+            $("#div_mesg").html(unescape(byName));
+            $("#div_mesg").css("height", $("#div_mesg")[0].scrollHeight);//自动撑开textarea 的高度
+        }
+    </script>
+</body>
+
+</html>

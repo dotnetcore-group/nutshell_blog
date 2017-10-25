@@ -53,7 +53,5 @@ namespace Nutshell.Blog.Model
 
         [MaxLength(200)]
         public string Remark { get; set; }
-
-        public virtual ICollection<User> Users { get; set; }
     }
 }

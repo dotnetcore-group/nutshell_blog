@@ -333,6 +333,14 @@
     <Content Include="Content\style\account.css" />
     <Content Include="Content\style\paging.css" />
     <Content Include="Content\style\reset.css" />
+    <Content Include="error\404.html" />
+    <Content Include="error\500.html" />
+    <Content Include="error\css\dandelion.css" />
+    <Content Include="error\images\500err.png" />
+    <Content Include="error\images\blueprint.png" />
+    <Content Include="error\images\carbon.png" />
+    <Content Include="error\images\error-hanger.png" />
+    <Content Include="error\images\error-pin.png" />
     <Content Include="favicon.ico" />
     <Content Include="Content\images\nut_64.png" />
     <Content Include="Content\style\font-awesome.css.map" />
@@ -356,8 +364,9 @@
     <Content Include="Content\scripts\klorofil-common.js" />
     <Content Include="Content\style\index.css" />
     <Content Include="Global.asax" />
-    <Content Include="Resources\Theme\lightwhite.css" />
-    <Content Include="Resources\Theme\lightyellow.css" />
+    <Content Include="skins\codinglife\images\body_bg.png" />
+    <Content Include="skins\codinglife\images\title-yellow.png" />
+    <Content Include="skins\codinglife\style.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -390,8 +399,10 @@
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Account\Home.cshtml" />
+    <Content Include="Views\Article\Blogs.cshtml" />
     <None Include="Properties\PublishProfiles\publish.pubxml" />
+    <Content Include="Views\Account\UserHome.cshtml" />
+    <Content Include="Views\Shared\_BlogHomeLayout.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

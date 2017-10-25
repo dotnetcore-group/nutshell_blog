@@ -19,7 +19,7 @@
                 var account = ViewBag.Account as Nutshell.Blog.Model.ViewModel.Account;
                 if (account != null)
                 {
-                    <a href="/@account.UserName">@account.Nickname</a>
+                    <a href="/u/@account.User_Id">@account.Nickname</a>
                     <a href='/account/loginout'>退出</a>
                 }
                 else
@@ -160,7 +160,7 @@
             <a href="">博客园</a>
         </li>
     </ul>
-    <p class="copyright">Email : contact@cyqdata.com Copyright © 2010-2020 Powered by <a href="/">NthBlog - 果壳园</a> All Rights Reserved</p>
+    <p class="copyright">Email : contact@cyqdata.com Copyright © 2010-2020 Powered by <a href="/">Nutshell Blog - 果壳园</a> All Rights Reserved</p>
 </footer>
 @section script{
     <script src="~/Content/scripts/jquery-1.8.0.min.js"></script>

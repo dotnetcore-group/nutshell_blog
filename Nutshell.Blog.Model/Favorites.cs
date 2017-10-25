@@ -39,7 +39,7 @@ namespace Nutshell.Blog.Model
             Collection_Time = DateTime.Now;
         }
 
-        [Key, Column(Order = 1), ForeignKey("User")]
+        [Key, Column(Order = 1)]
         public int User_Id { get; set; }
 
         [Key, Column(Order = 2), ForeignKey("Article")]
@@ -50,6 +50,7 @@ namespace Nutshell.Blog.Model
         [MaxLength(200)]
         public string Remark { get; set; }
 
+        [ForeignKey("User_Id")]
         public virtual User User { get; set; }
         public virtual Article Article { get; set; }
     }

@@ -72,7 +72,6 @@
   <ItemGroup>
     <Compile Include="MemcacheHelper.cs" />
     <Compile Include="Model\IndexContent.cs" />
-    <Compile Include="Model\LuceneType.cs" />
     <Compile Include="PanGuLuceneHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

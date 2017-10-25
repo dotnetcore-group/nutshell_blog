@@ -6,6 +6,7 @@ using Nutshell.Blog.Mvc.Filters;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 
@@ -14,8 +15,9 @@ namespace Nutshell.Blog.Mvc.Controllers
     [CheckUserLogin]
     public class ArticleController : BaseController
     {
-        public ArticleController(IArticleService artService)
+        public ArticleController(IArticleService artService, IUserService uService)
         {
+            userService = uService;
             articleService = artService;
         }
 
@@ -72,13 +74,24 @@ namespace Nutshell.Blog.Mvc.Controllers
             var art = "";
             //if (ModelState.IsValid)
             //{
-            article.Author_Id = GetCurrentAccount()?.User_Id;
-            article.Body = Server.HtmlEncode(article.Body);
-            article.Content = article.Content.Replace("\n", " ").Replace("\r", " ").Replace("\t", " ").Replace(" ", "");
-            article.Introduction = article.Content.Length > 200 ? article.Content.Substring(0, 190) + "..." : article.Content;
-            art = articleService.AddArticle(article) == null ? "no" : "ok";
-            //}
-            return Json(new { art });
+            var account = GetCurrentAccount();
+
+            if (account != null)
+            {
+                var user = userService.LoadEntity(u => u.User_Id == account.User_Id);
+                if (user != null)
+                {
+                    article.Author_Id = user.User_Id;
+                    article.Body = Server.HtmlEncode(article.Body);
+                    article.Content = article.Content.Replace("\n", " ").Replace("\r", " ").Replace("\t", " ").Replace(" ", "");
+                    article.Introduction = article.Content.Length > 200 ? article.Content.Substring(0, 190) + "..." : article.Content;
+                    article.Author = user;
+                    art = articleService.AddArticle(article) == null ? "no" : "ok";
+                    //}
+                    return Json(new { art });
+                }
+            }
+            return Json(new { art = "no" });
         }
 
         [AllowAnonymous]
@@ -94,7 +107,31 @@ namespace Nutshell.Blog.Mvc.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.UserInfo = article.Author;
             return View(article);
+        }
+
+
+        // 用户博客
+        [AllowAnonymous]
+        public ActionResult Blogs(string author)
+        {
+            var user = userService.LoadEntity(u => u.Login_Name.Equals(author, StringComparison.CurrentCultureIgnoreCase));
+            if (user != null)
+            {
+                ViewBag.UserInfo = user;
+
+                // IEnumerable<IGrouping<DateTime, Article>>
+                var articles = articleService.LoadEntities(a => a.Author.User_Id == user.User_Id)
+                    .OrderByDescending(a => a.Creation_Time)
+                    .GroupBy(new Func<Article, DateTime>(a =>
+                    {
+                        var date = Convert.ToDateTime(a.Creation_Time.ToShortDateString());
+                        return date;
+                    }));
+                return View(articles);
+            }
+            return HttpNotFound();
         }
 
         public JsonResult Comment(string content)

@@ -61,15 +61,16 @@ namespace Nutshell.Blog.Model
         [MaxLength(200)]
         public string Introduction { get; set; }
 
-        public DateTime? Creation_Time { get; set; }
+        public DateTime Creation_Time { get; set; }
 
         public DateTime? Edit_Time { get; set; }
 
         //public int? Article_State { get; set; }
 
         [ForeignKey("Author")]
-        public int? Author_Id { get; set; }
+        public int Author_Id { get; set; }
 
+        [Required]
         public virtual User Author { get; set; }
         public virtual ICollection<Discussion> Discussions { get; set; }
         public virtual ICollection<Favorites> Favorites { get; set; }

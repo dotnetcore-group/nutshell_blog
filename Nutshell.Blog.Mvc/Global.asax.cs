@@ -18,8 +18,25 @@ namespace Nutshell.Blog.Mvc
             FilterConfig.Register(GlobalFilters.Filters);
 
             AutofacConfig.Register();
-            //LuceneIndexManager.GetInstance().StartThread();
+
+            //屏蔽浏览器中的ASP.NET版本
+            MvcHandler.DisableMvcResponseHeader = true;
+            RemoveWebFormEngines();
+
             PanGuLuceneHelper.Instance.StartThread();
+        }
+
+        /// <summary>
+        /// 移除web form视图引擎
+        /// </summary>
+        void RemoveWebFormEngines()
+        {
+            var engines = ViewEngines.Engines;
+            var webFormEngines = engines.OfType<WebFormViewEngine>().FirstOrDefault();
+            if (webFormEngines != null)
+            {
+                engines.Remove(webFormEngines);
+            }
         }
     }
 }

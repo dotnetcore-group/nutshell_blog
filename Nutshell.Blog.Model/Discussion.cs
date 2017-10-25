@@ -55,11 +55,8 @@ namespace Nutshell.Blog.Model
         public int? Reply_Id { get; set; }
 
         public virtual ICollection<Discussion> Reply { get; set; }
-        
         public virtual Discussion ParentDiscussion { get; set; }
-
-        public User User { get; set; }
-
-        public Article Article { get; set; }
+        public virtual User User { get; set; }
+        public virtual Article Article { get; set; }
     }
 }

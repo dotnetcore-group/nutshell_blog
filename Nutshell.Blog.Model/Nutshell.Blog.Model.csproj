@@ -65,7 +65,6 @@
     <Compile Include="Theme.cs" />
     <Compile Include="User.cs" />
     <Compile Include="CustomCategory.cs" />
-    <Compile Include="UserInfo.cs" />
     <Compile Include="ViewModel\Account.cs" />
     <Compile Include="ViewModel\SearchArticleResult.cs" />
     <Compile Include="ViewModel\UserLogin.cs" />

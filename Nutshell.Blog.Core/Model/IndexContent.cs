@@ -37,9 +37,15 @@ namespace Nutshell.Blog.Core.Model
 
         public string Content { get; set; }
 
-        public string Author { get; set; }
+        /// <summary>
+        /// 昵称
+        /// </summary>
+        public string Author_Nick { get; set; }
 
-        public LuceneType LuceneType { get; set; }
+        /// <summary>
+        /// 登录名
+        /// </summary>
+        public string Author_Name { get; set; }
 
         public DateTime? Creation_Time { get; set; }
     }

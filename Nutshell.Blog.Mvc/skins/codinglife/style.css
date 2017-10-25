@@ -1,0 +1,249 @@
+﻿body {
+    padding-top: 10px;
+    background: url(./images/body_bg.png) repeat-x scroll 0 0 #f0eef5;
+    color: #7d8b8d;
+    font-family: Verdana,Arial,Helvetica,sans-serif;
+    font-size: 14px;
+    line-height: 25px;
+    min-height: 101%;
+}
+
+#header {
+    width: 100%;
+    height: 314px;
+}
+
+#header-title {
+    /*padding:0px 164px;*/
+    height: 100%;
+    width: 1200px;
+    position: relative;
+    margin: 0px auto;
+    background: url(./images/title-yellow.png) no-repeat center 21px;
+}
+
+    #header-title h1 {
+        position: relative;
+        top: 80px;
+        width: 310px;
+        height: 100px;
+        line-height: 100px;
+        text-align: center;
+        font-weight: normal;
+        font-size: 30px;
+        left: 17px;
+    }
+
+    #header-title h2 {
+        position: relative;
+        top: 107px;
+        left: 17px;
+        font-size: 16px;
+        width: 550px;
+        color: #ffffff;
+        font-weight: normal;
+    }
+
+    #header-title h1 a {
+        color: #FFFFFF;
+    }
+
+#header #navigator {
+    height: 60px;
+    width: 100%;
+    position: relative;
+    background: #169fe6;
+    clear: both;
+}
+
+#navigator #navList {
+    position: relative;
+    width: 1200px;
+    height: 60px;
+    margin: 0px auto;
+}
+
+#navList li {
+    float: left;
+    height: 60px;
+    line-height: 60px;
+}
+
+    #navList li a {
+        display: block;
+        line-height: 60px;
+        padding: 0px 20px;
+        color: #ffffff;
+        font-size: 18px;
+        text-shadow: 3px 3px 3px #000;
+    }
+
+        #navList li a:hover {
+            text-decoration: none;
+            background-color: #fff;
+            color: #169fe6;
+        }
+
+#main {
+    width: 1200px;
+    margin: 80px auto 0px;
+}
+
+#mainContent {
+    background: none;
+    float: left;
+    overflow: visible;
+    text-overflow: ellipsis;
+    width: 890px;
+    word-break: break-all;
+    height: 500px;
+}
+
+.forFlow {
+    float: none;
+    width: 100%;
+}
+
+.blog-item {
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #dedede;
+    border-bottom: 1px solid #efefef;
+}
+
+    .blog-item:hover {
+        border: 1px solid #45bcf9;
+    }
+
+    .blog-item .date {
+        color: #fff;
+        background-color: #45bcf9;
+        padding: 3px 6px;
+        font-size: 12px;
+        display: block;
+        float: left;
+        margin-right: 10px;
+    }
+
+        .blog-item .date span {
+            color: #ffffff;
+        }
+
+    .blog-item .title {
+        font-size: 21px;
+        line-height: 1.5em;
+        float: left;
+        clear: right;
+    }
+
+        .blog-item .title a {
+            color: #555;
+        }
+
+            .blog-item .title a:hover {
+                color: #45bcf9;
+            }
+
+    .blog-item .content {
+        padding: 15px 0;
+        clear: both;
+    }
+
+        .blog-item .content .desc {
+            font-size: 14px;
+            color: #333;
+            line-height: 200%;
+        }
+
+        .blog-item .content a {
+            color: #9ab26b;
+        }
+
+            .blog-item .content a:hover {
+                text-decoration: underline;
+            }
+
+    .blog-item .info {
+        clear: both;
+        color: #bcbcbc;
+        float: none;
+        text-align: left;
+        line-height: 200%;
+        font-size: 12px;
+    }
+
+        .blog-item .info a {
+            color: #999;
+        }
+
+.separator {
+    border-top: 1px dashed silver;
+    margin: 20px 0;
+    clear: both;
+}
+
+.blog-item div.separator:last-child {
+    display: none;
+}
+
+#footer {
+    height: 200px;
+    width: 100%;
+    padding-top: 80px;
+    clear: both;
+}
+
+#sideBar {
+    width: 290px;
+    margin-left: 20px;
+    float: left;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: visible;
+    word-break: break-all;
+}
+
+#sideBarMain {
+}
+
+#authorItem {
+}
+
+#sideTitle {
+    font-size: 18px;
+    padding: 10px 20px;
+    background-color: #169fe6;
+    color: #fff;
+    font-weight: normal;
+    border: 1px solid #169fe6;
+}
+
+#authorInfo {
+    overflow: visible;
+    margin-bottom: 20px;
+}
+
+#profile_block {
+    background: #fff;
+    padding: 20px;
+    color: #7e8c8d;
+    font-size: 13px;
+    line-height: 1.8;
+    margin-top: 0 !important;
+    border: 1px solid #dedede;
+}
+
+    #profile_block a {
+        color: #9fa4a4;
+        text-decoration: none;
+        font-size: 13px;
+    }
+
+#follow a {
+    color: #9fa4a4;
+    text-decoration: none;
+    font-size: 13px;
+}
+#authorInfo a:hover {
+    text-decoration:underline;
+}

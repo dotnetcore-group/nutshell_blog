@@ -1,0 +1,121 @@
+﻿@{
+    Layout = null;
+}
+@model Nutshell.Blog.Model.User
+    <!DOCTYPE html>
+
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>@Model.Nickname 的主页 - 果壳园</title>
+        <link href="~/Content/style/reset.css" rel="stylesheet" />
+        <style>
+            .wrapper {
+                position:relative;
+                margin:0px auto;
+                width: 1000px;
+            }
+            .dot:after {
+                content:"·";
+            }
+            .header {
+                width:100%;
+                padding-bottom:8px;
+                border-bottom:1px solid #e8e8e8;
+            }
+            .header .nav {
+                padding-top:15px;
+            }
+            .header .user {
+                padding-top:35px;
+            }
+            .nav a {
+                font-size:14px;
+                color:#075db3;
+            }
+                .nav a:hover {
+                    color:#d76b1a;
+                    text-decoration:underline;
+                }
+            .user h1 {
+                font-size:16px;
+                font-weight:bold;
+            }
+            .content {
+                position:relative;
+                width:100%;
+                margin-top:10px;
+            }
+                .content .left-nav {
+                    position:absolute;
+                    width:150px;
+                    border:1px solid #dfe1e1;
+                    background:#f7f7f7;
+                    border-radius:3px;
+                    padding-top:5px;
+                }
+            .left-nav .nav-item {
+                
+            }
+            .left-nav .nav-last a{
+                margin:20px 10px 10px 10px;
+                padding:5px 0px 0px 25px;
+                display:block;
+                font-size:12px;
+                border-top:1px solid #e8e8e8;
+                color:#075db3;
+                text-decoration:underline;
+            }
+            .nav-item a{
+                padding:8px 0px 8px 35px;
+                display:block;
+                font-size:14px;
+                color:#075db3;
+            }
+                .nav-item a:hover {
+                    background:#e8e8e8;
+                    color:#d76b1a;
+                }
+            .content .main {
+                position:absolute;
+                left:170px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="top"></div>
+        <div class="wrapper">
+            <div class="header">
+                <div class="nav">
+                    <a href="/">主页</a>
+                    <span class="dot"></span>
+                    <a href="#">关注</a>
+                    <span class="dot"></span>
+                    <a href="#">粉丝</a>
+                    <span class="dot"></span>
+                    <a href="#">收藏</a>
+                    <span class="dot"></span>
+                    <a href="#">消息</a>
+                </div>
+                <div class="user">
+                    <h1>欢迎你，@Model.Nickname</h1>
+                </div>
+                
+            </div>
+            <div class="content">
+                <div class="left-nav">
+                    <ul>
+                        <li class="nav-item"><a href="#">博客</a></li>
+                        <li class="nav-item"><a href="#">新闻</a></li>
+                        <li class="nav-item"><a href="#">收藏</a></li>
+                        <li class="nav-last"><a href="#">问题反馈</a></li>
+                    </ul>
+                </div>
+                <div class="main">
+                    <img width="80" height="80" src="@Model.Photo" alt="头像加载失败！" />
+                </div>
+            </div>
+            <div class="footer"></div>
+        </div>
+    </body>
+</html>

@@ -135,9 +135,10 @@
             text-decoration: underline;
             color: #12c;
         }
-        .no-result h3{
-            text-align:center;
-            line-height:135px;
+
+        .no-result h3 {
+            text-align: center;
+            line-height: 135px;
         }
     </style>
     <link href="~/Content/style/paging.css" rel="stylesheet" />
@@ -170,18 +171,20 @@
 
             @if (Model != null && Model.Count() > 0)
             {
+                var link = "";
                 <ul class="articleList">
                     @foreach (var item in Model)
                     {
+                        link = $"/{item.Author_Name}/p/{item.Id}.html";
                         <li class="article-item">
                             <div>
-                                <a href="@item.Id" class="item-title">@Html.Raw(HttpUtility.HtmlDecode(item.Title))</a>
+                                <a href="@link" class="item-title">@Html.Raw(HttpUtility.HtmlDecode(item.Title))</a>
                                 <p class="item-content">@Html.Raw(HttpUtility.HtmlDecode(item.Content)) ……</p>
                                 <p class="item-desc">
-                                    <a href="/zengande">曾安德</a>
+                                    <a href="/@item.Author_Name">@item.Author_Nick</a>
                                     <span class="fa fa-clock-o"> @item.Creation_Time</span>
                                 </p>
-                                <p class="item-link">http://localhost:54727/zengande/p/457.html</p>
+                                <p class="item-link">@(Request.Url.Authority + link)</p>
                             </div>
                         </li>
                     }

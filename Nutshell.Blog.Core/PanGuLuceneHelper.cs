@@ -140,16 +140,16 @@ namespace Nutshell.Blog.Core
         /// <param name="content"></param>
         /// <param name="author"></param>
         /// <param name="creation_time"></param>
-        public void AddQueue(string id, string title, string content, string author, DateTime? creation_time)
+        public void AddQueue(string id, string title, string content, string author_nick, string author_name, DateTime? creation_time)
         {
             IndexContent indexContent = new IndexContent
             {
                 Id = id,
                 Title = title,
                 Content = content,
-                Author = author,
-                Creation_Time = creation_time,
-                LuceneType = LuceneType.Add
+                Author_Nick = author_nick,
+                Author_Name = author_name,
+                Creation_Time = creation_time
             };
             queue.Enqueue(indexContent);
         }
@@ -236,6 +236,8 @@ namespace Nutshell.Blog.Core
                 document.Add(new Field("Title", indexContent.Title, Field.Store.YES, Field.Index.ANALYZED));
                 document.Add(new Field("Content", indexContent.Content, Field.Store.YES, Field.Index.ANALYZED));
                 document.Add(new Field("CreationTime", indexContent.Creation_Time?.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+                document.Add(new Field("Author_Nick", indexContent.Author_Nick, Field.Store.YES, Field.Index.NOT_ANALYZED));
+                document.Add(new Field("Author_Name", indexContent.Author_Name, Field.Store.YES, Field.Index.NOT_ANALYZED));
 
                 writer.AddDocument(document);
             }
@@ -285,16 +287,24 @@ namespace Nutshell.Blog.Core
                 {
                     var doc = searcher.Doc(scoreDoc.Doc);
                     var title = CreateHightLight(keyword, doc.Get("Title"));
+                    var content = CreateHightLight(keyword, doc.Get("Content"));
                     if (string.IsNullOrWhiteSpace(title))
                     {
                         title = doc.Get("Title");
+                    }
+                    if (string.IsNullOrWhiteSpace(content))
+                    {
+                        var tem = doc.Get("Content");
+                        content = tem.Length >= 190 ? tem.Substring(0, 190) : tem;
                     }
                     articles.Add(new SearchArticleResult
                     {
                         Id = doc.Get("Id"),
                         Creation_Time = doc.Get("CreationTime"),
                         Title = title,
-                        Content = CreateHightLight(keyword, doc.Get("Content"))
+                        Content = content,
+                        Author_Nick = doc.Get("Author_Nick"),
+                        Author_Name = doc.Get("Author_Name")
                     });
                 }
             }
@@ -349,7 +359,9 @@ namespace Nutshell.Blog.Core
                         Id = doc.Get("Id"),
                         Creation_Time = doc.Get("CreationTime"),
                         Title = title,
-                        Content = content
+                        Content = content,
+                        Author_Nick = doc.Get("Author_Nick"),
+                        Author_Name = doc.Get("Author_Name")
                     });
                 }
             }

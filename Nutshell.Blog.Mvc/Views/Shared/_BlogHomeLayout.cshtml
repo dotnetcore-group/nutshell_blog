@@ -1,0 +1,66 @@
+﻿@{
+    Layout = null;
+    var user = ViewBag.UserInfo as Nutshell.Blog.Model.User;
+    
+}
+@using Nutshell.Blog.Common
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/style/reset.css" rel="stylesheet" />
+    <link rel="stylesheet" href="@user.Theme.Resources" />
+    @RenderSection("style", false)
+</head>
+<body>
+    <div id="home">
+        <div id="header">
+            <div id="header-title">
+                <h1>
+                    <a href="/@user.Login_Name">@user.Nickname</a>
+                </h1>
+                <h2>@(user.Words)</h2>
+            </div>
+            <div id="navigator">
+                <ul id="navList">
+                    <li><a href="/">果壳园</a></li>
+                    <li><a href="/@user.Login_Name">首页</a></li>
+                    <li><a href="/article/post">随笔</a></li>
+                    <li><a href="/">管理</a></li>
+                </ul>
+            </div>
+        </div>
+        <div id="main">
+            <div id="mainContent">
+                <div class="forFlow">
+                    @RenderBody()
+                </div>
+
+            </div>
+            <div id="sideBar">
+                <div id="sideBarMain">
+                    <div id="authorItem">
+                        <h3 id="sideTitle">作者</h3>
+                        <div id="authorInfo">
+                            <div id="profile_block">
+                                昵称：<a href="/@user.Login_Name">@user.Nickname</a> <br />
+                                园龄：<a href="/@user.Login_Name">@user.Registration_Time.GetYearMonthDayString()</a> <br />
+                                粉丝：<a href="#">0</a> <br />
+                                关注：<a href="#">0</a>
+                                <div id="follow">
+                                    <a href="#">+加关注</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="footer"></div>
+    </div>
+    <script src="~/Content/scripts/jquery-1.8.0.min.js"></script>
+    @RenderSection("script", false)
+</body>
+</html>

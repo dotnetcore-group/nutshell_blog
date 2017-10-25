@@ -29,17 +29,22 @@ namespace Nutshell.Blog.Mvc.Filters
             {
                 return;
             }
-
-            var sessionid = request.Cookies[Keys.SessionId]?.Value;
-            if (sessionid != null)
+            var cookie = request.Cookies[Keys.SessionId];
+            if (cookie != null)
             {
-                var obj = MemcacheHelper.Get(sessionid);
-                if (obj != null)
+                var sessionid = request.Cookies[Keys.SessionId].Value;
+                if (sessionid != null)
                 {
-                    var account = SerializerHelper.DeserializeToObject<Account>(obj.ToString());
-                    if (account != null)
+                    var obj = MemcacheHelper.Get(sessionid);
+                    if (obj != null)
                     {
-                        return;
+                        var account = SerializerHelper.DeserializeToObject<Account>(obj.ToString());
+                        if (account != null)
+                        {
+                            cookie.Expires = DateTime.Now.AddMinutes(20);
+                            response.Cookies.Add(cookie);
+                            return;
+                        }
                     }
                 }
             }

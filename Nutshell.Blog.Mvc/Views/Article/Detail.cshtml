@@ -1,14 +1,10 @@
-﻿
+﻿@model Nutshell.Blog.Model.Article
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_BlogHomeLayout.cshtml";
+    ViewBag.Title = $"{Model.Title} - {Model.Author?.Nickname} - 果壳园";
 }
-@model Nutshell.Blog.Model.Article
-<!DOCTYPE html>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>@Model.Title - @(Model.Author?.Nickname) - 果壳园</title>
+@section style{
 
     <style>
         body {
@@ -54,57 +50,57 @@
             line-height: 20px;
         }
     </style>
-</head>
-<body>
-    <div class="root-container">
-        <div class="left"></div>
-        <div class="main">
-            @Model.Title
-            <br />
-            @ViewBag.Author
-            <div class="article-body">
-                @Html.Raw(HttpUtility.HtmlDecode(Model.Body))
-            </div>
-            <hr />
-
-            <div>
-                @if (Model.Discussions.Count > 0)
-                {
-                    <h3>评论列表</h3>
-                    <ul id="commentlist">
-
-                        @{
-                            var comments = Model.Discussions.OrderBy(c => c.Discussion_Time);
-                        }
-                        @foreach (var item in comments)
-                        {
-                            <li>
-                                <h4>
-                                    @(item.UserName)
-                                    @if (item.User_Id == item.Article.Author_Id)
-                                    {
-                                        <span>作者</span>
-                                    }
-                                </h4>
-                                @if (item.ParentDiscussion != null)
-                                {
-                                    <p>
-                                        回复 @@@item.ParentDiscussion.User.Nickname
-                                    </p>
-                                }
-                                <p>@Html.Raw(HttpUtility.HtmlDecode(item.Content))</p>
-                            </li>
-                        }
-                    </ul>
-                }
-            </div>
-
-            <textarea id="comment"></textarea>
-            <button id="btnSubmit">提交</button>
+}
+<div class="root-container">
+    <div class="left"></div>
+    <div class="main">
+        @Model.Title
+        <br />
+        @ViewBag.Author
+        <div class="article-body">
+            @Html.Raw(HttpUtility.HtmlDecode(Model.Body))
         </div>
-        <div class="right"></div>
-    </div>
+        <hr />
 
+        <div>
+            @if (Model.Discussions.Count > 0)
+                {
+                <h3>评论列表</h3>
+                <ul id="commentlist">
+
+                    @{
+                            var comments = Model.Discussions.OrderBy(c => c.Discussion_Time);
+                    }
+                    @foreach (var item in comments)
+                        {
+                        <li>
+                            <h4>
+                                @(item.UserName)
+                                @if (item.User_Id == item.Article.Author_Id)
+                                    {
+                                    <span>作者</span>
+                                    }
+                            </h4>
+                            @if (item.ParentDiscussion != null)
+                                {
+                                <p>
+                                    回复 @@@item.ParentDiscussion.User.Nickname
+                                </p>
+                                }
+                            <p>@Html.Raw(HttpUtility.HtmlDecode(item.Content))</p>
+                        </li>
+                        }
+                </ul>
+                            }
+        </div>
+
+        <textarea id="comment"></textarea>
+        <button id="btnSubmit">提交</button>
+    </div>
+    <div class="right"></div>
+</div>
+
+@section script{
     <script src="~/Content/scripts/jquery-1.8.0.min.js"></script>
     <link href="~/Content/kindeditor/themes/default/default.css" rel="stylesheet" />
     <link href="~/Content/kindeditor/plugins/code/prettify.css" rel="stylesheet" />
@@ -136,5 +132,4 @@
             })
         })
     </script>
-</body>
-</html>
+}

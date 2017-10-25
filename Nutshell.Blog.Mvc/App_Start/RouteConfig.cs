@@ -18,13 +18,18 @@ namespace Nutshell.Blog.Mvc
             routes.MapRoute(
                 name: "ArticleDetail",
                 url: "{author}/p/{id}.html",
-                defaults: new { controller = "Article", action = "Detail", id = UrlParameter.Optional },
+                defaults: new { controller = "Article", action = "Detail"},
                 constraints: new { }
             );
             routes.MapRoute(
-                name: "UserCenter",
+                name: "BlogHome",
                 url: "{author}",
-                defaults: new { controller = "Account", action = "Home" }
+                defaults: new { controller = "Article", action = "Blogs" }
+            );
+            routes.MapRoute(
+                name: "UserHome",
+                url: "u/{id}",
+                defaults: new { controller = "Account", action = "UserHome" }
             );
             routes.MapRoute(
                 name: "ArticleList",
@@ -35,7 +40,7 @@ namespace Nutshell.Blog.Mvc
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "All", id = 1 },
+                defaults: new { controller = "Home", action = "All", id = UrlParameter.Optional},
                 namespaces: new string[] { "Nutshell.Blog.Mvc.Controllers" }
             );
         }

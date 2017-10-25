@@ -16,6 +16,7 @@ namespace Nutshell.Blog.Mvc.Controllers
         public AccountController(IUserService userService)
         {
             base.userService = userService;
+            
         }
 
         // GET: Account
@@ -80,16 +81,21 @@ namespace Nutshell.Blog.Mvc.Controllers
             }
             return Json(new { res, msg = res ? "注册成功！" : "注册失败！" });
         }
+        
+        
 
+        // 用户主页
         [CheckUserLogin]
-        public ActionResult Home(string author)
+        public ActionResult UserHome(string id)
         {
-            var userInfo = userService.LoadEntity(u => u.Login_Name.Equals(author, StringComparison.CurrentCultureIgnoreCase));
-            if (userInfo != null)
+            var user_id = 0;
+            if (int.TryParse(id, out user_id))
             {
-                ViewBag.User = author;
-                ViewBag.Theme = userInfo.Theme.Resources;
-                return View(userInfo);
+                var user = userService.LoadEntity(u => u.User_Id == user_id);
+                if (user != null)
+                {
+                    return View(user);
+                }
             }
             return HttpNotFound();
         }
@@ -103,6 +109,16 @@ namespace Nutshell.Blog.Mvc.Controllers
                 return Json(false);
             }
             var user = userService.LoadEntity(u => u.Login_Name.Equals(UserName, StringComparison.CurrentCultureIgnoreCase));
+            return user == null ? Json(true) : Json(false);
+        }
+        public JsonResult NotExitesNickname()
+        {
+            string Nickname = Request.Params["Nickname"];
+            if (string.IsNullOrEmpty(Nickname))
+            {
+                return Json(false);
+            }
+            var user = userService.LoadEntity(u => u.Nickname.Equals(Nickname, StringComparison.CurrentCultureIgnoreCase));
             return user == null ? Json(true) : Json(false);
         }
         

@@ -30,6 +30,7 @@ namespace Nutshell.Blog.Mvc.Controllers
                     return obj == null ? null : SerializerHelper.DeserializeToObject<Account>(obj.ToString());
                 }
             }
+            Redirect("/account/signin");
             return null;
         }
     }
