@@ -41,6 +41,7 @@ namespace Nutshell.Blog.Model
             IsLock = false;
             Photo = "/upload/photos/default.png";
             Registration_Time = DateTime.Now;
+            Theme_Id = 1;
         }
 
         [Key]
@@ -75,6 +76,9 @@ namespace Nutshell.Blog.Model
         public string Photo { get; set; }
 
         public bool IsLock { get; set; }
+
+        [ForeignKey("Theme")]
+        public int Theme_Id { get; set; }
 
         public virtual ICollection<Article> Articles { get; set; }
         public virtual ICollection<Discussion> Discussions { get; set; }

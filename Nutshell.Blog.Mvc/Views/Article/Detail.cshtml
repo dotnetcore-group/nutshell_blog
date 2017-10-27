@@ -5,99 +5,151 @@
 }
 
 @section style{
-
-    <style>
-        body {
-            padding: 0px;
-            margin: 0px;
-        }
-
-        ul, li {
-            list-style: none;
-        }
-
-        .root-container {
-            position: relative;
-            margin: 0px;
-            padding: 0px;
-            width: 100%;
-        }
-
-            .root-container > div {
-                float: left;
-                height: 500px;
-            }
-
-        .left {
-            width: 20%;
-        }
-
-        .right {
-            width: 30%;
-        }
-
-        .main {
-            width: 50%;
-        }
-
-        .article-body {
-            position: relative;
-            margin: 0px auto;
-        }
-
-        p {
-            font-size: 14px;
-            line-height: 20px;
-        }
-    </style>
 }
-<div class="root-container">
-    <div class="left"></div>
-    <div class="main">
-        @Model.Title
-        <br />
-        @ViewBag.Author
-        <div class="article-body">
-            @Html.Raw(HttpUtility.HtmlDecode(Model.Body))
-        </div>
-        <hr />
+@*<div class="root-container">
+        <div class="left"></div>
+        <div class="main">
+            @Model.Title
+            <br />
+            @ViewBag.Author
+            <div class="article-body">
+                @Html.Raw(HttpUtility.HtmlDecode(Model.Body))
+            </div>
+            <hr />
 
-        <div>
-            @if (Model.Discussions.Count > 0)
-                {
-                <h3>评论列表</h3>
-                <ul id="commentlist">
+            <div>
+                @if (Model.Discussions.Count > 0)
+                    {
+                    <h3>评论列表</h3>
+                    <ul id="commentlist">
 
-                    @{
-                            var comments = Model.Discussions.OrderBy(c => c.Discussion_Time);
-                    }
-                    @foreach (var item in comments)
-                        {
-                        <li>
-                            <h4>
-                                @(item.UserName)
-                                @if (item.User_Id == item.Article.Author_Id)
-                                    {
-                                    <span>作者</span>
-                                    }
-                            </h4>
-                            @if (item.ParentDiscussion != null)
-                                {
-                                <p>
-                                    回复 @@@item.ParentDiscussion.User.Nickname
-                                </p>
-                                }
-                            <p>@Html.Raw(HttpUtility.HtmlDecode(item.Content))</p>
-                        </li>
+                        @{
+                                var comments = Model.Discussions.OrderBy(c => c.Discussion_Time);
                         }
-                </ul>
+                        @foreach (var item in comments)
+                            {
+                            <li>
+                                <h4>
+                                    @(item.UserName)
+                                    @if (item.User_Id == item.Article.Author_Id)
+                                        {
+                                        <span>作者</span>
+                                        }
+                                </h4>
+                                @if (item.ParentDiscussion != null)
+                                    {
+                                    <p>
+                                        回复 @@@item.ParentDiscussion.User.Nickname
+                                    </p>
+                                    }
+                                <p>@Html.Raw(HttpUtility.HtmlDecode(item.Content))</p>
+                            </li>
                             }
-        </div>
+                    </ul>
+                                }
+            </div>
 
-        <textarea id="comment"></textarea>
-        <button id="btnSubmit">提交</button>
+            <textarea id="comment"></textarea>
+            <button id="btnSubmit">提交</button>
+        </div>
+        <div class="right"></div>
+    </div>*@
+
+<div id="post_detail">
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                <a href="#">@Model.Title</a>
+            </h1>
+            <div class="postBody">
+                <div id="post_body">
+                    <h1>@Model.Title</h1>
+                    @Html.Raw(HttpUtility.HtmlDecode(Model.Body))
+                </div>
+                <div id="blog_post_info_block">
+                    <div id="BlogPostCategory">
+                        分类：
+                        <a href="#">
+                            @(Model.CustomCategory?.CategoryName)
+                        </a>
+                    </div>
+                    <div id="blog_post_info">
+                        <div id="green_channel">
+                            <a href="#" id="green_channel_follow">关注我</a>
+                            <a href="#" id="green_channel_favorite">收藏该文</a>
+                        </div>
+                    </div>
+                    <div id="author_profile">
+                        <div id="author_profile_info" class="author_profile_info">
+                            <a href="#">
+                                <img src="/upload/photos/default.png" alt="加载失败" class="author_avatar" />
+                            </a>
+                            <div id="" class="author_profile_info">
+                                <a href="/@Model.Author.Login_Name">@Model.Author.Nickname</a>
+                                <br />
+                                <a href="#">关注</a>
+                                <br />
+                                <a href="#">粉丝</a>
+                            </div>
+                        </div>
+                        <div id="author_profile_follow">
+                            <a href="#">+加关注</a>
+                        </div>
+                    </div>
+                    <div id="post_next_prev">
+                        <a href="#">《</a>
+                        上一篇
+                        <a href="#">co ntentcon tentco ntentcont entcon tentc ontent</a>
+                    </div>
+                </div>
+            </div>
+            <div class="postDesc">
+                posted @@ <span class="post-date">@Model.Creation_Time</span> @Model.Author.Nickname 阅读(0) 评论(0) <a href="#">编辑</a> <a href="#">收藏</a>
+            </div>
+        </div>
     </div>
-    <div class="right"></div>
+
+    <div id="blog-comments-placeholder">
+        @if (Model.Discussions.Count > 0)
+        {
+            <h3>评论列表</h3>
+            <ul id="commentlist">
+
+                @{
+                    var comments = Model.Discussions.OrderBy(c => c.Discussion_Time);
+                }
+                @foreach (var item in comments)
+                {
+                    <li>
+                        <h4>
+                            @(item.UserName)
+                            @if (item.User_Id == item.Article.Author_Id)
+                            {
+                                <span>作者</span>
+                            }
+                        </h4>
+                        @if (item.ParentDiscussion != null)
+                        {
+                            <p>
+                                回复 @@@item.ParentDiscussion.User.Nickname
+                            </p>
+                        }
+                        <p>@Html.Raw(HttpUtility.HtmlDecode(item.Content))</p>
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+    <div id="comment_form">
+        <div id="comment_nav">
+            <a href="#">刷新评论</a>
+            <a href="#">刷新页面</a>
+            <a href="#">返回顶部</a>
+        </div>
+        <div id="comment_form_container">
+            <div id="commentform_title">发表评论</div>
+        </div>
+    </div>
 </div>
 
 @section script{

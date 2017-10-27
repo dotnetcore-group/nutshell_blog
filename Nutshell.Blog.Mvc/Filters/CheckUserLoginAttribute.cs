@@ -41,8 +41,10 @@ namespace Nutshell.Blog.Mvc.Filters
                         var account = SerializerHelper.DeserializeToObject<Account>(obj.ToString());
                         if (account != null)
                         {
+                            // 滑动过期时间
                             cookie.Expires = DateTime.Now.AddMinutes(20);
                             response.Cookies.Add(cookie);
+                            MemcacheHelper.Set(sessionid, obj, DateTime.Now.AddMinutes(20));
                             return;
                         }
                     }

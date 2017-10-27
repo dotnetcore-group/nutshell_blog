@@ -21,6 +21,7 @@
  * 描述：
  * 
  *********************************************************************************/
+using Nutshell.Blog.Model.Attributes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -38,6 +39,7 @@ namespace Nutshell.Blog.Model
         {
             Creation_Time = DateTime.Now;
             //Article_State = 1;
+            IsTop = false;
         }
 
         [Key]
@@ -56,6 +58,7 @@ namespace Nutshell.Blog.Model
         /// </summary>
         [MaxLength(int.MaxValue)]
         [Required]
+        [AntiXss]
         public string Body { get; set; }
 
         [MaxLength(200)]
@@ -66,6 +69,8 @@ namespace Nutshell.Blog.Model
         public DateTime? Edit_Time { get; set; }
 
         //public int? Article_State { get; set; }
+
+        public bool IsTop { get; set; }
 
         [ForeignKey("Author")]
         public int Author_Id { get; set; }

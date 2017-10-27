@@ -78,11 +78,16 @@ namespace Nutshell.Blog.Mvc.Controllers
                     Nickname = user.Nickname
                 });
                 res = userService.SaveChanges();
+                // 注册成功
+                if (res)
+                {
+                    var sessionid = Guid.NewGuid().ToString();
+                    MemcacheHelper.Set(sessionid, SerializerHelper.SerializeToString(userInfo.ToAccount()), DateTime.Now.AddMinutes(20));
+                    Response.Cookies[Keys.SessionId].Value = sessionid;
+                }
             }
             return Json(new { res, msg = res ? "注册成功！" : "注册失败！" });
         }
-        
-        
 
         // 用户主页
         [CheckUserLogin]

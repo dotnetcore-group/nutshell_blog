@@ -34,6 +34,10 @@ namespace Nutshell.Blog.Model
     [Table("custom_category")]
     public class CustomCategory
     {
+        public CustomCategory()
+        {
+        }
+
         [Key]
         public int Id { get; set; }
 

@@ -4,6 +4,7 @@ using Nutshell.Blog.IService;
 using Nutshell.Blog.Model.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -14,6 +15,20 @@ namespace Nutshell.Blog.Mvc.Controllers
     {
         protected IUserService userService;
         protected IArticleService articleService;
+
+        protected int PageSize
+        {
+            get
+            {
+                var pageSize = 0;
+                var setting = ConfigurationManager.AppSettings["pageSize"];
+                if (!int.TryParse(setting, out pageSize))
+                {
+                    pageSize = 20;
+                }
+                return pageSize;
+            }
+        }
 
         /// <summary>
         /// 获取当前登陆人的账户信息

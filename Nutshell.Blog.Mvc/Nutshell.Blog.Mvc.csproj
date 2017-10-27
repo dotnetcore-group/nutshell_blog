@@ -20,10 +20,11 @@
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode />
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -333,6 +334,10 @@
     <Content Include="Content\style\account.css" />
     <Content Include="Content\style\paging.css" />
     <Content Include="Content\style\reset.css" />
+    <Content Include="Content\wangEditor\wangEditor.css" />
+    <Content Include="Content\wangEditor\wangEditor.js" />
+    <Content Include="Content\wangEditor\wangEditor.min.css" />
+    <Content Include="Content\wangEditor\wangEditor.min.js" />
     <Content Include="error\404.html" />
     <Content Include="error\500.html" />
     <Content Include="error\css\dandelion.css" />
@@ -392,7 +397,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\Home\All.cshtml" />
-    <Content Include="Views\Article\Post.cshtml" />
+    <Content Include="Views\Article\Edit.cshtml" />
     <Content Include="Views\Article\Search.cshtml" />
     <Content Include="Views\Article\Detail.cshtml" />
     <Content Include="Views\Account\SignIn.cshtml" />
@@ -400,6 +405,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Article\Blogs.cshtml" />
+    <Content Include="Content\wangEditor\fonts\w-e-icon.woff" />
     <None Include="Properties\PublishProfiles\publish.pubxml" />
     <Content Include="Views\Account\UserHome.cshtml" />
     <Content Include="Views\Shared\_BlogHomeLayout.cshtml" />

@@ -63,13 +63,14 @@
     <script src="~/Content/scripts/jquery-validation/jquery.validate.unobtrusive.min.js"></script>
     <script>
         function success(data) {
-            console.log(data);
             loaded();
+            alert(data.msg);
+            if (data.res) {
+                location = "/";
+            }
         }
         function begin() {
             loadding();
-
-
 
             //return false;
         }

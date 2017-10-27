@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     Layout = null;
 }
 @model Nutshell.Blog.Model.Article
@@ -44,9 +43,10 @@
             editor_body = K.create("#txtBody", {
                 resizeType: 1,
                 allowPreviewEmoticons: false,
-                allowImageUpload: false,
+                allowImageUpload: true,
+                uploadJson:"/article/uploadimage",
                 items: [
-                    'source','fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+                    'source', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
                     'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
                     'insertunorderedlist', '|', 'emoticons', 'image', 'link'],
                 afterCreate: function () {

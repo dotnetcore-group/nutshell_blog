@@ -173,12 +173,12 @@ body {
 
 .list-item .item-body {
     font-size: 13px;
+    min-height:60px;
 }
 
 .list-item .item-footer {
     font-size: 12px;
-    margin-top:28px;
-    position:relative;
+    padding-top:10px;
 }
 
 .item-body img.item-pic {
