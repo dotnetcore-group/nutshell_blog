@@ -26,8 +26,6 @@ namespace Nutshell.Blog.Model.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
-
-
         }
     }
 }

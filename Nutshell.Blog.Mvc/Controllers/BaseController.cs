@@ -15,6 +15,10 @@ namespace Nutshell.Blog.Mvc.Controllers
     {
         protected IUserService userService;
         protected IArticleService articleService;
+        protected IModuleService moduleService;
+        protected IModuleOperateService moduleOperateService;
+        protected ICustomCategoryService customCategoryService;
+        protected IRoleService roleService;
 
         protected int PageSize
         {
@@ -47,6 +51,14 @@ namespace Nutshell.Blog.Mvc.Controllers
             }
             Redirect("/account/signin");
             return null;
+        }
+
+        protected List<Permission> GetPermission()
+        {
+            string filePath = HttpContext.Request.FilePath;
+            var account = GetCurrentAccount();
+            List<Permission> perm = (List<Permission>)Session[filePath+ account.User_Id];
+            return perm;
         }
     }
 }

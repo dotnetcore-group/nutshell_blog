@@ -31,11 +31,6 @@ namespace Nutshell.Blog.Common
 {
     public class Keys
     {
-        /// <summary>
-        /// 存入memcache登录信息的key 
-        /// </summary>
-        public static readonly string AccountKey = "_account";
-
         public static readonly string SessionId = "_sessionid";
     }
 }

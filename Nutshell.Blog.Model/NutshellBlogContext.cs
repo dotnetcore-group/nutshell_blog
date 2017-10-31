@@ -41,12 +41,22 @@ namespace Nutshell.Blog.Model
         public DbSet<CustomCategory> CustomCategory { get; set; }
         public DbSet<Role> Role { get; set; }
         public DbSet<Dictionaries> Dictionaries { get; set; }
+        public DbSet<Message> Message { get; set; }
+        public DbSet<Right> Right { get; set; }
+        public DbSet<Module> Module { get; set; }
+        public DbSet<RightOperate> RightOperate { get; set; }
+        public DbSet<ModuleOperate> ModuleOperate { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<User>().HasMany(u => u.Discussions).WithRequired(d => d.User).WillCascadeOnDelete(false);
             modelBuilder.Entity<User>().HasMany(u => u.Favorites).WithRequired(f => f.User).WillCascadeOnDelete(false);
+            //modelBuilder.Entity<User>().HasMany(u => u.SendMessages)
+            //            .WithRequired(m => m.Sender);
+            //modelBuilder.Entity<User>().HasMany(u => u.ReceiveMessages)
+            //            .WithRequired(m => m.Recipient);
+            base.OnModelCreating(modelBuilder);
+
         }
     }
 }

@@ -37,7 +37,7 @@ namespace Nutshell.Blog.Repository
 {
     public class BaseRepository<T> : IBaseRepository<T> where T : class, new()
     {
-        DbContext db
+        protected DbContext db
         {
             get
             {

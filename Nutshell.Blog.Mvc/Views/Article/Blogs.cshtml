@@ -20,20 +20,20 @@
             @foreach (var article in topList)
             {
 
-            <div class="title">
-                <a href="/@article.Author.Login_Name/p/@(article.Article_Id).html">[置顶]@article.Title</a>
-            </div>
-            <div class="content">
-                <div class="desc">
-                    摘要: @article.Introduction
-                    <a href="/@article.Author.Login_Name/p/@(article.Article_Id).html">阅读全文</a>
+                <div class="title">
+                    <a href="/@article.Author.Login_Name/p/@(article.Article_Id).html">[置顶]@article.Title</a>
                 </div>
-                <div class="info">
-                    posted @@ @article.Creation_Time @article.Author.Nickname 阅读(0) 评论(0)
-                    <a href="/">编辑</a>
+                <div class="content">
+                    <div class="desc">
+                        摘要: @article.Introduction
+                        <a href="/@article.Author.Login_Name/p/@(article.Article_Id).html">阅读全文</a>
+                    </div>
+                    <div class="info">
+                        posted @@ @article.Creation_Time @article.Author.Nickname 阅读(0) 评论(0)
+                        <a href="/article/edit?postid=@article.Article_Id">编辑</a>
+                    </div>
                 </div>
-            </div>
-            <div class="separator"></div>
+                <div class="separator"></div>
             }
         </div>
     }
@@ -50,21 +50,31 @@
             </div>
             @foreach (var article in group)
             {
-            <div class="title">
-                <a href="/@article.Author.Login_Name/p/@(article.Article_Id).html">@article.Title</a>
-            </div>
-            <div class="content">
-                <div class="desc">
-                    摘要: @article.Introduction
-                    <a href="/@article.Author.Login_Name/p/@(article.Article_Id).html">阅读全文</a>
+                <div class="title">
+                    <a href="/@article.Author.Login_Name/p/@(article.Article_Id).html">@article.Title</a>
                 </div>
-                <div class="info">
-                    posted @@ @article.Creation_Time @article.Author.Nickname 阅读(0) 评论(0)
-                    <a href="/">编辑</a>
+                <div class="content">
+                    <div class="desc">
+                        摘要: @article.Introduction
+                        <a href="/@article.Author.Login_Name/p/@(article.Article_Id).html">阅读全文</a>
+                    </div>
+                    <div class="info">
+                        posted @@ @article.Creation_Time @article.Author.Nickname 阅读(0) 评论(0)
+                        <a href="/article/edit?postid=@article.Article_Id">编辑</a>
+                    </div>
                 </div>
-            </div>
-            <div class="separator"></div>
+                <div class="separator"></div>
             }
         </div>
+    }
+}
+@{
+    if (ViewBag.HasPre ?? false)
+    {
+        <a href="/@user.Login_Name?page=@ViewBag.Pre">上一页</a>
+    }
+    if (ViewBag.HasNext ?? false)
+    {
+        <a href="/@user.Login_Name?page=@ViewBag.Next">下一页</a>
     }
 }

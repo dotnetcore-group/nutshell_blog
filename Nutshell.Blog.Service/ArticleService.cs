@@ -27,6 +27,7 @@ using Nutshell.Blog.IService;
 using Nutshell.Blog.Model;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -61,9 +62,18 @@ namespace Nutshell.Blog.Service
             return currentRepository.ExecuteSelectQuery<Archives>("[dbo].[PROC_GET_ARCHIVES] @User_Id=@User_Id", new System.Data.SqlClient.SqlParameter("@User_Id", UserId));
         }
 
+        public int GetArticlesTotalCount(int UserId)
+        {
+            string sql = "SELECT COUNT(*) AS [Count] FROM [dbo].[article] WHERE Author_Id=@Author_Id";
+            SqlParameter parameter = new SqlParameter("@Author_Id", UserId);
+            return currentRepository.ExecuteSelectQuery<int>(sql, parameter).FirstOrDefault();
+        }
+
         public List<CustomCategories> GetCustomCategoriesByUserId<CustomCategories>(int UserId)
         {
             return currentRepository.ExecuteSelectQuery<CustomCategories>("PROC_GET_CustomCategories @User_Id=@User_Id", new System.Data.SqlClient.SqlParameter("@User_Id", UserId));
         }
+
+        
     }
 }

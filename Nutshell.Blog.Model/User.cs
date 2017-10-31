@@ -42,6 +42,9 @@ namespace Nutshell.Blog.Model
             Photo = "/upload/photos/default.png";
             Registration_Time = DateTime.Now;
             Theme_Id = 1;
+
+            SendMessages = new HashSet<Message>();
+            ReceiveMessages = new HashSet<Message>();
         }
 
         [Key]
@@ -80,11 +83,18 @@ namespace Nutshell.Blog.Model
         [ForeignKey("Theme")]
         public int Theme_Id { get; set; }
 
+        [NotMapped]
+        public virtual ICollection<Message> SendMessages { get; set; }
+        [NotMapped]
+        public virtual ICollection<Message> ReceiveMessages { get; set; }
+
         public virtual ICollection<Article> Articles { get; set; }
         public virtual ICollection<Discussion> Discussions { get; set; }
         public virtual ICollection<Favorites> Favorites { get; set; }
         public virtual ICollection<CustomCategory> CustomCategories { get; set; }
         public virtual Theme Theme { get; set; }
+        public virtual ICollection<Role> Roles { get; set; }
+        
 
         public Account ToAccount()
         {

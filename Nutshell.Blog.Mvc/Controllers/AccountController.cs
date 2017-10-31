@@ -2,7 +2,7 @@
 using Nutshell.Blog.Core;
 using Nutshell.Blog.IService;
 using Nutshell.Blog.Model.ViewModel;
-using Nutshell.Blog.Mvc.Filters;
+using Nutshell.Blog.Core.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -139,5 +139,6 @@ namespace Nutshell.Blog.Mvc.Controllers
             }
             return Redirect("/");
         }
+        
     }
 }

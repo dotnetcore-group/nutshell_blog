@@ -40,28 +40,29 @@ namespace Nutshell.Blog.Model
             Creation_Time = DateTime.Now;
             //Article_State = 1;
             IsTop = false;
+            IsChecked = false;
         }
 
         [Key]
         public int Article_Id { get; set; }
 
-        [MaxLength(50)]
+        [StringLength(100)]
         [Required]
         public string Title { get; set; }
 
-        [MaxLength(int.MaxValue)]
+        [StringLength(int.MaxValue)]
         public string Content { get; set; }
 
         /// <summary>
         /// 与content一致，保留html代码
         /// content只保留纯文字
         /// </summary>
-        [MaxLength(int.MaxValue)]
+        [StringLength(int.MaxValue)]
         [Required]
         [AntiXss]
         public string Body { get; set; }
 
-        [MaxLength(200)]
+        [StringLength(200)]
         public string Introduction { get; set; }
 
         public DateTime Creation_Time { get; set; }
@@ -72,10 +73,17 @@ namespace Nutshell.Blog.Model
 
         public bool IsTop { get; set; }
 
+        public bool IsChecked { get; set; }
+
+        [StringLength(50)]
+        public string Checker { get; set; }
+
         [ForeignKey("Author")]
         public int Author_Id { get; set; }
 
-        [Required]
+        [ForeignKey("CustomCategory")]
+        public int? CustomCategory_Id { get; set; }
+        
         public virtual User Author { get; set; }
         public virtual ICollection<Discussion> Discussions { get; set; }
         public virtual ICollection<Favorites> Favorites { get; set; }

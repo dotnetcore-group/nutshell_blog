@@ -42,6 +42,11 @@
   <ItemGroup>
     <Compile Include="IArticleService.cs" />
     <Compile Include="IBaseService.cs" />
+    <Compile Include="ICustomCategoryService.cs" />
+    <Compile Include="IMessageService.cs" />
+    <Compile Include="IModuleOperateService.cs" />
+    <Compile Include="IModuleService.cs" />
+    <Compile Include="IRoleService.cs" />
     <Compile Include="IUserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

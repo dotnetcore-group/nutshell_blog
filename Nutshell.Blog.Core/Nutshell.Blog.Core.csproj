@@ -62,6 +62,11 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -70,8 +75,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Filters\CheckUserLoginAttribute.cs" />
+    <Compile Include="Filters\SupportFilterAttribute.cs" />
     <Compile Include="MemcacheHelper.cs" />
     <Compile Include="Model\IndexContent.cs" />
+    <Compile Include="MvcHtmlExtend.cs" />
     <Compile Include="PanGuLuceneHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -103,9 +111,17 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Nutshell.Blog.Common\Nutshell.Blog.Common.csproj">
+      <Project>{597D5E2D-6D37-4FE1-83FE-81AAA4208B93}</Project>
+      <Name>Nutshell.Blog.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Nutshell.Blog.Model\Nutshell.Blog.Model.csproj">
       <Project>{E3D7DA59-99B7-4EFB-98CF-739FB2796A21}</Project>
       <Name>Nutshell.Blog.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nutshell.Blog.Repository\Nutshell.Blog.Repository.csproj">
+      <Project>{d6baaa4b-8680-4dcf-872f-060804f32eaf}</Project>
+      <Name>Nutshell.Blog.Repository</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

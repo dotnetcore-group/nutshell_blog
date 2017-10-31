@@ -1,0 +1,195 @@
+﻿@using Nutshell.Blog.Core;
+@{
+    Layout = null;
+    List<Nutshell.Blog.Model.ViewModel.Permission> perm = ViewBag.Perm as List<Nutshell.Blog.Model.ViewModel.Permission>;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Module</title>
+    <link href="~/Content/easyui/themes/bootstrap/easyui.css" rel="stylesheet" />
+    <link href="~/Content/easyui/themes/icon.css" rel="stylesheet" />
+    <link href="~/Content/H-ui.admin/lib/Hui-iconfont/1.0.8/iconfont.min.css" rel="stylesheet" />
+    <link href="~/Content/H-ui.admin/lib/layer/2.4/skin/layer.css" rel="stylesheet" />
+    <style>
+        .tip-enable {
+            color: #5eb95e;
+        }
+
+        .tip-disable {
+            color: #dd514c;
+        }
+
+        .mvctool {
+            padding-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <table>
+        <tr>
+            <td style="vertical-align:top">
+                <div class="mvctool">
+                    @Html.ToolButton("btnCreate", "icon-add", "新增", perm, "Create")
+                    @Html.ToolButton("btnEdit", "icon-edit", "编辑", perm, "Edit")
+                    @Html.ToolButton("btnDelete", "icon-remove", "删除", perm, "Delete")
+                </div>
+
+                <table id="list"></table>
+
+            </td>
+            <td style="width: 210px; padding-left: 5px; vertical-align:top">
+                <div class="mvctool">
+                    @Html.ToolButton("btnCreateOpt", "icon-add", "新增操作码", perm, "Create")
+                    @Html.ToolButton("btnDeleteOpt", "icon-remove", "删除操作码", perm, "Delete")
+                </div>
+
+                <table id="optList"></table>
+
+            </td>
+        </tr>
+    </table>
+    <script src="~/Content/easyui/jquery.min.js"></script>
+    <script src="~/Content/easyui/jquery.easyui.min.js"></script>
+    <script src="~/Content/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script src="~/Content/H-ui.admin/lib/layer/2.4/layer.js"></script>
+    <script src="~/Content/scripts/common.js"></script>
+    <script>
+       
+        $(function () {
+            // 模块数据表
+            $('#list').treegrid({
+                url: '@Url.Action("GetModuleList")',
+                width: $(window).width() - 300,
+                methord: 'post',
+                height: $(window).height() - 45,
+                fitColumns: true,
+                treeField: 'Name',
+                idField: 'Id',
+                pagination: false,
+                striped: true, //奇偶行是否区分
+                singleSelect: true,//单选模式
+                //rownumbers: true,//行号
+                columns: [[
+                    { field: 'Id', title: '唯一标识', width: 60},
+                    { field: 'Name', title: '名称', width: 220, sortable: true },
+                    { field: 'ParentId', title: '上级Id', width: 80, sortable: true },
+                    { field: 'Url', title: '链接地址', width: 80, sortable: true },
+                    { field: 'Iconic', title: '图标', width: 80, sortable: true },
+                    { field: 'Sort', title: '排序号', width: 80, sortable: true },
+                    { field: 'Remark', title: '说明', width: 80, sortable: true },
+                     {
+                         field: 'Enable', title: '是否启用', width: 60,align:'center', formatter: function (value) {
+                             if (value) {
+                                 return "<i class='Hui-iconfont Hui-iconfont-gouxuan tip-enable'></i>";
+                             } else {
+                                 return "<i class='Hui-iconfont Hui-iconfont-shenhe-tingyong tip-disable'></i>";
+                             }
+                         }
+                     },
+                    { field: 'CreatePerson', title: '创建人', width: 80, sortable: true },
+                    {
+                        field: 'CreateTime', title: '创建时间', width: 140, sortable: true, formatter: function (value) {
+                            value.replace(/Date\([\d+]+\)/, function (a) { eval('d = new ' + a) });
+                            return d.format("yyyy-MM-dd hh:mm:ss");
+                        }
+                    },
+                    {
+                        field: 'IsLast', title: '是否最后一项', align: 'center', width: 100, formatter: function (value) {
+                            if (value) {
+                                return "是";
+                            } else {
+                                return "否";
+                            }
+                        }
+                    },
+                ]],
+                onClickRow: function (index, data) {
+                    var row = $('#list').treegrid('getSelected');
+                    if (row != null) {
+                        $('#optList').datagrid({
+                            url: '@Url.Action("GetOptListByModule")?module_id=' + row.Id
+                        });
+                    }
+                }
+            });
+
+            // 操作数据表
+            $('#optList').datagrid({
+                url: '@Url.Action("GetOptListByModule")',
+                width: 255,
+                methord: 'post',
+                height: $(window).height() - 45,
+                fitColumns: true,
+                sortName: 'Sort',
+                sortOrder: 'asc',
+                idField: 'Id',
+                pageSize: 1000,
+                pagination: false,
+                striped: true, //奇偶行是否区分
+                singleSelect: true,//单选模式
+                //rownumbers: true,//行号
+                columns: [[
+                    { field: 'Id', title: '', width: 80, hidden: true },
+                    { field: 'Name', title: '名称', width: 80, sortable: true },
+                    { field: 'KeyCode', title: '操作码', width: 80, sortable: true },
+                    { field: 'ModuleId', title: '所属模块', width: 80, sortable: true, hidden: true },
+                     {
+                         field: 'IsValid', title: '是否验证', width: 80, align: 'center', formatter: function (value) {
+                             if (value) {
+                                 return "<i class='Hui-iconfont Hui-iconfont-shenhe-tongguo tip-enable'></i>";
+                             } else {
+                                 return "<i class='Hui-iconfont Hui-iconfont-shenhe-weitongguo tip-disbale'></i>";
+                             }
+                         }
+                     },
+                    { field: 'Sort', title: '排序', width: 80, sortable: true }
+                ]]
+            });
+
+            //自动宽高
+            $(window).resize(function () {
+                $('#list').datagrid('resize', {
+                    width: $(window).width() - 300,
+                    height: $(window).height() - 45
+                }).datagrid('resize', {
+                    width: $(window).width() - 300,
+                    height: $(window).height() - 45
+                });
+                $('#optList').datagrid('resize', {
+                    height: $(window).height() - 45
+                }).datagrid('resize', {
+                    height: $(window).height() - 45
+                });
+            });
+
+            // 创建模块
+            $("#btnCreate").click(function () {
+
+            });
+            // 编辑模块
+
+            // 删除模块
+            $("#btnDelete").click(function () {
+                var row = $('#list').treegrid('getSelected');
+                if (row != null) {
+                    var id = row.id;
+                    parent.layer.confirm('你确定要删除吗？', {
+                        btn: ['确定', '取消'] //按钮
+                    }, function () {
+                        parent.layer.msg('删除成功！', { icon: 1 });
+                    }, function () {
+                        
+                    });
+                } else {
+                    layer.msg('请选择要删除的行！');
+                }
+            });
+        })
+    </script>
+</body>
+</html>

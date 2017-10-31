@@ -1,4 +1,4 @@
-﻿using Nutshell.Blog.Mvc.Filters;
+﻿using Nutshell.Blog.Core.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +12,7 @@ namespace Nutshell.Blog.Mvc
         public static void Register(GlobalFilterCollection filters)
         {
             //filters.Add(new CheckUserLoginAttribute());
+            //filters.Add(new SupportFilterAttribute());
         }
     }
 }

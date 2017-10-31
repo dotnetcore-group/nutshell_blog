@@ -15,5 +15,7 @@ namespace Nutshell.Blog.IService
         List<Archives> GetArchivesByUserId<Archives>(int UserId);
 
         List<CustomCategories> GetCustomCategoriesByUserId<CustomCategories>(int UserId);
+
+        int GetArticlesTotalCount(int UserId);
     }
 }

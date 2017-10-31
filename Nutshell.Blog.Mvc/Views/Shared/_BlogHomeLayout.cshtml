@@ -12,6 +12,7 @@
     <title>@ViewBag.Title</title>
     <link href="~/Content/style/reset.css" rel="stylesheet" />
     <link rel="stylesheet" href="@user.Theme.Resources" />
+    <link href="~/Content/style/font-awesome.min.css" rel="stylesheet" />
     @RenderSection("style", false)
 </head>
 <body>
@@ -27,7 +28,7 @@
                 <ul id="navList">
                     <li><a href="/">果壳园</a></li>
                     <li><a href="/@user.Login_Name">首页</a></li>
-                    <li><a href="/article/edit">随笔</a></li>
+                    <li><a href="/article/edit">文章</a></li>
                     <li><a href="/">管理</a></li>
                 </ul>
             </div>
@@ -42,7 +43,7 @@
             <div id="sideBar">
                 <div id="sideBarMain">
                     <div id="authorItem">
-                        <h3 id="sideTitle">作者</h3>
+                        <h3 id="sideTitle">作者信息</h3>
                         <div id="authorInfo">
                             <div id="profile_block">
                                 昵称：<a href="/@user.Login_Name">@user.Nickname</a> <br />

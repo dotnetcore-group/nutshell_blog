@@ -36,7 +36,7 @@ namespace Nutshell.Blog.Model
     {
         public Role()
         {
-            IsDeleted = false;
+            CreateTime = DateTime.Now;
         }
 
         [Key]
@@ -46,12 +46,18 @@ namespace Nutshell.Blog.Model
         [Required]
         public string Role_Name { get; set; }
 
-        [MaxLength(100)]
+        [StringLength(100)]
         public string Img_Icon { get; set; }
 
-        public bool? IsDeleted { get; set; }
+        [StringLength(200)]
+        public string Description { get; set; }
 
-        [MaxLength(200)]
-        public string Remark { get; set; }
+        public DateTime CreateTime { get; set; }
+
+        [StringLength(20)]
+        public string CreateUser { get; set; }
+
+        public virtual ICollection<User> Users { get; set; }
+        public virtual ICollection<Right> Rights { get; set; }
     }
 }
