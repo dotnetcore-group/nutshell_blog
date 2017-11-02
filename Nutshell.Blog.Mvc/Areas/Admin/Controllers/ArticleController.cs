@@ -1,4 +1,5 @@
-﻿using Nutshell.Blog.Core.Filters;
+﻿using Nutshell.Blog.Common;
+using Nutshell.Blog.Core.Filters;
 using Nutshell.Blog.IService;
 using Nutshell.Blog.Model;
 using Nutshell.Blog.Model.ViewModel;
@@ -55,8 +56,81 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
             return View();
         }
 
+        public ActionResult BlogList()
+        {
+            return View();
+        }
 
-        public ActionResult UploadImage()
+        // 文章审核
+        [SupportFilter(Action = "Examine")]
+        public ActionResult ArticleExamine()
+        {
+            return View();
+        }
+
+
+        [SupportFilter(Action = "Examine")]
+        [HttpPost]
+        public JsonResult ExaminePass(int id)
+        {
+            var data = new { code = 1, msg = "审核失败，请重试！" };
+            var article = articleService.LoadEntity(a => a.Article_Id == id);
+            if (article != null)
+            {
+                article.State = (int)ArticleSateEnum.Published;
+                articleService.EditEntity(article);
+                var res = articleService.SaveChanges();
+                if (res)
+                {
+                    data = new { code = 0, msg = "审核通过，已发布！" };
+                }
+            }
+            else
+            {
+                data = new { code = 1, msg = "该文章不存在，请重试！" };
+            }
+            return Json(data);
+        }
+
+        [HttpPost]
+        public JsonResult GetBlogs()
+        {
+            int draw = Convert.ToInt32(Request["draw"] ?? "0");
+            int start = Convert.ToInt32(Request["start"] ?? "1");
+            int length = Convert.ToInt32(Request["length"] ?? "10");
+            var account = GetCurrentAccount();
+            int total;
+            var list = articleService.LoadPageEntities((start + length) / length, length, out total, a => a.Author_Id == account.User_Id, a => a.Creation_Time, false).Select(a => new
+            {
+                a.Article_Id,
+                a.Title,
+                a.Creation_Time,
+                a.State,
+                a.CustomCategory.CategoryName
+            });
+            return Json(new { data = list, draw, recordsTotal = total, recordsFiltered = total });
+        }
+
+        [HttpPost]
+        public JsonResult GetArticles()
+        {
+            int draw = Convert.ToInt32(Request["draw"] ?? "0");
+            int start = Convert.ToInt32(Request["start"] ?? "1");
+            int length = Convert.ToInt32(Request["length"] ?? "10");
+            int total;
+            var list = articleService.LoadPageEntities((start + length) / length, length, out total, a => a.State != (int)ArticleSateEnum.Draft && a.State != (int)ArticleSateEnum.Deleted, a => a.Creation_Time, false).Select(a => new
+            {
+                a.Article_Id,
+                a.Title,
+                a.Creation_Time,
+                a.State,
+                a.CustomCategory.CategoryName,
+                a.Author.Nickname
+            });
+            return Json(new { data = list, draw, recordsTotal = total, recordsFiltered = total });
+        }
+
+        public JsonResult UploadImage()
         {
             var date = DateTime.Now.ToString("yyyy-MM-dd");
 
@@ -128,7 +202,7 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
                         article.Body = Server.HtmlEncode(article.Body);
                         article.Content = article.Content.Replace("\n", " ").Replace("\r", " ").Replace("\t", " ").Replace(" ", "");
                         article.Introduction = article.Content.Length > 200 ? article.Content.Substring(0, 190) + "..." : article.Content;
-                        
+
                         if (articleService.AddArticle(article) != null)
                         {
                             res = new { code = 0, msg = "提交成功！" };

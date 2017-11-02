@@ -22,7 +22,7 @@ namespace Nutshell.Blog.Mvc.Controllers
             int pageSize = PageSize;
             int totalCount = 0;
 
-            var articles = articleService.LoadPageEntities(pageIndex, pageSize, out totalCount, a => true, a => a.Creation_Time, false)?.ToList();
+            var articles = articleService.LoadPageEntities(pageIndex, pageSize, out totalCount, a => a.State == 3, a => a.Creation_Time, false)?.ToList();
 
             ViewBag.Account = GetCurrentAccount();
 

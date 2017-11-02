@@ -40,7 +40,7 @@ namespace Nutshell.Blog.Model
             Creation_Time = DateTime.Now;
             //Article_State = 1;
             IsTop = false;
-            IsChecked = false;
+            State = 2;
         }
 
         [Key]
@@ -68,18 +68,14 @@ namespace Nutshell.Blog.Model
         public DateTime Creation_Time { get; set; }
 
         public DateTime? Edit_Time { get; set; }
-
-        //public int? Article_State { get; set; }
-
+        
         public bool IsTop { get; set; }
-
-        public bool IsChecked { get; set; }
-
-        [StringLength(50)]
-        public string Checker { get; set; }
 
         [ForeignKey("Author")]
         public int Author_Id { get; set; }
+
+        [ForeignKey("ArticleState")]
+        public int State { get; set; }
 
         [ForeignKey("CustomCategory")]
         public int? CustomCategory_Id { get; set; }
@@ -89,5 +85,6 @@ namespace Nutshell.Blog.Model
         public virtual ICollection<Favorites> Favorites { get; set; }
         public virtual ICollection<Article_Category> Categories { get; set; }
         public virtual CustomCategory CustomCategory { get; set; }
+        public virtual ArticleState ArticleState { get; set; }
     }
 }

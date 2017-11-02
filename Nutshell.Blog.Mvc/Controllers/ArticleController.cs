@@ -99,9 +99,27 @@ namespace Nutshell.Blog.Mvc.Controllers
             var user = userService.LoadEntity(u => u.Login_Name.Equals(author, StringComparison.CurrentCultureIgnoreCase));
             if (user != null)
             {
-                var pageIndex = page.HasValue ? (page.Value<=0? 1: page.Value) : 1;
+                var pageIndex = page.HasValue ? (page.Value <= 0 ? 1 : page.Value) : 1;
                 var pageSize = PageSize;
                 ViewBag.UserInfo = user;
+
+                // 上一页、下一页
+                var totalCount = articleService.GetArticlesTotalCount(user.User_Id);
+                var totalPage = totalCount % PageSize == 0 ? totalCount / PageSize : (totalCount + PageSize) / PageSize;
+                if (pageIndex > 1 && pageIndex <= totalPage)
+                {
+                    ViewBag.HasPre = true;
+                    ViewBag.Pre = pageIndex - 1;
+                }
+                if (pageIndex < totalPage)
+                {
+                    ViewBag.HasNext = true;
+                    ViewBag.Next = pageIndex + 1;
+                }
+                if (pageIndex > totalPage)
+                {
+                    pageIndex = 1;
+                }
 
                 // 置顶文章只在第一页（置顶文章数量最多20）
                 if (pageIndex <= 1)
@@ -120,26 +138,13 @@ namespace Nutshell.Blog.Mvc.Controllers
                 // 文章分类
                 ViewBag.Categories = articleService.GetCustomCategoriesByUserId<CustomCategories>(user.User_Id);
 
-                // 上一页、下一页
-                var totalCount = articleService.GetArticlesTotalCount(user.User_Id);
-                var totalPage = totalCount % PageSize ==0 ? totalCount /PageSize : (totalCount + PageSize)/PageSize;
-                if (pageIndex > 1)
-                {
-                    ViewBag.HasPre = true;
-                    ViewBag.Pre = pageIndex - 1;
-                }
-                if (pageIndex < totalPage)
-                {
-                    ViewBag.HasNext = true;
-                    ViewBag.Next = pageIndex + 1;
-                }
-
+                
                 // 设定的pagesize大小减去置顶文章数 为取其他文章的数量
                 if (pageSize > 0)
                 {
                     int count = 0;
                     // 按日期分组的文章 类型为 IEnumerable<IGrouping<DateTime, Article>>
-                    var articles = articleService.LoadPageEntities(pageIndex, pageSize, out count, a => a.Author_Id == user.User_Id && !a.IsTop, a => a.Creation_Time, false)
+                    var articles = articleService.LoadPageEntities(pageIndex, pageSize, out count, a => a.Author_Id == user.User_Id && !a.IsTop && a.State == 3, a => a.Creation_Time, false)
                         .GroupBy(new Func<Article, DateTime>(a =>
                         {
                             var date = Convert.ToDateTime(a.Creation_Time.ToShortDateString());

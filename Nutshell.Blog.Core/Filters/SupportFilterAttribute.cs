@@ -62,6 +62,11 @@ namespace Nutshell.Blog.Core.Filters
                 result = count > 0;
                 if (!result)
                 {
+                    if (filterContext.HttpContext.Request.IsAjaxRequest())
+                    {
+                        filterContext.Result = new JsonResult() { Data = new { code=1,msg= "你没有操作权限，请联系管理员！" } };
+                        return;
+                    }
                     filterContext.Result = new ContentResult() { Content = "你没有操作权限，请联系管理员！" };
                     return;
                 }

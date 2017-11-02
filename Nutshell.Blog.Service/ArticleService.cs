@@ -64,7 +64,7 @@ namespace Nutshell.Blog.Service
 
         public int GetArticlesTotalCount(int UserId)
         {
-            string sql = "SELECT COUNT(*) AS [Count] FROM [dbo].[article] WHERE Author_Id=@Author_Id";
+            string sql = "SELECT COUNT(*) AS [Count] FROM [dbo].[article] WHERE Author_Id=@Author_Id AND State=3";
             SqlParameter parameter = new SqlParameter("@Author_Id", UserId);
             return currentRepository.ExecuteSelectQuery<int>(sql, parameter).FirstOrDefault();
         }

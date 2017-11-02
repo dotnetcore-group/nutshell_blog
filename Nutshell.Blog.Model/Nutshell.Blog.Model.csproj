@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Article.cs" />
+    <Compile Include="ArticleState.cs" />
     <Compile Include="Article_Category.cs" />
     <Compile Include="Attributes\AntiXssAttribute.cs" />
     <Compile Include="Dictionaries.cs" />

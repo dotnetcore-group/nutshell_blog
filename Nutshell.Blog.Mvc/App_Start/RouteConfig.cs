@@ -37,6 +37,7 @@ namespace Nutshell.Blog.Mvc
                 name: "ArticleList",
                 url: "all/{index}",
                 defaults: new { controller = "Home", action = "All", index = UrlParameter.Optional },
+                namespaces: new string[] { "Nutshell.Blog.Mvc.Controllers" },
                 constraints: new { }
             );
             routes.MapRoute(

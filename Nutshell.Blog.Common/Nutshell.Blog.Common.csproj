@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArticleSateEnum.cs" />
     <Compile Include="DateTimeUtil.cs" />
     <Compile Include="Encrypt.cs" />
     <Compile Include="Keys.cs" />
