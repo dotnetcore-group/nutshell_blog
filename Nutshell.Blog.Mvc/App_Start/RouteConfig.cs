@@ -18,8 +18,8 @@ namespace Nutshell.Blog.Mvc
             routes.MapRoute(
                 name: "ArticleDetail",
                 url: "{author}/p/{id}.html",
-                defaults: new { controller = "Article", action = "Detail"},
-                namespaces:new string[] { "Nutshell.Blog.Mvc.Controllers" },
+                defaults: new { controller = "Article", action = "Detail" },
+                namespaces: new string[] { "Nutshell.Blog.Mvc.Controllers" },
                 constraints: new { }
             );
             routes.MapRoute(
@@ -28,11 +28,7 @@ namespace Nutshell.Blog.Mvc
                 defaults: new { controller = "Article", action = "Blogs" },
                 namespaces: new string[] { "Nutshell.Blog.Mvc.Controllers" }
             );
-            routes.MapRoute(
-                name: "UserHome",
-                url: "u/{id}",
-                defaults: new { controller = "Account", action = "UserHome" }
-            );
+
             routes.MapRoute(
                 name: "ArticleList",
                 url: "all/{index}",
@@ -40,11 +36,17 @@ namespace Nutshell.Blog.Mvc
                 namespaces: new string[] { "Nutshell.Blog.Mvc.Controllers" },
                 constraints: new { }
             );
+
+            routes.MapRoute(
+                name: "UserHome",
+                url: "u/{id}",
+                defaults: new { controller = "Account", action = "UserHome" }
+            );
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "All", id = UrlParameter.Optional},
-                namespaces:new string[]{ "Nutshell.Blog.Mvc.Controllers"}
+                defaults: new { controller = "Home", action = "All", id = UrlParameter.Optional },
+                namespaces: new string[] { "Nutshell.Blog.Mvc.Controllers" }
             );
         }
     }

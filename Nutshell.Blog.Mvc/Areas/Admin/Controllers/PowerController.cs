@@ -30,13 +30,13 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
         [SupportFilter(Action = "RoleManage")]
         public ActionResult RoleManage()
         {
-            return View();
+            return PartialView();
         }
 
         [SupportFilter(Action = "Create")]
         public ActionResult AddRole()
         {
-            return View();
+            return PartialView();
         }
 
         [HttpPost]

@@ -118,7 +118,7 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
             int start = Convert.ToInt32(Request["start"] ?? "1");
             int length = Convert.ToInt32(Request["length"] ?? "10");
             int total;
-            var list = articleService.LoadPageEntities((start + length) / length, length, out total, a => a.State != (int)ArticleSateEnum.Draft && a.State != (int)ArticleSateEnum.Deleted, a => a.Creation_Time, false).Select(a => new
+            var list = articleService.LoadPageEntities((start + length) / length, length, out total, a => a.State == (int)ArticleSateEnum.NotAudited, a => a.Creation_Time, false).Select(a => new
             {
                 a.Article_Id,
                 a.Title,

@@ -52,6 +52,7 @@ namespace Nutshell.Blog.Core.Filters
                 }
             }
 
+            response.StatusCode = 401;
             if (request.IsAjaxRequest())
             {
                 filterContext.Result = new AjaxUnauthorizedResult();
@@ -61,11 +62,12 @@ namespace Nutshell.Blog.Core.Filters
             base.OnActionExecuting(filterContext);
         }
     }
-    class AjaxUnauthorizedResult : JavaScriptResult
+    class AjaxUnauthorizedResult : JsonResult
     {
         public AjaxUnauthorizedResult()
         {
-            Script = "alert('尚未登录！');location='/account/signin'";
+            Data = new { code = 1, msg = "未登录或者登录状态失效，请重新登录！" };
+            JsonRequestBehavior = JsonRequestBehavior.AllowGet;
         }
     }
 }

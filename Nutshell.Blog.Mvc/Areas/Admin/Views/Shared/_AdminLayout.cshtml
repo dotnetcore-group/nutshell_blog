@@ -1,47 +1,32 @@
-﻿
-@{
-    Layout = null;
-}
-
-<!DOCTYPE html>
-
-<html>
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title</title>
     <meta charset="utf-8">
-    <meta name="renderer" content="webkit|ie-comp|ie-stand">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Amaze UI Admin index Examples</title>
+    <meta name="description" content="这是一个 index 页面">
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
     <meta http-equiv="Cache-Control" content="no-siteapp" />
-    <link rel="Bookmark" href="/favicon.ico">
-    <link rel="Shortcut Icon" href="/favicon.ico" />
-    <!--[if lt IE 9]>
-    <script type="text/javascript" src="~/Content/H-ui.admin/lib/html5shiv.js"></script>
-    <script type="text/javascript" src="~/Content/H-ui.admin/lib/respond.min.js"></script>
-    <![endif]-->
-    <link rel="stylesheet" type="text/css" href="~/Content/H-ui.admin/static/h-ui/css/H-ui.min.css" />
-    <link rel="stylesheet" type="text/css" href="~/Content/H-ui.admin/static/h-ui.admin/css/H-ui.admin.css" />
-    <link rel="stylesheet" type="text/css" href="~/Content/H-ui.admin/lib/Hui-iconfont/1.0.8/iconfont.css" />
-    <link rel="stylesheet" type="text/css" href="~/Content/H-ui.admin/static/h-ui.admin/skin/default/skin.css" id="skin" />
-    <link rel="stylesheet" type="text/css" href="~/Content/H-ui.admin/static/h-ui.admin/css/style.css" />
-    <link href="~/Content/H-ui.admin/lib/layer/2.4/skin/layer.css" rel="stylesheet" />
-    <!--[if IE 6]>
-    <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
-    <script>DD_belatedPNG.fix('*');</script>
-    <![endif]-->
-
-    @RenderSection("style", false)
-
+    <link rel="icon" type="image/png" href="~/favicon.png">
+    <link rel="apple-touch-icon-precomposed" href="~/Content/amazeui/assets/i/app-icon72x72@2x.png">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    <link rel="stylesheet" href="~/Content/amazeui/assets/css/amazeui.min.css" />
+    <link rel="stylesheet" href="~/Content/amazeui/assets/css/amazeui.datatables.min.css" />
+    <link rel="stylesheet" href="~/Content/amazeui/assets/css/app.css">
+    <script src="~/Content/amazeui/assets/js/jquery.min.js"></script>
+    <script src="~/Content/amazeui/assets/js/amazeui.min.js"></script>
+    <link href="~/Content/layer/2.4/skin/layer.css" rel="stylesheet" />
+    
+    @RenderSection("style",false)
 </head>
-<body>
+<body data-type="index">
+    <script src="~/Content/amazeui/assets/js/theme.js"></script>
     @RenderBody()
-    <!--_footer 作为公共模版分离出去-->
-    <script type="text/javascript" src="~/Content/H-ui.admin/lib/jquery/1.9.1/jquery.min.js"></script>
-    <script type="text/javascript" src="~/Content/H-ui.admin/lib/layer/2.4/layer.js"></script>
-    <script type="text/javascript" src="~/Content/H-ui.admin/static/h-ui/js/H-ui.min.js"></script>
-    <script type="text/javascript" src="~/Content/H-ui.admin/static/h-ui.admin/js/H-ui.admin.js"></script>
-    <script src="~/Content/H-ui.admin/lib/layer/2.4/layer.js"></script>
+    <script src="~/Content/amazeui/assets/js/amazeui.datatables.min.js"></script>
+    <script src="~/Content/amazeui/assets/js/dataTables.responsive.min.js"></script>
+    <script src="~/Content/layer/2.4/layer.js"></script>
     <script src="~/Content/scripts/common.js"></script>
     @RenderSection("script", false)
 </body>

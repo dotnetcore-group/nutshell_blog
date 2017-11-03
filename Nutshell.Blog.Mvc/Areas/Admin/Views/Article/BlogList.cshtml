@@ -4,6 +4,9 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 @section style{
+    <script>
+       
+    </script>
     <style>
         .text-center {
             text-align: center !important;
@@ -11,47 +14,74 @@
     </style>
 }
 
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 我的文章 <span class="c-gray en">&gt;</span> 文章列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
-<div class="page-container">
-    <div class="text-c">
-        <button onclick="removeIframe()" class="btn btn-primary radius">关闭选项卡</button>
-        <span class="select-box inline">
-            <select name="" class="select">
-                <option value="0">全部分类</option>
-                <option value="1">分类一</option>
-                <option value="2">分类二</option>
-            </select>
-        </span> 日期范围：
-        <input type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'logmax\')||\'%y-%M-%d\'}' })" id="logmin" class="input-text Wdate" style="width:120px;">
-        -
-        <input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'logmin\')}',maxDate:'%y-%M-%d' })" id="logmax" class="input-text Wdate" style="width:120px;">
-        <input type="text" name="" id="" placeholder=" 资讯名称" style="width:250px" class="input-text">
-        <button name="" id="" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 搜资讯</button>
-    </div>
-    <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a class="btn btn-primary radius" data-title="添加资讯" data-href="article-add.html" onclick="Hui_admin_tab(this)" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加资讯</a></span></div>
-    <div class="mt-20">
-        <table id="list" class="table table-border table-bordered table-bg table-hover table-sort table-responsive">
-            <thead>
-                <tr class="text-c">
-                    <th width="40">
-                        <input type="checkbox" class="checkall" />
-                    </th>
-                    <th width="80">ID</th>
-                    <th>标题</th>
-                    <th width="150">分类</th>
-                    <th width="120">更新时间</th>
-                    <th width="75">状态</th>
-                </tr>
-            </thead>
-        </table>
+<div class="row-content am-cf">
+    <div class="row">
+        <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+            <div class="widget am-cf">
+                <div class="widget-head am-cf">
+                    <div class="widget-title  am-cf">文章列表</div>
+
+
+                </div>
+                <div class="widget-body  am-fr">
+
+                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                        <div class="am-form-group">
+                            <div class="am-btn-toolbar">
+                                <div class="am-btn-group am-btn-group-xs">
+                                    <button type="button" class="am-btn am-btn-default am-btn-success"><span class="am-icon-plus"></span> 新增</button>
+                                    <button type="button" class="am-btn am-btn-default am-btn-secondary"><span class="am-icon-save"></span> 保存</button>
+                                    <button type="button" class="am-btn am-btn-default am-btn-warning"><span class="am-icon-archive"></span> 审核</button>
+                                    <button type="button" class="am-btn am-btn-default am-btn-danger"><span class="am-icon-trash-o"></span> 删除</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-3">
+                        <div class="am-form-group tpl-table-list-select">
+                            <select data-am-selected="{btnSize: 'sm'}" style="display: none;">
+                                <option value="option1">所有类别</option>
+                                <option value="option2">IT业界</option>
+                                <option value="option3">数码产品</option>
+                                <option value="option3">笔记本电脑</option>
+                                <option value="option3">平板电脑</option>
+                                <option value="option3">只能手机</option>
+                                <option value="option3">超极本</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
+                        <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
+                            <input type="text" class="am-form-field ">
+                            <span class="am-input-group-btn">
+                                <button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search" type="button"></button>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="am-u-sm-12">
+                        <table class="am-table am-table-compact am-table-striped tpl-table-black " id="list">
+                            <thead>
+                                <tr>
+                                    <th width="40">
+                                        <input type="checkbox" class="checkall" />
+                                    </th>
+                                    <th width="80">ID</th>
+                                    <th>标题</th>
+                                    <th width="150">分类</th>
+                                    <th width="180">更新时间</th>
+                                    <th width="75">状态</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 @section script{
-    <!--请在下方写此页面业务相关的脚本-->
-    <script type="text/javascript" src="~/Content/H-ui.admin/lib/My97DatePicker/4.8/WdatePicker.js"></script>
-    <script type="text/javascript" src="~/Content/H-ui.admin/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="~/Content/H-ui.admin/lib/laypage/1.2/laypage.js"></script>
     <script type="text/javascript">
 
         $(function () {
@@ -96,7 +126,6 @@
                 serverSide: true,
                 columns: [
                     {
-                        class: "text-center",
                         data: "Article_Id",
                         render: function (data, type, full, meta) {
                             return '<input type="checkbox"  class="checkchild"  value="' + data + '" />';
@@ -106,8 +135,7 @@
                     { class: "text-center", data: 'Article_Id'},
                     {
                         data: 'Title', render: function (data, type, row, meta) {
-                            console.log(row);
-                            return '<u style="cursor:pointer" class="text-primary" onclick="article_edit(\'编辑文章\',\'/admin/article/edit\',\'' + row["Article_Id"] + '\')" title="编辑">' + data + '</u>';
+                            return data;
                         }
                     },
                     {
@@ -127,9 +155,9 @@
                     {
                         data: 'State', class: "text-center", render: function (data, type, row, meta) {
                             if (data == 3) {
-                                return '<span class="label label-success radius">已发布</span>';
+                                return '<span class="am-badge am-badge-success">已发布</span>';
                             } else if (data == 2) {
-                                return '<span class="label label-warning radius">未审核</span>';
+                                return '<span class="am-badge">未审核</span>';
                             } else if (data == 1) {
                                 return '<span class="label label-warning radius">草稿</span>';
                             } else if (data == 4) {

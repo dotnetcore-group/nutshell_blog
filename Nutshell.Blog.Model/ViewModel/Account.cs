@@ -39,6 +39,8 @@ namespace Nutshell.Blog.Model.ViewModel
 
         public int ThemeId { get; set; }
 
+        public string Photo { get; set; }
+
         public IList<CustomCategory> CustomCategories { get; set; }
     }
 }

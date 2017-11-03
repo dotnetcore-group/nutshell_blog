@@ -160,6 +160,7 @@ namespace Nutshell.Blog.Mvc.Controllers
         [CheckUserLogin]
         public JsonResult Comment(string content)
         {
+
             return Json(content);
         }
     }

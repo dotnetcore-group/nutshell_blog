@@ -1,202 +1,280 @@
-﻿@{ 
-    ViewBag.Title = "管理 - 果壳园";
+﻿@{
+    var menus = ViewBag.Menus as List<Nutshell.Blog.Model.Module>;
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 @model Nutshell.Blog.Model.ViewModel.Account
-
 @section style{
-    <style>
-        #loadding {
-            position: absolute;
-            z-index: 999;
-            width: 100%;
-            text-align: center;
-            height: 100px;
-            line-height: 100px;
-        }
-    </style>
 }
-<header class="navbar-wrapper">
-    <div class="navbar navbar-fixed-top">
-        <div class="container-fluid cl">
-            <a class="logo navbar-logo f-l mr-10 hidden-xs" href="/">果壳园</a> 
-            <a class="logo navbar-logo-m f-l mr-10 visible-xs" href="/">果壳园</a>
-            <span class="logo navbar-slogan f-l mr-10 hidden-xs">v1.0</span>
-            <a aria-hidden="false" class="nav-toggle Hui-iconfont visible-xs" href="javascript:;">&#xe667;</a>
-            <nav class="nav navbar-nav">
-                <ul class="cl">
-                    <li class="dropDown dropDown_hover">
-                        <a href="javascript:;" class="dropDown_A"><i class="Hui-iconfont">&#xe600;</i> 新增 <i class="Hui-iconfont">&#xe6d5;</i></a>
-                        <ul class="dropDown-menu menu radius box-shadow">
-                            <li><a href="javascript:;" onclick="article_add('添加资讯','/admin/article/edit')"><i class="Hui-iconfont">&#xe616;</i> 资讯</a></li>
-                            <li><a href="javascript:;" onclick="picture_add('添加资讯','picture-add.html')"><i class="Hui-iconfont">&#xe613;</i> 图片</a></li>
-                            <li><a href="javascript:;" onclick="product_add('添加资讯','product-add.html')"><i class="Hui-iconfont">&#xe620;</i> 产品</a></li>
-                            <li><a href="javascript:;" onclick="member_add('添加用户','member-add.html','','510')"><i class="Hui-iconfont">&#xe60d;</i> 用户</a></li>
+<div class="am-g tpl-g">
+    <!-- 头部 -->
+    <header class="fixed">
+        <!-- logo -->
+        <div class="am-fl tpl-header-logo">
+            <a href="javascript:;"><img src="~/Content/amazeui/assets/img/logo.png" alt=""></a>
+        </div>
+        <!-- 右侧内容 -->
+        <div class="tpl-header-fluid">
+            <!-- 侧边切换 -->
+            <div class="am-fl tpl-header-switch-button am-icon-list">
+                <span>
+                </span>
+            </div>
+            <!-- 搜索 -->
+            <div class="am-fl tpl-header-search">
+                <form class="tpl-header-search-form" action="javascript:;">
+                    <button class="tpl-header-search-btn am-icon-search"></button>
+                    <input class="tpl-header-search-box" type="text" placeholder="搜索内容...">
+                </form>
+            </div>
+            <!-- 其它功能-->
+            <div class="am-fr tpl-header-navbar">
+                <ul>
+                    <!-- 欢迎语 -->
+                    <li class="am-text-sm tpl-header-navbar-welcome">
+                        <a href="javascript:;">欢迎你, <span>@Model.Nickname</span> </a>
+                    </li>
+                    
+                    <!-- 新邮件 -->
+                    <li class="am-dropdown tpl-dropdown" data-am-dropdown>
+                        <a href="javascript:;" class="am-dropdown-toggle tpl-dropdown-toggle" data-am-dropdown-toggle>
+                            <i class="am-icon-envelope"></i>
+                            <span class="am-badge am-badge-success am-round item-feed-badge">4</span>
+                        </a>
+                        <!-- 弹出列表 -->
+                        <ul class="am-dropdown-content tpl-dropdown-content">
+                            <li class="tpl-dropdown-menu-messages">
+                                <a href="javascript:;" class="tpl-dropdown-menu-messages-item am-cf">
+                                    <div class="menu-messages-ico">
+                                        <img src="~/Content/amazeui/assets/img/user04.png" alt="">
+                                    </div>
+                                    <div class="menu-messages-time">
+                                        3小时前
+                                    </div>
+                                    <div class="menu-messages-content">
+                                        <div class="menu-messages-content-title">
+                                            <i class="am-icon-circle-o am-text-success"></i>
+                                            <span>夕风色</span>
+                                        </div>
+                                        <div class="am-text-truncate"> Amaze UI 的诞生，依托于 GitHub 及其他技术社区上一些优秀的资源；Amaze UI 的成长，则离不开用户的支持。 </div>
+                                        <div class="menu-messages-content-time">2016-09-21 下午 16:40</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="tpl-dropdown-menu-messages">
+                                <a href="javascript:;" class="tpl-dropdown-menu-messages-item am-cf">
+                                    <div class="menu-messages-ico">
+                                        <img src="~/Content/amazeui/assets/img/user02.png" alt="">
+                                    </div>
+                                    <div class="menu-messages-time">
+                                        5天前
+                                    </div>
+                                    <div class="menu-messages-content">
+                                        <div class="menu-messages-content-title">
+                                            <i class="am-icon-circle-o am-text-warning"></i>
+                                            <span>禁言小张</span>
+                                        </div>
+                                        <div class="am-text-truncate"> 为了能最准确的传达所描述的问题， 建议你在反馈时附上演示，方便我们理解。 </div>
+                                        <div class="menu-messages-content-time">2016-09-16 上午 09:23</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="tpl-dropdown-menu-messages">
+                                <a href="javascript:;" class="tpl-dropdown-menu-messages-item am-cf">
+                                    <i class="am-icon-circle-o"></i> 进入列表…
+                                </a>
+                            </li>
                         </ul>
+                    </li>
+                    <!-- 新提示 -->
+                    <li class="am-dropdown" data-am-dropdown>
+                        <a href="javascript:;" class="am-dropdown-toggle" data-am-dropdown-toggle>
+                            <i class="am-icon-bell"></i>
+                            <span class="am-badge am-badge-warning am-round item-feed-badge">5</span>
+                        </a>
+                        <!-- 弹出列表 -->
+                        <ul class="am-dropdown-content tpl-dropdown-content">
+                            <li class="tpl-dropdown-menu-notifications">
+                                <a href="javascript:;" class="tpl-dropdown-menu-notifications-item am-cf">
+                                    <div class="tpl-dropdown-menu-notifications-title">
+                                        <i class="am-icon-line-chart"></i>
+                                        <span> 有6笔新的销售订单</span>
+                                    </div>
+                                    <div class="tpl-dropdown-menu-notifications-time">
+                                        12分钟前
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="tpl-dropdown-menu-notifications">
+                                <a href="javascript:;" class="tpl-dropdown-menu-notifications-item am-cf">
+                                    <div class="tpl-dropdown-menu-notifications-title">
+                                        <i class="am-icon-star"></i>
+                                        <span> 有3个来自人事部的消息</span>
+                                    </div>
+                                    <div class="tpl-dropdown-menu-notifications-time">
+                                        30分钟前
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="tpl-dropdown-menu-notifications">
+                                <a href="javascript:;" class="tpl-dropdown-menu-notifications-item am-cf">
+                                    <div class="tpl-dropdown-menu-notifications-title">
+                                        <i class="am-icon-folder-o"></i>
+                                        <span> 上午开会记录存档</span>
+                                    </div>
+                                    <div class="tpl-dropdown-menu-notifications-time">
+                                        1天前
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li class="tpl-dropdown-menu-notifications">
+                                <a href="javascript:;" class="tpl-dropdown-menu-notifications-item am-cf">
+                                    <i class="am-icon-bell"></i> 进入列表…
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- 退出 -->
+                    <li class="am-text-sm">
+                        <a href="/Account/LoginOut">
+                            <span class="am-icon-sign-out"></span> 退出
+                        </a>
                     </li>
                 </ul>
-            </nav>
-            <nav id="Hui-userbar" class="nav navbar-nav navbar-userbar hidden-xs">
-                <ul class="cl">
-                    <li class="dropDown dropDown_hover">
-                        <a href="#" class="dropDown_A">@Model.Nickname <i class="Hui-iconfont">&#xe6d5;</i></a>
-                        <ul class="dropDown-menu menu radius box-shadow">
-                            <li><a href="javascript:;" onClick="myselfinfo()">个人信息</a></li>
-                            <li><a href="#">切换账户</a></li>
-                            <li><a href="#">退出</a></li>
-                        </ul>
+            </div>
+        </div>
+    </header>
+    <!-- 风格切换 -->
+    <div class="tpl-skiner">
+        <div class="tpl-skiner-toggle am-icon-cog">
+        </div>
+        <div class="tpl-skiner-content">
+            <div class="tpl-skiner-content-title">
+                选择主题
+            </div>
+            <div class="tpl-skiner-content-bar">
+                <span class="skiner-color skiner-white" data-color="theme-white"></span>
+                <span class="skiner-color skiner-black" data-color="theme-black"></span>
+            </div>
+        </div>
+    </div>
+    <!-- 侧边导航栏 -->
+    <div class="left-sidebar">
+        <!-- 用户信息 -->
+        <div class="tpl-sidebar-user-panel">
+            <div class="tpl-user-panel-slide-toggleable">
+                <div class="tpl-user-panel-profile-picture">
+                    <img src="@Model.Photo" alt="">
+                </div>
+                <span class="user-panel-logged-in-text">
+                    <i class="am-icon-circle-o am-text-success tpl-user-panel-status-icon"></i>
+                    @Model.Nickname
+                </span>
+                <a href="javascript:;" class="tpl-user-panel-action-link"> <span class="am-icon-pencil"></span> 账号设置</a>
+            </div>
+        </div>
+        <!-- 菜单 -->
+        <ul class="sidebar-nav" id="menu">
+            <li class="sidebar-nav-heading">User <span class="sidebar-nav-heading-info"> 用户菜单</span></li>
+            <li class="sidebar-nav-link">
+                <a data-href="/admin/home/desktop" onclick="SwitchPage(this); return false;">
+                    <i class="am-icon-home sidebar-nav-link-logo"></i> 主页
+                </a>
+            </li>
+            <li class="sidebar-nav-link">
+                <a href="javascript:;" class="sidebar-nav-sub-title">
+                    <i class="am-icon-book sidebar-nav-link-logo"></i> 我的文章 <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico"></span>
+                </a>
+                <ul class="sidebar-nav sidebar-nav-sub" style="display: none;">
+                    <li class="sidebar-nav-link">
+                        <a href="/admin/article/edit" data-href="/admin/article/edit" onclick="SwitchPage(this); return false;"> <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 发表文章 </a>
                     </li>
-                    <li id="Hui-msg"> <a href="#" title="消息"><span class="badge badge-danger">1</span><i class="Hui-iconfont" style="font-size:18px">&#xe68a;</i></a> </li>
-                    <li id="Hui-skin" class="dropDown right dropDown_hover">
-                        <a href="javascript:;" class="dropDown_A" title="换肤"><i class="Hui-iconfont" style="font-size:18px">&#xe62a;</i></a>
-                        <ul class="dropDown-menu menu radius box-shadow">
-                            <li><a href="javascript:;" data-val="default" title="默认（黑色）">默认（黑色）</a></li>
-                            <li><a href="javascript:;" data-val="blue" title="蓝色">蓝色</a></li>
-                            <li><a href="javascript:;" data-val="green" title="绿色">绿色</a></li>
-                            <li><a href="javascript:;" data-val="red" title="红色">红色</a></li>
-                            <li><a href="javascript:;" data-val="yellow" title="黄色">黄色</a></li>
-                            <li><a href="javascript:;" data-val="orange" title="橙色">橙色</a></li>
-                        </ul>
+                    <li class="sidebar-nav-link">
+                        <a href="/" data-href="/" onclick="SwitchPage(this); return false;"> <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 文章分类 </a>
+                    </li>
+                    <li class="sidebar-nav-link">
+                        <a href="/admin/article/bloglist" data-href="/admin/article/bloglist" onclick="SwitchPage(this); return false;"> <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 文章列表 </a>
                     </li>
                 </ul>
-            </nav>
-        </div>
-    </div>
-</header>
-<aside class="Hui-aside">
-    <div class="menu_dropdown bk_2" id="menu">
-        <div id="loadding">
-            正在加载菜单中...
-        </div>
-    </div>
-</aside>
-<div class="dislpayArrow hidden-xs"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a></div>
-<section class="Hui-article-box">
-    <div id="Hui-tabNav" class="Hui-tabNav hidden-xs">
-        <div class="Hui-tabNav-wp">
-            <ul id="min_title_list" class="acrossTab cl">
-                <li class="active">
-                    <span title="我的桌面" data-href="/admin/home/desktop">我的桌面</span>
-                    <em></em>
-                </li>
-            </ul>
-        </div>
-        <div class="Hui-tabNav-more btn-group"><a id="js-tabNav-prev" class="btn radius btn-default size-S" href="javascript:;"><i class="Hui-iconfont">&#xe6d4;</i></a><a id="js-tabNav-next" class="btn radius btn-default size-S" href="javascript:;"><i class="Hui-iconfont">&#xe6d7;</i></a></div>
-    </div>
-    <div id="iframe_box" class="Hui-article">
-        <div class="show_iframe">
-            <div style="display:none" class="loading"></div>
-            <iframe scrolling="yes" frameborder="0" src="/admin/home/desktop"></iframe>
-        </div>
-    </div>
-</section>
-
-<div class="contextMenu" id="Huiadminmenu">
-    <ul>
-        <li id="closethis">关闭当前 </li>
-        <li id="closeall">关闭全部 </li>
-    </ul>
-</div>
-
-@section script{
-    <!--请在下方写此页面业务相关的脚本-->
-    <script type="text/javascript" src="~/Content/H-ui.admin/lib/jquery.contextmenu/jquery.contextmenu.r2.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            $.getUrlParam = function (name) {
-                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-                var r = window.location.search.substr(1).match(reg);
-                if (r != null) return unescape(r[2]); return null;
-            };
-
-
-            var $menu = $("#menu");
-            var child = new Array();
-            $.get("/admin/home/getmenu", function (data) {
-                var menu = data.menu;
-                if (menu == null) {
-                    return;
-                }
-                $.each(menu, function (i) {
-                    //console.log(menu[i].Parent_Id);
-                    // 一级菜单
-                    var parentId = menu[i].Parent_Id;
-                    if (parentId == 0) {
-                        // 无子项
-                        //console.log(menu[i].IsLast);
-                        if (menu[i].IsLast) {
-                            $menu.append('<ul><li><a data-href="' + menu[i].Url + '" data-title="' + menu[i].Name + '" href="javascript:void(0)">' + menu[i].Name + '</a></li></ul>');
-                        } else {
-                            $menu.append('<dl><dt><i class="Hui-iconfont">' + menu[i].Iconic + '</i> ' + menu[i].Name + '<i class="Hui-iconfont menu_dropdown-arrow" >&#xe6d5;</i ></dt ><dd><ul id="menu_' + menu[i].Id + '"></ul></dd></dl>');
-                        }
-                    } else {
-                        child.push(menu[i]);
+            </li>
+            <li class="sidebar-nav-link">
+                <a href="javascript:;" class="sidebar-nav-sub-title">
+                    <i class="am-icon-user-secret sidebar-nav-link-logo"></i> 我的资料 <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico"></span>
+                </a>
+                <ul class="sidebar-nav sidebar-nav-sub" style="display: none;">
+                    <li class="sidebar-nav-link">
+                        <a href="/" data-href="/admin/user/index" onclick="SwitchPage(this); return false;"> <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 资料与设置 </a>
+                    </li>
+                    <li class="sidebar-nav-link">
+                        <a href="/" data-href="/admin/user/index" onclick="SwitchPage(this); return false;"> <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 账号安全 </a>
+                    </li>
+                    <li class="sidebar-nav-link">
+                        <a href="/admin/manage/friendlink" data-href="/admin/manage/friendlink" onclick="SwitchPage(this); return false;"> <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 友情链接 </a>
+                    </li>
+                </ul>
+            </li>
+            @if (menus != null)
+            {
+                var parent = menus.Where(m => m.Parent_Id == 0);
+                foreach (var pItem in parent)
+                {
+                    if (pItem.IsLast)
+                    {
+                        <li class="sidebar-nav-link">
+                            <a data-href="@pItem.Url" onclick="SwitchPage(this); return false;">
+                                <i class="am-icon-table sidebar-nav-link-logo"></i> @pItem.Name
+                            </a>
+                        </li>
                     }
-                });
-                //console.log(child);
-                $.each(child, function (i) {
-                    $("#menu_" + child[i].Parent_Id).append('<li><a data-href="' + child[i].Url + '" data-title="' + child[i].Name + '" href="javascript:void(0)"> ' + child[i].Name + '</a></li>');
-                });
-
-                $(".Hui-aside").Huifold({
-                    titCell: '.menu_dropdown dl dt',
-                    mainCell: '.menu_dropdown dl dd',
-                });
-                $("#loadding").hide();
-
-                var target = $.getUrlParam('target');
-                //$("[data-href='" + target + "']").trigger("click");
-                if (target != null) {
-                    article_add("写文章", target);
+                    else
+                    {
+                        var children = menus.Where(m => m.Parent_Id == pItem.Id);
+                        <li class="sidebar-nav-link">
+                            <a href="javascript:;" class="sidebar-nav-sub-title">
+                                <i class="@pItem.Iconic sidebar-nav-link-logo"></i> @pItem.Name <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico"></span>
+                            </a>
+                            <ul class="sidebar-nav sidebar-nav-sub">
+                                @foreach (var cItem in children)
+                                {
+                                    <li class="sidebar-nav-link">
+                                        <a href="@cItem.Url" data-href="@cItem.Url" onclick="SwitchPage(this); return false;"> <span class="am-icon-angle-right sidebar-nav-link-logo"></span> @cItem.Name </a>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                    }
                 }
-            });
-        });
-        /*个人信息*/
-        function myselfinfo() {
-            layer.open({
-                type: 1,
-                area: ['300px', '200px'],
-                fix: false, //不固定
-                maxmin: true,
-                shade: 0.4,
-                title: '查看信息',
-                content: '<div>管理员信息</div>'
-            });
-        }
+            }
+        </ul>
+    </div>
 
-        /*添加编辑文章*/
-        function article_add(title, url) {
-            var index = layer.open({
-                type: 2,
-                title: title,
-                content: url
-            });
-            layer.full(index);
-        }
-        /*图片-添加*/
-        function picture_add(title, url) {
-            var index = layer.open({
-                type: 2,
-                title: title,
-                content: url
-            });
-            layer.full(index);
-        }
-        /*产品-添加*/
-        function product_add(title, url) {
-            var index = layer.open({
-                type: 2,
-                title: title,
-                content: url
-            });
-            layer.full(index);
-        }
-        /*用户-添加*/
-        function member_add(title, url, w, h) {
-            layer_show(title, url, w, h);
-        }
+    <!--内容-->
+    <div class="tpl-content-wrapper" id="loadData">
 
+    </div>
+</div>
+@section script{
+    <script src="~/Content/amazeui/assets/js/app.js"></script>
+    <script type="text/javascript">
+        function LoadPage($obj, url) {
+            var index = layer.msg('加载中', {
+                icon: 16
+                , shade: 0.3
+            });
+            $obj.load(url, function (response, status, xhr) {
+                layer.close(index);
+            }); //将PartialIndex分部视图中的内容加载到id为loadData这个元素中去
+        }
+        $(function () {
+            LoadPage($("#loadData"), "/admin/home/desktop");
+        })
 
+        function SwitchPage(obj) {
+            var url = $(obj).attr("data-href");
+            //console.log(url);
+            if (url != null) {
+                LoadPage($("#loadData"), url);
+            }
+        }
     </script>
-
 }

@@ -102,7 +102,8 @@ namespace Nutshell.Blog.Model
             {
                 User_Id = this.User_Id,
                 UserName = this.Login_Name,
-                Nickname = this.Nickname
+                Nickname = this.Nickname,
+                Photo = Photo
             };
         }
     }

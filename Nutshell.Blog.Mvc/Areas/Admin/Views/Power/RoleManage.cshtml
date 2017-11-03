@@ -1,37 +1,75 @@
 ﻿
 @{
-    Layout = null;
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 权限管理 <span class="c-gray en">&gt;</span> 角色管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
-<div class="page-container">
-    <div class="text-c">
+<div class="row-content am-cf">
+    <div class="row">
+        <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+            <div class="widget am-cf">
+                <div class="widget-head am-cf">
+                    <div class="widget-title  am-cf">角色管理</div>
+                </div>
+                <div class="widget-body  am-fr">
 
-        <input type="text" class="input-text" style="width:250px" placeholder="输入管理员名称" id="" name="">
-        <button type="submit" class="btn btn-success" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                        <div class="am-form-group">
+                            <div class="am-btn-toolbar">
+                                <div class="am-btn-group am-btn-group-xs">
+                                    <button type="button" onclick="admin_add()" class="am-btn am-btn-default am-btn-success"><span class="am-icon-plus"></span> 新增</button>
+                                    <button type="button" class="am-btn am-btn-default am-btn-secondary"><span class="am-icon-save"></span> 保存</button>
+                                    <button type="button" class="am-btn am-btn-default am-btn-warning"><span class="am-icon-archive"></span> 审核</button>
+                                    <button type="button" class="am-btn am-btn-default am-btn-danger"><span class="am-icon-trash-o"></span> 删除</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-3">
+                        <div class="am-form-group tpl-table-list-select">
+                            <select data-am-selected="{btnSize: 'sm'}" style="display: none;">
+                                <option value="option1">所有类别</option>
+                                <option value="option2">IT业界</option>
+                                <option value="option3">数码产品</option>
+                                <option value="option3">笔记本电脑</option>
+                                <option value="option3">平板电脑</option>
+                                <option value="option3">只能手机</option>
+                                <option value="option3">超极本</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
+                        <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
+                            <input type="text" class="am-form-field ">
+                            <span class="am-input-group-btn">
+                                <button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search" type="button"></button>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="am-u-sm-12">
+                        <table class="am-table am-table-compact am-table-striped tpl-table-black " id="list">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <input type="checkbox" class="checkall" />
+                                    </th>
+                                    <th>ID</th>
+                                    <th>角色名称</th>
+                                    <th>说明</th>
+                                    <th>创建时间</th>
+                                    <th>创建人</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 删除角色</a> <a href="javascript:;" onclick="admin_add('添加角色','/admin/power/addrole','800','500')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加角色</a></span> </div>
-    <table class="table table-border table-bordered table-bg" id="list">
-        <thead>
-            <tr>
-                <th>
-                    <input type="checkbox" class="checkall" />
-                </th>
-                <th>ID</th>
-                <th>角色名称</th>
-                <th>说明</th>
-                <th>创建时间</th>
-                <th>创建人</th>
-            </tr>
-        </thead>
-    </table>
 </div>
 
 @section script{
-    <script type="text/javascript" src="~/Content/H-ui.admin/lib/My97DatePicker/4.8/WdatePicker.js"></script>
-    <script src="~/Content/H-ui.admin/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="~/Content/H-ui.admin/lib/laypage/1.2/laypage.js"></script>
+
     <script type="text/javascript">
 
         $(function () {
@@ -78,8 +116,8 @@
             });
         })
 
-        function admin_add(title,url,w,h) {
-            layer_show(title,url,w,h)
+        function admin_add() {
+            layer.msg("添加角色")
         }
     </script>
 }

@@ -20,13 +20,14 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
         // GET: Admin/Home
         public ActionResult Index()
         {
-            var account = GetCurrentAccount() ?? new Model.ViewModel.Account();
+            var account = GetCurrentAccount();
+            ViewBag.Menus = moduleService.GetMenuByPersonId(account.User_Id);
             return View(account);
         }
 
         public ActionResult Desktop()
         {
-            return View();
+            return PartialView();
         }
 
         public JsonResult GetMenu()
