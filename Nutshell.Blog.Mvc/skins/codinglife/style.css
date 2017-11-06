@@ -1,5 +1,4 @@
 ﻿a:link {
-    color: #000;
     text-decoration: none;
 }
 a:hover {
@@ -48,7 +47,7 @@ pre {
 
 body {
     padding-top: 10px;
-    background: url(./images/body_bg.png) repeat-x scroll 0 0 #f0eef5;
+    background: url(./images/body_bg.png) repeat-x scroll 0 0 #f0eef5 !important;
     color: #7d8b8d;
     font-family: Verdana,Arial,Helvetica,sans-serif;
     font-size: 14px;
@@ -109,6 +108,7 @@ body {
     width: 1200px;
     height: 60px;
     margin: 0px auto;
+    padding-left:0px;
 }
 
 #navList li {
@@ -267,6 +267,7 @@ body {
     background-color: #169fe6;
     color: #fff;
     font-weight: normal;
+    margin:0px;
     border: 1px solid #169fe6;
 }
 
@@ -330,6 +331,7 @@ body {
     font-size: 18px;
     font-weight: normal;
     padding: 10px 20px;
+    margin:0px;
 }
 
 #sideBar ul {
@@ -340,6 +342,8 @@ body {
 .sidebar-block ul {
     border: 1px solid #dedede;
     border-top: none;
+    margin-top:0px;
+    padding-left:0px;
 }
 
     .sidebar-block ul li a {

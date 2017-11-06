@@ -1,40 +1,94 @@
-﻿
-@{
-    ViewBag.Title = "用户登录 - 果壳园";
-    @model Nutshell.Blog.Model.ViewModel.UserLogin
+﻿@{
+    Layout = null;
 }
+@model Nutshell.Blog.Model.ViewModel.UserLogin
+<!DOCTYPE html>
+<html lang="en">
 
-<div>
-    @using (Ajax.BeginForm("signin","account", new AjaxOptions { HttpMethod = "Post" , OnSuccess="success"}))
-    {
-        @Html.LabelFor(model => model.UserName)
-        @Html.TextBoxFor(model => model.UserName)
-        @Html.ValidationMessageFor(model => model.UserName)
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>用户登录 - 果壳园</title>
+    <meta name="description" content="这是一个 index 页面">
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="icon" type="image/png" href="~/favicon.png">
+    <link rel="apple-touch-icon-precomposed" href="~/Content/amazeui/assets/i/app-icon72x72@2x.png">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    <link rel="stylesheet" href="~/Content/amazeui/assets/css/amazeui.min.css" />
+    <link rel="stylesheet" href="~/Content/amazeui/assets/css/amazeui.datatables.min.css" />
+    <link rel="stylesheet" href="~/Content/amazeui/assets/css/app.css">
+    <script src="~/Content/amazeui/assets/js/jquery.min.js"></script>
 
-        @Html.LabelFor(model => model.Password)
-        @Html.PasswordFor(model => model.Password)
-        @Html.ValidationMessageFor(model => model.Password)
+</head>
 
-        @Html.CheckBoxFor(model => model.RememberMe)
-        @Html.LabelFor(model => model.RememberMe)
-        @Html.ValidationMessageFor(model => model.RememberMe)
+<body data-type="login">
+    <script src="~/Content/amazeui/assets/js/theme.js"></script>
+    <div class="am-g tpl-g">
+        <!-- 风格切换 -->
+        <div class="tpl-skiner">
+            <div class="tpl-skiner-toggle am-icon-cog">
+            </div>
+            <div class="tpl-skiner-content">
+                <div class="tpl-skiner-content-title">
+                    选择主题
+                </div>
+                <div class="tpl-skiner-content-bar">
+                    <span class="skiner-color skiner-white" data-color="theme-white"></span>
+                    <span class="skiner-color skiner-black" data-color="theme-black"></span>
+                </div>
+            </div>
+        </div>
+        <div class="tpl-login">
+            <div class="tpl-login-content">
+                <div class="tpl-login-logo">
 
-        <input type="submit" value="登录"/>
-    }
-</div>
+                </div>
 
-@section script{
-    <script src="~/Content/scripts/jquery-1.8.0.min.js"></script>
+                @using (Ajax.BeginForm("/signin", null, new AjaxOptions() {OnBegin="begin", OnSuccess="success", OnComplete="complate" }, new { @class = "am-form tpl-form-line-form" }))
+                {
+                    <div class="am-form-group">
+                        @Html.TextBoxFor(m => m.UserName, new { @class = "tpl-form-input", id = "user-name", placeholder = "请输入账号", maxlength="20" })
+                        @Html.ValidationMessageFor(m => m.UserName, null, new { @class="error-msg"})
+                    </div>
+                    <div class="am-form-group">
+                        @Html.PasswordFor(m => m.Password, new { @class = "tpl-form-input", id = "user-pwd", placeholder = "请输入密码", maxlength = "20" })
+                        @Html.ValidationMessageFor(m => m.Password, null, new { @class = "error-msg" })
+
+                    </div>
+                    <div class="am-form-group">
+
+                        <input type="submit" value="登录" data-am-loading="{loadingText: '登录中...'}" class="am-btn am-btn-primary  am-btn-block tpl-btn-bg-color-success tpl-login-btn"/>
+
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <script src="~/Content/amazeui/assets/js/amazeui.min.js"></script>
+    <script src="~/Content/amazeui/assets/js/app.js"></script>
     <script src="~/Content/scripts/jquery-validation/jquery.validate.min.js"></script>
     <script src="~/Content/scripts/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/Content/scripts/jquery-validation/jquery.validate.unobtrusive.min.js"></script>
     <script>
-        function success(data) {
-            if (data.res) {
-                location = "/";
+        $(function () {
+        });
+
+        var begin = function () {
+            $(".tpl-login-btn").button("loading");
+        }
+        var success = function (data) {
+            if (data.code == 0) {
+                location = data.url;
             } else {
                 alert(data.msg);
             }
         }
+        var complate = function () {
+            $(".tpl-login-btn").button("reset");
+        }
     </script>
-}
+</body>
+</html>

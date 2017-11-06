@@ -36,11 +36,17 @@ namespace Nutshell.Blog.Mvc
                 namespaces: new string[] { "Nutshell.Blog.Mvc.Controllers" },
                 constraints: new { }
             );
-
+            
             routes.MapRoute(
                 name: "UserHome",
                 url: "u/{id}",
                 defaults: new { controller = "Account", action = "UserHome" }
+            );
+            routes.MapRoute(
+                name: "Category",
+                url: "cate/{category}/{index}",
+                defaults: new { controller = "Home", action = "Category", index = UrlParameter.Optional },
+                namespaces: new string[] { "Nutshell.Blog.Mvc.Controllers" }
             );
             routes.MapRoute(
                 name: "Default",

@@ -16,7 +16,7 @@ namespace Nutshell.Blog.Mvc.Controllers
         public AccountController(IUserService userService)
         {
             base.userService = userService;
-            
+
         }
 
         // GET: Account
@@ -29,20 +29,21 @@ namespace Nutshell.Blog.Mvc.Controllers
         public JsonResult SignIn(UserLogin user)
         {
             string msg = "";
-            var res = false;
+            dynamic data = null;
             if (ModelState.IsValid)
             {
                 var userinfo = userService.ValidationUser(user.UserName, user.Password, out msg);
+                data = new { code = 1, msg = msg, url = "" };
                 // 验证通过
                 if (userinfo != null)
                 {
                     // 将用户信息存入memcache
                     // 返回客户端一个session id
                     ValidatedUser(userinfo.ToAccount());
-                    res = true;
+                    data = new { code = 0, msg = msg, url = "/admin/home/index" };
                 }
             }
-            return Json(new { res, msg });
+            return Json(data);
         }
 
         void ValidatedUser(Account account)
@@ -126,7 +127,7 @@ namespace Nutshell.Blog.Mvc.Controllers
             var user = userService.LoadEntity(u => u.Nickname.Equals(Nickname, StringComparison.CurrentCultureIgnoreCase));
             return user == null ? Json(true) : Json(false);
         }
-        
+
         public ActionResult LoginOut()
         {
             var cookie = Request.Cookies[Keys.SessionId];
@@ -139,6 +140,6 @@ namespace Nutshell.Blog.Mvc.Controllers
             }
             return Redirect("/");
         }
-        
+
     }
 }

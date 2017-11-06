@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="ArticleRepository.cs" />
     <Compile Include="BaseRepository.cs" />
+    <Compile Include="CategoryRepository.cs" />
     <Compile Include="CustomCategoryRepository.cs" />
     <Compile Include="MessageRepository.cs" />
     <Compile Include="ModuleOperateRepository.cs" />

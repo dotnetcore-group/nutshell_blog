@@ -4,9 +4,6 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 @section style{
-    <script>
-
-    </script>
     <style>
         .text-center {
             text-align: center !important;
@@ -21,7 +18,6 @@
                 <div class="widget-head am-cf">
                     <div class="widget-title  am-cf">文章列表</div>
 
-
                 </div>
                 <div class="widget-body  am-fr">
 
@@ -35,27 +31,6 @@
                                     <button type="button" class="am-btn am-btn-default am-btn-danger"><span class="am-icon-trash-o"></span> 删除</button>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-3">
-                        <div class="am-form-group tpl-table-list-select">
-                            <select data-am-selected="{btnSize: 'sm'}" style="display: none;">
-                                <option value="option1">所有类别</option>
-                                <option value="option2">IT业界</option>
-                                <option value="option3">数码产品</option>
-                                <option value="option3">笔记本电脑</option>
-                                <option value="option3">平板电脑</option>
-                                <option value="option3">只能手机</option>
-                                <option value="option3">超极本</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
-                        <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
-                            <input type="text" class="am-form-field ">
-                            <span class="am-input-group-btn">
-                                <button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search" type="button"></button>
-                            </span>
                         </div>
                     </div>
 
@@ -84,6 +59,7 @@
 </div>
 
 @section script{
+    <script src="~/Content/scripts/article.js"></script>
     <script type="text/javascript">
         var table = null;
         $(function () {
@@ -176,7 +152,7 @@
                         data: 'Article_Id', class: "text-center", render: function (data, type, row, meta) {
                             var state = row["State"];
                             if (state == 2) {
-                                return '<div class="tpl-table-black-operation"><a onclick="article_shenhe(this, ' + data + ')" href="javascript:;"><i class="am-icon-pencil"></i> 审核</a> <a href="javascript:;" class="tpl-table-black-operation-del"><i class="am-icon-trash"></i> 删除</a></div>';
+                                return '<div class="tpl-table-black-operation"><a onclick="article_shenhe(' + data + ')" href="javascript:;"><i class="am-icon-pencil"></i> 审核</a> <a href="javascript:;" onclick="article_delete(' + data + ')" class="tpl-table-black-operation-del"><i class="am-icon-trash"></i> 删除</a></div>';
                             } else {
                                 return '<div class="tpl-table-black-operation"><a href="javascript:;" class="tpl-table-black-operation-del"><i class="am-icon-trash"></i> 删除</a></div>';
                             }
@@ -192,93 +168,6 @@
                 },
             });
         })
-
-        /*资讯-添加*/
-        function article_add(title, url, w, h) {
-            var index = layer.open({
-                type: 2,
-                title: title,
-                content: url
-            });
-            layer.full(index);
-        }
-        /*资讯-编辑*/
-        function article_edit(title, url, id, w, h) {
-            var index = layer.open({
-                type: 2,
-                title: title,
-                content: url
-            });
-            layer.full(index);
-        }
-        /*资讯-删除*/
-        function article_del(obj, id) {
-            layer.confirm('确认要删除吗？', function (index) {
-                $.ajax({
-                    type: 'POST',
-                    url: '',
-                    dataType: 'json',
-                    success: function (data) {
-                        $(obj).parents("tr").remove();
-                        layer.msg('已删除!', { icon: 1, time: 1000 });
-                    },
-                    error: function (data) {
-                        console.log(data.msg);
-                    },
-                });
-            });
-        }
-
-        /*资讯-审核*/
-        function article_shenhe(obj, id) {
-            layer.confirm('审核文章？', {
-                btn: ['通过', '不通过', '取消'],
-                shade: false,
-                closeBtn: 0
-            },
-                function () {
-                    $.post("/admin/article/ExaminePass", { id: id }, function (data) {
-                        if (data.code == 0) {
-                            layer.msg(data.msg, { icon: 6, time: 1000 });
-                            table.ajax.reload();
-                        } else {
-                            layer.msg(data.msg, { icon: 5, time: 1000 });
-                        }
-                    });
-
-                },
-                function () {
-                    $(obj).parents("tr").find(".td-manage").prepend('<a class="c-primary" onClick="article_shenqing(this,id)" href="javascript:;" title="申请上线">申请上线</a>');
-                    $(obj).parents("tr").find(".td-status").html('<span class="label label-danger radius">未通过</span>');
-                    $(obj).remove();
-                    layer.msg('未通过', { icon: 5, time: 1000 });
-                });
-        }
-        /*资讯-下架*/
-        function article_stop(obj, id) {
-            layer.confirm('确认要下架吗？', function (index) {
-                $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="article_start(this,id)" href="javascript:;" title="发布"><i class="Hui-iconfont">&#xe603;</i></a>');
-                $(obj).parents("tr").find(".td-status").html('<span class="label label-defaunt radius">已下架</span>');
-                $(obj).remove();
-                layer.msg('已下架!', { icon: 5, time: 1000 });
-            });
-        }
-
-        /*资讯-发布*/
-        function article_start(obj, id) {
-            layer.confirm('确认要发布吗？', function (index) {
-                $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="article_stop(this,id)" href="javascript:;" title="下架"><i class="Hui-iconfont">&#xe6de;</i></a>');
-                $(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已发布</span>');
-                $(obj).remove();
-                layer.msg('已发布!', { icon: 6, time: 1000 });
-            });
-        }
-        /*资讯-申请上线*/
-        function article_shenqing(obj, id) {
-            $(obj).parents("tr").find(".td-status").html('<span class="label label-default radius">待审核</span>');
-            $(obj).parents("tr").find(".td-manage").html("");
-            layer.msg('已提交申请，耐心等待审核!', { icon: 1, time: 2000 });
-        }
 
     </script>
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Nutshell.Blog.Common
 {
-    public enum ArticleSateEnum
+    public enum ArticleStateEnum
     {
         /// <summary>
         /// 草稿

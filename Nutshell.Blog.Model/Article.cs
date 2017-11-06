@@ -48,6 +48,7 @@ namespace Nutshell.Blog.Model
 
         [StringLength(100)]
         [Required]
+        [AntiXss]
         public string Title { get; set; }
 
         [StringLength(int.MaxValue)]
@@ -63,6 +64,7 @@ namespace Nutshell.Blog.Model
         public string Body { get; set; }
 
         [StringLength(200)]
+        [AntiXss]
         public string Introduction { get; set; }
 
         public DateTime Creation_Time { get; set; }
@@ -79,11 +81,14 @@ namespace Nutshell.Blog.Model
 
         [ForeignKey("CustomCategory")]
         public int? CustomCategory_Id { get; set; }
+
+        [ForeignKey("SystemCategory")]
+        public int? SystemCategory_Id { get; set; }
         
         public virtual User Author { get; set; }
         public virtual ICollection<Discussion> Discussions { get; set; }
         public virtual ICollection<Favorites> Favorites { get; set; }
-        public virtual ICollection<Article_Category> Categories { get; set; }
+        public virtual Article_Category SystemCategory { get; set; }
         public virtual CustomCategory CustomCategory { get; set; }
         public virtual ArticleState ArticleState { get; set; }
     }

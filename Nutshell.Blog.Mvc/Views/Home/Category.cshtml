@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "果壳园 - 技术分享博客园";
+    ViewBag.Title = ViewBag.Name + " - 网站分类 - 果壳园";
     Layout = "~/Views/Shared/_HomeLayout.cshtml";
 }
 @section script{
@@ -13,9 +13,9 @@
             totalSize: @ViewBag.Total,
             callback: function (num) {
                 if(num!=1){
-                    location="/all/"+num;
+                    location="/cate/@ViewBag.Key/"+num;
                 }else{
-                    location='/';
+                    location='/cate/@ViewBag.Key';
                 }
             }
         })

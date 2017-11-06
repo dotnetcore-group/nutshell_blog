@@ -4,9 +4,6 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 @section style{
-    <script>
-       
-    </script>
     <style>
         .text-center {
             text-align: center !important;
@@ -39,14 +36,11 @@
                     </div>
                     <div class="am-u-sm-12 am-u-md-6 am-u-lg-3">
                         <div class="am-form-group tpl-table-list-select">
-                            <select data-am-selected="{btnSize: 'sm'}" style="display: none;">
-                                <option value="option1">所有类别</option>
-                                <option value="option2">IT业界</option>
-                                <option value="option3">数码产品</option>
-                                <option value="option3">笔记本电脑</option>
-                                <option value="option3">平板电脑</option>
-                                <option value="option3">只能手机</option>
-                                <option value="option3">超极本</option>
+                            <select data-am-selected="{btnSize: 'sm'}" style="display: none;" id="type">
+                                <option value="0">所有文章</option>
+                                <option value="2">未审核</option>
+                                <option value="3">已发布</option>
+                                <option value="4">未通过</option>
                             </select>
                         </div>
                     </div>
@@ -71,6 +65,7 @@
                                     <th width="150">分类</th>
                                     <th width="180">更新时间</th>
                                     <th width="75">状态</th>
+                                    <th width="75">操作</th>
                                 </tr>
                             </thead>
                         </table>
@@ -82,8 +77,9 @@
 </div>
 
 @section script{
+    <script src="~/Content/scripts/article.js"></script>
     <script type="text/javascript">
-
+        var table = null;
         $(function () {
             //提示信息
             var lang = {
@@ -112,13 +108,17 @@
                 }
             };
 
-            $('#list').dataTable({
+            table = $('#list').DataTable({
                 ajax: {
                     url: '@Url.Action("GetBlogs")',
-                    type:'post'
+                    type: 'post'
+                },
+                serverParams: function (aoData) {
+                    aoData.type = $("#type").val();
+                    //aoData.push({ name: "type", value: 1 })
                 },
                 language: lang,
-                aLengthMenu: [10,20,50,100],
+                aLengthMenu: [10, 20, 50, 100],
                 processing: true,
                 paging: true,
                 searching: false,
@@ -132,7 +132,7 @@
                         },
                         sortable: false
                     },
-                    { class: "text-center", data: 'Article_Id'},
+                    { class: "text-center", data: 'Article_Id' },
                     {
                         data: 'Title', render: function (data, type, row, meta) {
                             return data;
@@ -159,10 +159,16 @@
                             } else if (data == 2) {
                                 return '<span class="am-badge">未审核</span>';
                             } else if (data == 1) {
-                                return '<span class="label label-warning radius">草稿</span>';
+                                return '<span class="am-badge am-badge-warning">草稿</span>';
                             } else if (data == 4) {
-                                return '<span class="label label-error radius">未通过</span>';
+                                return '<span class="am-badge am-badge-danger">未通过</span>';
                             }
+                        }
+                    },
+                    {
+                        data: 'Article_Id', class: "text-center", render: function (data, type, row, meta) {
+                            return '<div class="tpl-table-black-operation"><a href="javascript:;" onclick="article_delete(' + data + ')" class="tpl-table-black-operation-del"><i class="am-icon-trash"></i> 删除</a></div>';
+
                         }
                     }
                 ],
@@ -174,89 +180,10 @@
                     });
                 },
             });
+
+            $("#type").change(function () {
+                table.draw();
+            })
         })
-
-        /*资讯-添加*/
-        function article_add(title, url, w, h) {
-            var index = layer.open({
-                type: 2,
-                title: title,
-                content: url
-            });
-            layer.full(index);
-        }
-        /*资讯-编辑*/
-        function article_edit(title, url, id, w, h) {
-            var index = layer.open({
-                type: 2,
-                title: title,
-                content: url
-            });
-            layer.full(index);
-        }
-        /*资讯-删除*/
-        function article_del(obj, id) {
-            layer.confirm('确认要删除吗？', function (index) {
-                $.ajax({
-                    type: 'POST',
-                    url: '',
-                    dataType: 'json',
-                    success: function (data) {
-                        $(obj).parents("tr").remove();
-                        layer.msg('已删除!', { icon: 1, time: 1000 });
-                    },
-                    error: function (data) {
-                        console.log(data.msg);
-                    },
-                });
-            });
-        }
-
-        /*资讯-审核*/
-        function article_shenhe(obj, id) {
-            layer.confirm('审核文章？', {
-                btn: ['通过', '不通过', '取消'],
-                shade: false,
-                closeBtn: 0
-            },
-                function () {
-                    $(obj).parents("tr").find(".td-manage").prepend('<a class="c-primary" onClick="article_start(this,id)" href="javascript:;" title="申请上线">申请上线</a>');
-                    $(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已发布</span>');
-                    $(obj).remove();
-                    layer.msg('已发布', { icon: 6, time: 1000 });
-                },
-                function () {
-                    $(obj).parents("tr").find(".td-manage").prepend('<a class="c-primary" onClick="article_shenqing(this,id)" href="javascript:;" title="申请上线">申请上线</a>');
-                    $(obj).parents("tr").find(".td-status").html('<span class="label label-danger radius">未通过</span>');
-                    $(obj).remove();
-                    layer.msg('未通过', { icon: 5, time: 1000 });
-                });
-        }
-        /*资讯-下架*/
-        function article_stop(obj, id) {
-            layer.confirm('确认要下架吗？', function (index) {
-                $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="article_start(this,id)" href="javascript:;" title="发布"><i class="Hui-iconfont">&#xe603;</i></a>');
-                $(obj).parents("tr").find(".td-status").html('<span class="label label-defaunt radius">已下架</span>');
-                $(obj).remove();
-                layer.msg('已下架!', { icon: 5, time: 1000 });
-            });
-        }
-
-        /*资讯-发布*/
-        function article_start(obj, id) {
-            layer.confirm('确认要发布吗？', function (index) {
-                $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="article_stop(this,id)" href="javascript:;" title="下架"><i class="Hui-iconfont">&#xe6de;</i></a>');
-                $(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已发布</span>');
-                $(obj).remove();
-                layer.msg('已发布!', { icon: 6, time: 1000 });
-            });
-        }
-        /*资讯-申请上线*/
-        function article_shenqing(obj, id) {
-            $(obj).parents("tr").find(".td-status").html('<span class="label label-default radius">待审核</span>');
-            $(obj).parents("tr").find(".td-manage").html("");
-            layer.msg('已提交申请，耐心等待审核!', { icon: 1, time: 2000 });
-        }
-
     </script>
 }

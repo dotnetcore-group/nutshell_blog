@@ -68,7 +68,6 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
             return View();
         }
 
-
         [SupportFilter(Action = "Examine")]
         [HttpPost]
         public JsonResult ExaminePass(int id)
@@ -77,7 +76,7 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
             var article = articleService.LoadEntity(a => a.Article_Id == id);
             if (article != null)
             {
-                article.State = (int)ArticleSateEnum.Published;
+                article.State = (int)ArticleStateEnum.Published;
                 articleService.EditEntity(article);
                 var res = articleService.SaveChanges();
                 if (res)
@@ -92,15 +91,65 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
             return Json(data);
         }
 
+        [SupportFilter(Action = "Examine")]
+        [HttpPost]
+        public JsonResult ExamineOut(int id)
+        {
+            var data = new { code = 1, msg = "审核失败，请重试！" };
+            var article = articleService.LoadEntity(a => a.Article_Id == id);
+            if (article != null)
+            {
+                article.State = (int)ArticleStateEnum.NotPass;
+                articleService.EditEntity(article);
+                var res = articleService.SaveChanges();
+                if (res)
+                {
+                    data = new { code = 0, msg = "该文章不通过！" };
+                }
+            }
+            else
+            {
+                data = new { code = 1, msg = "该文章不存在，请重试！" };
+            }
+            return Json(data);
+        }
+
+        [SupportFilter(Action = "Delete")]
+        [HttpPost]
+        public JsonResult Delete(int id)
+        {
+            var data = new { code = 1, msg = "删除失败，请重试！" };
+            var account = GetCurrentAccount();
+            var article = articleService.LoadEntity(a => a.Article_Id == id && a.Author_Id == account.User_Id);
+            if (article != null)
+            {
+                article.State = (int)ArticleStateEnum.Deleted;
+                articleService.EditEntity(article);
+                if (articleService.SaveChanges())
+                {
+                    data = new { code = 0, msg = "文章已删除！" };
+                }
+            }
+            return Json(data);
+        }
+
         [HttpPost]
         public JsonResult GetBlogs()
         {
-            int draw = Convert.ToInt32(Request["draw"] ?? "0");
-            int start = Convert.ToInt32(Request["start"] ?? "1");
-            int length = Convert.ToInt32(Request["length"] ?? "10");
+            var draw = Convert.ToInt32(Request["draw"] ?? "0");
+            var start = Convert.ToInt32(Request["start"] ?? "1");
+            var length = Convert.ToInt32(Request["length"] ?? "10");
+            var type = Convert.ToInt32(Request["type"] ?? "0");
+
             var account = GetCurrentAccount();
             int total;
-            var list = articleService.LoadPageEntities((start + length) / length, length, out total, a => a.Author_Id == account.User_Id, a => a.Creation_Time, false).Select(a => new
+            
+            var temp = articleService.LoadPageEntities((start + length) / length, length, out total, a => a.Author_Id == account.User_Id && a.State != (int)ArticleStateEnum.Deleted, a => a.Creation_Time, false);
+            if (type != 0)
+            {
+                temp = articleService.LoadPageEntities((start + length) / length, length, out total, a => a.Author_Id == account.User_Id && a.State == type , a => a.Creation_Time, false);
+            }
+            var list = temp.Select(a => new
             {
                 a.Article_Id,
                 a.Title,
@@ -118,7 +167,7 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
             int start = Convert.ToInt32(Request["start"] ?? "1");
             int length = Convert.ToInt32(Request["length"] ?? "10");
             int total;
-            var list = articleService.LoadPageEntities((start + length) / length, length, out total, a => a.State == (int)ArticleSateEnum.NotAudited, a => a.Creation_Time, false).Select(a => new
+            var list = articleService.LoadPageEntities((start + length) / length, length, out total, a => a.State == (int)ArticleStateEnum.NotAudited, a => a.Creation_Time, false).Select(a => new
             {
                 a.Article_Id,
                 a.Title,
@@ -199,11 +248,12 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
                     var customCate = customCategoryService.LoadEntity(c => c.Author.User_Id == user.User_Id && c.Id == article.CustomCategory_Id);
                     if (ModelState.IsValid && customCate != null)
                     {
+                        article.Title = Server.HtmlEncode(article.Title);
                         article.Body = Server.HtmlEncode(article.Body);
                         article.Content = article.Content.Replace("\n", " ").Replace("\r", " ").Replace("\t", " ").Replace(" ", "");
                         article.Introduction = article.Content.Length > 200 ? article.Content.Substring(0, 190) + "..." : article.Content;
-
-                        if (articleService.AddArticle(article) != null)
+                        articleService.AddEntity(article);
+                        if (articleService.SaveChanges())
                         {
                             res = new { code = 0, msg = "提交成功！" };
                         }

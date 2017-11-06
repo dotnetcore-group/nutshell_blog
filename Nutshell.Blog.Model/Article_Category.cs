@@ -21,6 +21,7 @@
  * 描述：
  * 
  *********************************************************************************/
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -49,7 +50,14 @@ namespace Nutshell.Blog.Model
 
         public int Sort { get; set; }
 
+        [Index(IsUnique = true)]
+        [Required]
+        [MaxLength(10)]
+        public string CategoryName { get; set; }
+
         public virtual ICollection<Article_Category> Categories { get; set; }
+
+        [JsonIgnore]
         public virtual ICollection<Article> Articles { get; set; }
     }
 }

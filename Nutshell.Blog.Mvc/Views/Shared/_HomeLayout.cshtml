@@ -1,0 +1,156 @@
+﻿@{ 
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model IList<Nutshell.Blog.Model.Article>
+
+@section style{
+    <link href="~/Content/style/paging.css" rel="stylesheet" />
+    <link href="~/Content/style/index.css" rel="stylesheet" />
+}
+
+<header class="header">
+    <div class="header-top">
+        <p class="header-top-left">果壳中的新世界</p>
+        <p class="header-top-right">
+
+            @{
+                var account = ViewBag.Account as Nutshell.Blog.Model.ViewModel.Account;
+                if (account != null)
+                {
+                    <a href="/admin/home/index">@account.Nickname</a>
+                    <a href="/@account.UserName">我的博客</a>
+                    <a href="/message">消息 (3)</a>
+                    <a href='/account/loginout' class="fa fa-sign-out">退出</a>
+                }
+                else
+                {
+                    @("[")<a href='/account/register'>注册</a>@("·")<a href='/account/signin'>登录</a>@("]")
+                }
+            }
+        </p>
+
+        <div class="header-logo">
+
+        </div>
+
+        <nav class="header-nav">
+            <ul>
+                <li><a href="">首页</a></li>
+                <li><a href="/">新闻</a></li>
+                <li><a href="/">收藏</a></li>
+                <li><a href="/admin/article/edit">写博客</a></li>
+                <li><a href="/article/search">搜索</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+@RenderBody()
+
+<div class="body">
+    <div class="body-main">
+        <div class="body-list">
+            <ul>
+                @{
+                    if (Model.Count > 0)
+                    {
+                        foreach (var article in Model)
+                        {
+                            <li class="list-item">
+                                <div>
+                                    <h5 class="item-title">
+                                        <a target="_blank" href="/@(article.Author?.Login_Name)/p/@(article.Article_Id).html" title="@article.Title">@article.Title</a>
+                                    </h5>
+                                    <div class="item-body">
+                                        <a href="/@(article.Author?.Login_Name)">
+                                            <img class="item-pic" src='@(article.Author.Photo ?? "/upload/photos/default.png")' alt="加载失败……" />
+                                        </a>
+                                        <p class="item-desc">
+                                            @article.Introduction
+                                        </p>
+                                    </div>
+                                    <div class="item-footer">
+                                        <a target="_blank" href="/@(article.Author?.Login_Name)" class="item-author">@(article.Author?.Nickname)</a>
+                                        <span class="item-time">@article.Creation_Time</span>
+                                        <span class="fa fa-commenting-o"> 评论(@article.Discussions.Count)</span>
+                                        <span class="fa fa-eye"> 浏览(18)</span>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        <div style="padding:50px 0px;">
+                            <p style="text-align: center;">暂无数据！</p>
+                        </div>
+                    }
+
+                }
+            </ul>
+            <div class="list-pager page_div" id="page"></div>
+        </div>
+    </div>
+
+    <div class="body-left">
+        <h5>网站导航</h5>
+        <ul class="nav-left">
+            @*<li>
+                    <a href="#">.Net技术</a>
+                    <span class="tag-total">(15689)</span>
+                </li>
+                <li>
+                    <a href="#">Web前端</a><span class="tag-total">(1598)</span>
+                </li>
+                <li>
+                    <a href="#">网站安全</a><span class="tag-total">(9875)</span>
+                </li>
+                <li>
+                    <a href="#">Android开发</a><span class="tag-total">(6598)</span>
+                </li>
+                <li>
+                    <a href="#">经验分享</a><span class="tag-total">(156)</span>
+                </li>*@
+            @{
+                var categories = ViewBag.Categories as List<Nutshell.Blog.Model.Article_Category>;
+                if (categories != null)
+                {
+                    foreach (var category in categories)
+                    {
+                        <li>
+                            <a href="/cate/@category.CategoryName">@category.Cate_Name</a>
+                        </li>
+                    }
+                }
+            }
+        </ul>
+
+    </div>
+
+    <div class="body-right">
+        右侧导航
+    </div>
+</div>
+
+<footer class="footer">
+    <ul class="friend-links">
+        <li>友情链接：</li>
+        <li>
+            <a href="">博客园</a>
+        </li>
+        <li>
+            <a href="">博客园</a>
+        </li>
+        <li>
+            <a href="">博客园</a>
+        </li>
+        <li>
+            <a href="">博客园</a>
+        </li>
+        <li>
+            <a href="">博客园</a>
+        </li>
+    </ul>
+    <p class="copyright">Email : contact@cyqdata.com Copyright © 2010-2020 Powered by <a href="/">Nutshell Blog - 果壳园</a> All Rights Reserved</p>
+</footer>
+@RenderSection("script",false)

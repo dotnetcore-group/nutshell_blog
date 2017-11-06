@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="IArticleRepository.cs" />
     <Compile Include="IBaseRepository.cs" />
+    <Compile Include="ICategoryRepository.cs" />
     <Compile Include="ICustomCategoryRepository.cs" />
     <Compile Include="IMessageRepository.cs" />
     <Compile Include="IModuleOperateRepository.cs" />

@@ -13,6 +13,7 @@ using System.Net;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using Nutshell.Blog.Common;
 
 namespace Nutshell.Blog.Mvc.Controllers
 {
@@ -57,7 +58,7 @@ namespace Nutshell.Blog.Mvc.Controllers
             // 搜索词
             ViewBag.Query = q;
             // 总页数
-            ViewBag.Page = 1 + (totalCount / pageSize);
+            ViewBag.Page = PagerHelper.GetTotalPage(pageSize, totalCount);
             watch.Stop();
             // 搜索所需时间
             ViewBag.Time = watch.ElapsedMilliseconds;
@@ -71,7 +72,7 @@ namespace Nutshell.Blog.Mvc.Controllers
             {
                 return HttpNotFound();
             }
-            var article = articleService.LoadEntity(a => a.Article_Id == id && a.Author.Login_Name.Equals(author, StringComparison.CurrentCultureIgnoreCase));
+            var article = articleService.LoadEntity(a => a.Article_Id == id && a.Author.Login_Name.Equals(author, StringComparison.CurrentCultureIgnoreCase) && a.State == (int)ArticleStateEnum.Published);
             ViewBag.Author = author;
             if (article == null)
             {
@@ -84,7 +85,7 @@ namespace Nutshell.Blog.Mvc.Controllers
             ViewBag.Categories = articleService.GetCustomCategoriesByUserId<CustomCategories>(user.User_Id);
 
             // 上一篇 下一篇
-            var articles = articleService.LoadEntities(a => a.Author_Id == article.Author_Id && a.Article_Id != id);
+            var articles = articleService.LoadEntities(a => a.Author_Id == article.Author_Id &&a.State == (int)ArticleStateEnum.Published && a.Article_Id != id);
             ViewBag.Before = articles.OrderBy(a => a.Creation_Time).Where(a => a.Creation_Time >= article.Creation_Time).FirstOrDefault();
             ViewBag.Next = articles.OrderByDescending(a => a.Creation_Time).Where(a => a.Creation_Time <= article.Creation_Time).FirstOrDefault();
 
@@ -105,7 +106,7 @@ namespace Nutshell.Blog.Mvc.Controllers
 
                 // 上一页、下一页
                 var totalCount = articleService.GetArticlesTotalCount(user.User_Id);
-                var totalPage = totalCount % PageSize == 0 ? totalCount / PageSize : (totalCount + PageSize) / PageSize;
+                var totalPage = PagerHelper.GetTotalPage(PageSize, totalCount);// totalCount % PageSize == 0 ? totalCount / PageSize : (totalCount + PageSize) / PageSize;
                 if (pageIndex > 1 && pageIndex <= totalPage)
                 {
                     ViewBag.HasPre = true;
@@ -138,7 +139,7 @@ namespace Nutshell.Blog.Mvc.Controllers
                 // 文章分类
                 ViewBag.Categories = articleService.GetCustomCategoriesByUserId<CustomCategories>(user.User_Id);
 
-                
+
                 // 设定的pagesize大小减去置顶文章数 为取其他文章的数量
                 if (pageSize > 0)
                 {

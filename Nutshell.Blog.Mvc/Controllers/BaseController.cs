@@ -19,6 +19,7 @@ namespace Nutshell.Blog.Mvc.Controllers
         protected IModuleOperateService moduleOperateService;
         protected ICustomCategoryService customCategoryService;
         protected IRoleService roleService;
+        protected ICategoryService categoryService;
 
         protected int PageSize
         {
