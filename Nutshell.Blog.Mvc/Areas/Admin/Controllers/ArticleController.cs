@@ -1,9 +1,11 @@
 ﻿using Nutshell.Blog.Common;
+using Nutshell.Blog.Core;
 using Nutshell.Blog.Core.Filters;
 using Nutshell.Blog.IService;
 using Nutshell.Blog.Model;
 using Nutshell.Blog.Model.ViewModel;
 using Nutshell.Blog.Mvc.Controllers;
+using Nutshell.Blog.Mvc.Hubs;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -56,16 +58,30 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
             return View();
         }
 
+        [OnlyAllowAjaxRequest]
         public ActionResult BlogList()
         {
-            return View();
+            return PartialView();
         }
 
         // 文章审核
         [SupportFilter(Action = "Examine")]
+        [OnlyAllowAjaxRequest]
         public ActionResult ArticleExamine()
         {
-            return View();
+            return PartialView();
+        }
+
+        // 预览
+        [SupportFilter(Action = "Examine")]
+        public ActionResult Preview(int id)
+        {
+            var article = articleService.LoadEntity(a => a.Article_Id == id);
+            if (article == null)
+            {
+                return HttpNotFound();
+            }
+            return PartialView(article);
         }
 
         [SupportFilter(Action = "Examine")]
@@ -143,11 +159,11 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
 
             var account = GetCurrentAccount();
             int total;
-            
+
             var temp = articleService.LoadPageEntities((start + length) / length, length, out total, a => a.Author_Id == account.User_Id && a.State != (int)ArticleStateEnum.Deleted, a => a.Creation_Time, false);
             if (type != 0)
             {
-                temp = articleService.LoadPageEntities((start + length) / length, length, out total, a => a.Author_Id == account.User_Id && a.State == type , a => a.Creation_Time, false);
+                temp = articleService.LoadPageEntities((start + length) / length, length, out total, a => a.Author_Id == account.User_Id && a.State == type, a => a.Creation_Time, false);
             }
             var list = temp.Select(a => new
             {
@@ -173,7 +189,7 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
                 a.Title,
                 a.Creation_Time,
                 a.State,
-                a.CustomCategory.CategoryName,
+                a.SystemCategory.Cate_Name,
                 a.Author.Nickname
             });
             return Json(new { data = list, draw, recordsTotal = total, recordsFiltered = total });

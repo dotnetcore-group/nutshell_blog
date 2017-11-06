@@ -24,7 +24,7 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
             ViewBag.Menus = moduleService.GetMenuByPersonId(account.User_Id);
             return View(account);
         }
-
+        [OnlyAllowAjaxRequest]
         public ActionResult Desktop()
         {
             return PartialView();

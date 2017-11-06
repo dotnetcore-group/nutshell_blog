@@ -17,7 +17,7 @@
                 var account = ViewBag.Account as Nutshell.Blog.Model.ViewModel.Account;
                 if (account != null)
                 {
-                    <a href="/admin/home/index">@account.Nickname</a>
+                    <a href="/u/@account.User_Id">@account.Nickname</a>
                     <a href="/@account.UserName">我的博客</a>
                     <a href="/message">消息 (3)</a>
                     <a href='/account/loginout' class="fa fa-sign-out">退出</a>

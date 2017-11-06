@@ -40,7 +40,7 @@ namespace Nutshell.Blog.Mvc.Controllers
                     // 将用户信息存入memcache
                     // 返回客户端一个session id
                     ValidatedUser(userinfo.ToAccount());
-                    data = new { code = 0, msg = msg, url = "/admin/home/index" };
+                    data = new { code = 0, msg = msg, url = "/admin/home/index" , userId = userinfo.User_Id};
                 }
             }
             return Json(data);
@@ -53,6 +53,7 @@ namespace Nutshell.Blog.Mvc.Controllers
                 var sessionid = Guid.NewGuid().ToString();
                 MemcacheHelper.Set(sessionid, SerializerHelper.SerializeToString(account), DateTime.Now.AddMinutes(20));
                 Response.Cookies[Keys.SessionId].Value = sessionid;
+                Response.Cookies[Keys.UserId].Value = account.User_Id.ToString();
             }
             catch (Exception e)
             {

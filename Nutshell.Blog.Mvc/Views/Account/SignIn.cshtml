@@ -21,7 +21,8 @@
     <link rel="stylesheet" href="~/Content/amazeui/assets/css/amazeui.datatables.min.css" />
     <link rel="stylesheet" href="~/Content/amazeui/assets/css/app.css">
     <script src="~/Content/amazeui/assets/js/jquery.min.js"></script>
-
+    <script src="~/Scripts/jquery.signalR-2.2.2.min.js"></script>
+    <script src="~/signalr/hubs"></script>
 </head>
 
 <body data-type="login">
@@ -72,8 +73,10 @@
     <script src="~/Content/scripts/jquery-validation/jquery.validate.min.js"></script>
     <script src="~/Content/scripts/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/Content/scripts/jquery-validation/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/pushmessage.js"></script>
     <script>
         $(function () {
+            
         });
 
         var begin = function () {
@@ -81,6 +84,11 @@
         }
         var success = function (data) {
             if (data.code == 0) {
+                var hub = $.connection.pushHub;
+                $.connection.hub.start().done(function () {
+                    var res = hub.server.online(data.userId);
+                    console.log(res)
+                });
                 location = data.url;
             } else {
                 alert(data.msg);

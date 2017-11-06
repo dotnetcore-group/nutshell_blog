@@ -1,4 +1,18 @@
-﻿/*资讯-添加*/
+﻿
+// 预览
+function preview(id) {
+    console.log(id);
+    layer.open({
+        type: 2,
+        title: '文章预览',
+        shadeClose: true,
+        shade: 0.8,
+        maxmin: true, //开启最大化最小化按钮
+        area: ['893px', '600px'],
+        content: '/admin/article/preview/' + id //iframe的url
+    });
+}
+/*资讯-添加*/
 function article_add(title, url, w, h) {
     var index = layer.open({
         type: 2,
@@ -46,6 +60,9 @@ function article_shenhe(id) {
                 if (data.code == 0) {
                     layer.msg(data.msg, { icon: 6, time: 1000 });
                     table.ajax.reload();
+                    $.connection.hub.start().done(function () {
+                        hub.server.auditPassed("1001");
+                    })
                 } else {
                     layer.msg(data.msg, { icon: 5, time: 1000 });
                 }

@@ -1,6 +1,7 @@
 ﻿@{
     var menus = ViewBag.Menus as List<Nutshell.Blog.Model.Module>;
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "果壳园后台管理 - 果壳园";
 }
 @model Nutshell.Blog.Model.ViewModel.Account
 @section style{
@@ -10,7 +11,7 @@
     <header class="fixed">
         <!-- logo -->
         <div class="am-fl tpl-header-logo">
-            <a href="javascript:;"><img src="~/Content/amazeui/assets/img/logo.png" alt=""></a>
+            <a href="/"><img src="~/Content/amazeui/assets/img/logo.png" alt=""></a>
         </div>
         <!-- 右侧内容 -->
         <div class="tpl-header-fluid">
@@ -33,7 +34,7 @@
                     <li class="am-text-sm tpl-header-navbar-welcome">
                         <a href="javascript:;">欢迎你, <span>@Model.Nickname</span> </a>
                     </li>
-                    
+
                     <!-- 新邮件 -->
                     <li class="am-dropdown tpl-dropdown" data-am-dropdown>
                         <a href="javascript:;" class="am-dropdown-toggle tpl-dropdown-toggle" data-am-dropdown-toggle>
@@ -187,8 +188,8 @@
                 </a>
                 <ul class="sidebar-nav sidebar-nav-sub" style="display: none;">
                     <li class="sidebar-nav-link">
-                        <a href="/admin/article/edit" target="_blank"> 
-                            <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 发表文章 
+                        <a href="/admin/article/edit" target="_blank">
+                            <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 发表文章
                         </a>
                     </li>
                     <li class="sidebar-nav-link">
@@ -222,37 +223,37 @@
                 {
                     if (pItem.IsLast)
                     {
-                        <li class="sidebar-nav-link">
-                            <a data-href="@pItem.Url" onclick="SwitchPage(this); return false;">
-                                <i class="am-icon-table sidebar-nav-link-logo"></i> @pItem.Name
-                            </a>
-                        </li>
+            <li class="sidebar-nav-link">
+                <a data-href="@pItem.Url" onclick="SwitchPage(this); return false;">
+                    <i class="am-icon-table sidebar-nav-link-logo"></i> @pItem.Name
+                </a>
+            </li>
                     }
                     else
                     {
                         var children = menus.Where(m => m.Parent_Id == pItem.Id);
-                        <li class="sidebar-nav-link">
-                            <a href="javascript:;" class="sidebar-nav-sub-title">
-                                <i class="@pItem.Iconic sidebar-nav-link-logo"></i> @pItem.Name <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico"></span>
-                            </a>
-                            <ul class="sidebar-nav sidebar-nav-sub">
-                                @foreach (var cItem in children)
+            <li class="sidebar-nav-link">
+                <a href="javascript:;" class="sidebar-nav-sub-title">
+                    <i class="@pItem.Iconic sidebar-nav-link-logo"></i> @pItem.Name <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico"></span>
+                </a>
+                <ul class="sidebar-nav sidebar-nav-sub">
+                    @foreach (var cItem in children)
                                 {
-                                    <li class="sidebar-nav-link">
-                                        <a href="@cItem.Url" data-href="@cItem.Url" onclick="SwitchPage(this); return false;"> <span class="am-icon-angle-right sidebar-nav-link-logo"></span> @cItem.Name </a>
-                                    </li>
+                    <li class="sidebar-nav-link">
+                        <a href="@cItem.Url" data-href="@cItem.Url" onclick="SwitchPage(this); return false;"> <span class="am-icon-angle-right sidebar-nav-link-logo"></span> @cItem.Name </a>
+                    </li>
                                 }
-                            </ul>
-                        </li>
+                </ul>
+            </li>
                     }
                 }
             }
         </ul>
+
     </div>
 
     <!--内容-->
     <div class="tpl-content-wrapper" id="loadData">
-
     </div>
 </div>
 @section script{
@@ -263,9 +264,11 @@
                 icon: 16
                 , shade: 0.3
             });
-            $obj.load(url, function (response, status, xhr) {
-                layer.close(index);
-            }); //将PartialIndex分部视图中的内容加载到id为loadData这个元素中去
+            setTimeout(function () {
+                $obj.load(url, function (response, status, xhr) {
+                    layer.close(index);
+                }); //将PartialIndex分部视图中的内容加载到id为loadData这个元素中去
+            }, 3000)
         }
         $(function () {
             LoadPage($("#loadData"), "/admin/home/desktop");

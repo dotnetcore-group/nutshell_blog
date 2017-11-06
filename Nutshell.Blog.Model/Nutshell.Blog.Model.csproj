@@ -87,6 +87,7 @@
     <Compile Include="ViewModel\Account.cs" />
     <Compile Include="ViewModel\Archives.cs" />
     <Compile Include="ViewModel\CustomCategories.cs" />
+    <Compile Include="ViewModel\HubUser.cs" />
     <Compile Include="ViewModel\Permission.cs" />
     <Compile Include="ViewModel\SearchArticleResult.cs" />
     <Compile Include="ViewModel\UserLogin.cs" />

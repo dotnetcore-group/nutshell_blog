@@ -1,16 +1,4 @@
 ﻿
-@{
-    ViewBag.Title = "BlogList";
-    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
-}
-@section style{
-    <style>
-        .text-center {
-            text-align: center !important;
-        }
-    </style>
-}
-
 <div class="row-content am-cf">
     <div class="row">
         <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
@@ -36,7 +24,7 @@
                     </div>
                     <div class="am-u-sm-12 am-u-md-6 am-u-lg-3">
                         <div class="am-form-group tpl-table-list-select">
-                            <select data-am-selected="{btnSize: 'sm'}" style="display: none;" id="type">
+                            <select data-am-selected="{btnSize: 'sm'}"id="type">
                                 <option value="0">所有文章</option>
                                 <option value="2">未审核</option>
                                 <option value="3">已发布</option>
@@ -76,9 +64,9 @@
     </div>
 </div>
 
-@section script{
-    <script src="~/Content/scripts/article.js"></script>
-    <script type="text/javascript">
+<script src="~/Content/scripts/article.js"></script>
+<script src="~/Content/amazeui/assets/js/amazeui.min.js"></script>
+<script type="text/javascript">
         var table = null;
         $(function () {
             //提示信息
@@ -185,5 +173,4 @@
                 table.draw();
             })
         })
-    </script>
-}
+</script>

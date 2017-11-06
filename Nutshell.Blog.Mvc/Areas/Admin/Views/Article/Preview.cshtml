@@ -1,0 +1,16 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "文章预览 - 果壳园";
+}
+@model Nutshell.Blog.Model.Article
+
+<article class="am-article" style="margin:10px 15px;">
+    <div class="am-article-hd">
+        <h1 class="am-article-title">@Model.Title</h1>
+        <p class="am-article-meta">@Model.Author.Nickname</p>
+    </div>
+
+    <div class="am-article-bd">
+        @Html.Raw(HttpUtility.HtmlDecode(Model.Body))
+    </div>
+</article>

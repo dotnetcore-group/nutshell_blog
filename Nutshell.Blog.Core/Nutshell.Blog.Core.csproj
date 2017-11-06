@@ -76,10 +76,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Filters\CheckUserLoginAttribute.cs" />
+    <Compile Include="Filters\OnlyAllowAjaxRequestAttribute.cs" />
     <Compile Include="Filters\SupportFilterAttribute.cs" />
     <Compile Include="MemcacheHelper.cs" />
     <Compile Include="Model\IndexContent.cs" />
     <Compile Include="MvcHtmlExtend.cs" />
+    <Compile Include="OnlineUserPool.cs" />
     <Compile Include="PanGuLuceneHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
