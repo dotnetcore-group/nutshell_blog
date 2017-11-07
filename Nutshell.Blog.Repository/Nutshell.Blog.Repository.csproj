@@ -53,6 +53,7 @@
     <Compile Include="BaseRepository.cs" />
     <Compile Include="CategoryRepository.cs" />
     <Compile Include="CustomCategoryRepository.cs" />
+    <Compile Include="FavoritesRepository.cs" />
     <Compile Include="MessageRepository.cs" />
     <Compile Include="ModuleOperateRepository.cs" />
     <Compile Include="ModuleRepository.cs" />

@@ -44,6 +44,7 @@
     <Compile Include="BaseService.cs" />
     <Compile Include="CategoryService.cs" />
     <Compile Include="CustomCategoryService.cs" />
+    <Compile Include="FavoritesService.cs" />
     <Compile Include="MessageService.cs" />
     <Compile Include="ModuleOperateService.cs" />
     <Compile Include="ModuleService.cs" />

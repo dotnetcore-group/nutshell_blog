@@ -19,10 +19,11 @@ namespace Nutshell.Blog.Mvc.Controllers
 {
     public class ArticleController : BaseController
     {
-        public ArticleController(IArticleService artService, IUserService uService)
+        public ArticleController(IArticleService artService, IUserService uService, IFavoritesService favoritesService)
         {
             userService = uService;
             articleService = artService;
+            base.favoritesService = favoritesService;
         }
 
         [HttpGet]
@@ -85,7 +86,7 @@ namespace Nutshell.Blog.Mvc.Controllers
             ViewBag.Categories = articleService.GetCustomCategoriesByUserId<CustomCategories>(user.User_Id);
 
             // 上一篇 下一篇
-            var articles = articleService.LoadEntities(a => a.Author_Id == article.Author_Id &&a.State == (int)ArticleStateEnum.Published && a.Article_Id != id);
+            var articles = articleService.LoadEntities(a => a.Author_Id == article.Author_Id && a.State == (int)ArticleStateEnum.Published && a.Article_Id != id);
             ViewBag.Before = articles.OrderBy(a => a.Creation_Time).Where(a => a.Creation_Time >= article.Creation_Time).FirstOrDefault();
             ViewBag.Next = articles.OrderByDescending(a => a.Creation_Time).Where(a => a.Creation_Time <= article.Creation_Time).FirstOrDefault();
 
@@ -156,6 +157,47 @@ namespace Nutshell.Blog.Mvc.Controllers
                 return View();
             }
             return HttpNotFound();
+        }
+
+        [CheckUserLogin]
+        [HttpPost]
+        public JsonResult GetBlogs()
+        {
+            var account = GetCurrentAccount();
+
+            var temp = articleService.LoadEntities(a => a.Author_Id == account.User_Id && a.State != (int)ArticleStateEnum.Deleted).OrderByDescending(a=>a.Creation_Time);
+            if (temp == null)
+            {
+                return Json(new { code = 1 });
+            }
+            var list = temp.Select(a => new
+            {
+                a.Article_Id,
+                a.Title,
+                a.Creation_Time,
+                a.State,
+                a.CustomCategory.CategoryName
+            });
+            return Json(new { code = 0, res = list });
+        }
+
+        [CheckUserLogin]
+        [HttpPost]
+        public JsonResult GetFavorites()
+        {
+            var account = GetCurrentAccount();
+            var list = favoritesService.LoadEntities(f => f.User_Id == account.User_Id).OrderByDescending(f=>f.Collection_Time).Select(f=>new {
+                f.Article_Id,
+                author=f.Article.Author.Login_Name,
+                f.Remark,
+                f.Article.Title,
+                f.Collection_Time
+            });
+            if (list == null)
+            {
+                return Json(new JsonModel { code = 1 });
+            }
+            return Json(new JsonModel { code = 0, res = list });
         }
 
         [CheckUserLogin]

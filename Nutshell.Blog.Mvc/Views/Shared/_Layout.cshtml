@@ -7,11 +7,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="shortcut icon" href="~/favicon.ico" />
     <link href="~/Content/style/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/toastr/toastr.min.css" rel="stylesheet" />
     @RenderSection("style", false)
 </head>
     <body>
         @RenderBody()
+        <script src="~/Content/scripts/jquery-1.8.0.min.js"></script>
+        <script src="~/Scripts/jquery.signalR-2.2.2.min.js"></script>
+        <script src="~/signalr/hubs"></script>
         <script src="~/Scripts/pushmessage.js"></script>
+        <script src="~/Content/toastr/toastr.min.js"></script>
         @RenderSection("script", false)
     </body>
 </html>

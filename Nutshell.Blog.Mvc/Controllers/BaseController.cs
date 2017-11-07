@@ -20,6 +20,7 @@ namespace Nutshell.Blog.Mvc.Controllers
         protected ICustomCategoryService customCategoryService;
         protected IRoleService roleService;
         protected ICategoryService categoryService;
+        protected IFavoritesService favoritesService;
 
         protected int PageSize
         {

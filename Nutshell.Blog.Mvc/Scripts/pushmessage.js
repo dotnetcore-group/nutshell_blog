@@ -4,6 +4,7 @@ $.connection.hub.start().done(function () {
 });
 hub.client.receive = function (msg) {
     console.log(msg);
+    toastr.success(msg, '系统消息')
 }
 
 hub.client.sayHello = function (msg) {

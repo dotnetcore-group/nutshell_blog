@@ -11,9 +11,9 @@ using System.Web.Mvc;
 
 namespace Nutshell.Blog.Mvc.Controllers
 {
-    public class AccountController : BaseController
+    public class UserController : BaseController
     {
-        public AccountController(IUserService userService)
+        public UserController(IUserService userService)
         {
             base.userService = userService;
 
@@ -40,7 +40,7 @@ namespace Nutshell.Blog.Mvc.Controllers
                     // 将用户信息存入memcache
                     // 返回客户端一个session id
                     ValidatedUser(userinfo.ToAccount());
-                    data = new { code = 0, msg = msg, url = "/admin/home/index" , userId = userinfo.User_Id};
+                    data = new { code = 0, msg = msg, url = "/admin/home/index", userId = userinfo.User_Id };
                 }
             }
             return Json(data);
@@ -93,18 +93,20 @@ namespace Nutshell.Blog.Mvc.Controllers
 
         // 用户主页
         [CheckUserLogin]
-        public ActionResult UserHome(string id)
+        public ActionResult UserHome()
         {
-            var user_id = 0;
-            if (int.TryParse(id, out user_id))
+            var account = GetCurrentAccount();
+            var user = userService.LoadEntity(u => u.User_Id == account.User_Id);
+            if (user != null)
             {
-                var user = userService.LoadEntity(u => u.User_Id == user_id);
-                if (user != null)
-                {
-                    return View(user);
-                }
+                return View(user);
             }
             return HttpNotFound();
+        }
+
+        public ActionResult Favorite()
+        {
+            return View();
         }
 
         [HttpPost]

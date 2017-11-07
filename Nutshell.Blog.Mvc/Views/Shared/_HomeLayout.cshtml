@@ -17,14 +17,14 @@
                 var account = ViewBag.Account as Nutshell.Blog.Model.ViewModel.Account;
                 if (account != null)
                 {
-                    <a href="/u/@account.User_Id">@account.Nickname</a>
+                    <a href="/u/me">@account.Nickname</a>
                     <a href="/@account.UserName">我的博客</a>
                     <a href="/message">消息 (3)</a>
                     <a href='/account/loginout' class="fa fa-sign-out">退出</a>
                 }
                 else
                 {
-                    @("[")<a href='/account/register'>注册</a>@("·")<a href='/account/signin'>登录</a>@("]")
+                    @("[")<a href='/user/register'>注册</a>@("·")<a href='/user/signin'>登录</a>@("]")
                 }
             }
         </p>
@@ -37,7 +37,7 @@
             <ul>
                 <li><a href="">首页</a></li>
                 <li><a href="/">新闻</a></li>
-                <li><a href="/">收藏</a></li>
+                <li><a href="/u/favorite">收藏</a></li>
                 <li><a href="/admin/article/edit">写博客</a></li>
                 <li><a href="/article/search">搜索</a></li>
             </ul>

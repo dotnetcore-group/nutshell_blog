@@ -44,6 +44,7 @@
     <Compile Include="IBaseService.cs" />
     <Compile Include="ICategoryService.cs" />
     <Compile Include="ICustomCategoryService.cs" />
+    <Compile Include="IFavoritesService.cs" />
     <Compile Include="IMessageService.cs" />
     <Compile Include="IModuleOperateService.cs" />
     <Compile Include="IModuleService.cs" />

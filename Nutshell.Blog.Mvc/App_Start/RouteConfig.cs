@@ -39,8 +39,13 @@ namespace Nutshell.Blog.Mvc
             
             routes.MapRoute(
                 name: "UserHome",
-                url: "u/{id}",
-                defaults: new { controller = "Account", action = "UserHome" }
+                url: "u/me",
+                defaults: new { controller = "User", action = "UserHome" }
+            );
+            routes.MapRoute(
+                name: "Favorite",
+                url: "u/favorite",
+                defaults: new { controller = "User", action = "Favorite" }
             );
             routes.MapRoute(
                 name: "Category",
