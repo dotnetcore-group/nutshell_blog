@@ -71,6 +71,7 @@
     <Compile Include="Dictionaries.cs" />
     <Compile Include="Discussion.cs" />
     <Compile Include="Favorites.cs" />
+    <Compile Include="FriendLinks.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Module.cs" />

@@ -1,0 +1,164 @@
+﻿
+@{
+    ViewBag.Title = "我的文章";
+    Layout = "~/Views/Shared/_UserHomeLayout.cshtml";
+}
+
+<div class="tabs">
+    <ul class="tabs-nav">
+        <li class="active"><a href="javascript:void(0);" onclick="loadBlogs();">文章列表</a></li>
+        <li><a href="javascript:void(0);">类别管理</a></li>
+        <li><a href="javascript:void(0);">草稿箱</a></li>
+        <li><a href="javascript:void(0);">回收站</a></li>
+    </ul>
+    <div class="tabs-content">
+        <div class="tab-panel active">
+            <div class="selector_box">
+                分类：
+                <select id="category">
+                    <option value="0">全部</option>
+                    @{
+                        var categories = ViewBag.Categories as List<Nutshell.Blog.Model.CustomCategory>;
+                        if (categories != null)
+                        {
+                            foreach (var category in categories)
+                            {
+                                <option value="@category.Id">@category.CategoryName</option>
+                            }
+                        }
+                    }
+                </select>
+                状态：
+                <select id="state">
+                    <option value="0">全部</option>
+                    <option value="@((int)Nutshell.Blog.Common.ArticleStateEnum.Published)">已发布</option>
+                    <option value="@((int)Nutshell.Blog.Common.ArticleStateEnum.NotAudited)">未审核</option>
+                    <option value="@((int)Nutshell.Blog.Common.ArticleStateEnum.NotPass)">未通过</option>
+                </select>
+            </div>
+            <table id="articles" class="mDataTable" cellspacing="0" style="width:100%">
+                <thead>
+                    <tr>
+                        <th class="hidden">Id</th>
+                        <th>标题</th>
+                        <th>状态</th>
+                        <th class="center">操作</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="tab-panel">
+            2
+        </div>
+        <div class="tab-panel">
+            3
+        </div>
+        <div class="tab-panel">
+            4
+        </div>
+    </div>
+</div>
+
+@section script{
+    <script>
+        $(function () {
+            loadBlogs();
+            $("#category").change(function () {
+                loadBlogs();
+            });
+            $("#state").change(function () {
+                loadBlogs();
+            });
+        });
+
+        // 加载文章列表
+        function loadBlogs() {
+            var categoryid = $("#category").val();
+            var state = $("#state").val();
+            $('#articles').mDataTable({
+                pagesize: 20,
+                pageindex: 2,
+                ajax: {
+                    url: "/user/getblogs",
+                    type: 'POST',
+                    data: {
+                        categoryid: categoryid,
+                        state: state
+                    }
+                },
+                columns: [
+                    { data: 'Article_Id', hidden: true },
+                    {
+                        data: 'Title', render: function (data, row) {
+                            if (row["IsTop"]) {
+                                data = "[置顶]" + data;
+                            }
+                            return '<a target="_blank" href="/' + row["Author"] + '/p/' + row["Article_Id"] + '.html">' + data + '</a>';
+                        }
+                    },
+                    {
+                        data: 'State', render: function (data, row) {
+                            if (data == @((int)Nutshell.Blog.Common.ArticleStateEnum.Published)) {
+                                return "已发布";
+                            } else if (data ==@((int)Nutshell.Blog.Common.ArticleStateEnum.NotPass)){
+                                return "未通过";
+                            } else if (data ==@((int)Nutshell.Blog.Common.ArticleStateEnum.NotAudited)){
+                                return "未审核";
+                            }
+                        }
+                    },
+                    {
+                        data: 'Article_Id', class: 'center', render: function (data, row) {
+                            if (row["IsTop"]) {
+                                return '<a href="/article/edit?postid=' + data + '">编辑</a> | <a href="javascript:void(0);" onclick="unTop(this,' + data + ')">取消置顶</a> | <a href="javascript:void(0);" onclick="article_delete('+data+')">删除</a> | <a href="javascript:void(0);" onclick="javascript:return setcat(this,78543746);" class="cat">分类</a>';
+                            } else {
+                                return '<a href="/article/edit?postid=' + data + '">编辑</a> | <a href="javascript:void(0);" onclick="setTop(this,' + data + ')">置顶</a> | <a href="javascript:void(0);" onclick="article_delete(' + data +')">删除</a> | <a href="javascript:void(0);" onclick="javascript:return setcat(this,78543746);" class="cat">分类</a>';
+                            }
+                        }
+                    }
+                ]
+            });
+        }
+
+        // 置顶
+        function setTop(obj, id) {
+            $.post("/user/top", { id: id }, function (data) {
+                console.log(data)
+
+                if (data.code == 0) {
+                    loadBlogs();
+                } else {
+                    alert(data.msg)
+                }
+            });
+        }
+
+        // 取消置顶
+        function unTop(obj, id) {
+            $.post("/user/untop", { id: id }, function (data) {
+                if (data.code == 0) {
+                    loadBlogs();
+                } else {
+                    alert(data.msg);
+                }
+            });
+        }
+
+        function article_delete(id) {
+            layer.confirm('确认要删除吗？', function (index) {
+                var index = layer.load(1, {
+                    shade: [0.1, '#fff'] //0.1透明度的白色背景
+                });
+                $.post("/user/deleteblog", { id: id }, function (data) {
+                    if (data.code == 0) {
+                        layer.msg('已删除!', { icon: 1, time: 1000 });
+                        loadBlogs();
+                    } else {
+                        layer.msg(data.msg, { icon: 2, time: 1000 });
+                    }
+                    layer.close(index);
+                });
+            });
+        }
+    </script>
+}

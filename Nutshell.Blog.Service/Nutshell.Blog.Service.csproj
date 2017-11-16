@@ -43,6 +43,7 @@
     <Compile Include="ArticleService.cs" />
     <Compile Include="BaseService.cs" />
     <Compile Include="CategoryService.cs" />
+    <Compile Include="CommentService.cs" />
     <Compile Include="CustomCategoryService.cs" />
     <Compile Include="FavoritesService.cs" />
     <Compile Include="MessageService.cs" />

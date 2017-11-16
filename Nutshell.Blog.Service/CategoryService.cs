@@ -53,7 +53,7 @@ namespace Nutshell.Blog.Service
             }
             if (categories == null)
             {
-                categories = categoryRepository.LoadEntities(c => true).ToList();
+                categories = categoryRepository.LoadEntities(c => true).OrderBy(c => c.Sort).ToList();
                 MemcacheHelper.Set(Keys.Categories, SerializerHelper.SerializeToString(categories));
             }
 

@@ -71,7 +71,7 @@ namespace Nutshell.Blog.Service
 
         public List<CustomCategories> GetCustomCategoriesByUserId<CustomCategories>(int UserId)
         {
-            return currentRepository.ExecuteSelectQuery<CustomCategories>("PROC_GET_CustomCategories @User_Id=@User_Id", new System.Data.SqlClient.SqlParameter("@User_Id", UserId));
+            return currentRepository.ExecuteSelectQuery<CustomCategories>("PROC_GET_CustomCategories @User_Id=@User_Id", new SqlParameter("@User_Id", UserId));
         }
 
         

@@ -19,11 +19,52 @@ namespace Nutshell.Blog.Mvc.Controllers
 {
     public class ArticleController : BaseController
     {
-        public ArticleController(IArticleService artService, IUserService uService, IFavoritesService favoritesService)
+        public ArticleController(IArticleService artService, IUserService uService, IFavoritesService favoritesService, ICommentService commentService, ICustomCategoryService customCategoryService, ICategoryService categoryService)
         {
             userService = uService;
             articleService = artService;
+            base.commentService = commentService;
             base.favoritesService = favoritesService;
+            base.customCategoryService = customCategoryService;
+            base.categoryService = categoryService;
+        }
+
+        // 写文章 / 编辑文章
+        // 当 postid 为null 写文章
+        // 不为null 判断此文章是否为此登录用户的
+        // false 不能编辑 true 显示文章信息 可编辑
+        [CheckUserLogin]
+        public ActionResult Edit(int? postid)
+        {
+            ViewBag.IsEditMode = false;
+            ViewBag.Title = "写文章";
+
+            var user = GetCurrentAccount();
+
+            ViewBag.CustomCategories = customCategoryService.LoadEntities(c => c.Author.User_Id == user.User_Id)?.ToList();
+            ViewBag.SystemCategories = categoryService.GetCategories();
+            if (postid.HasValue)
+            {
+                ViewBag.Title = "编辑文章";
+                ViewBag.IsEditMode = true;
+                var article = articleService.LoadEntity(a => a.Article_Id == postid.Value);
+                if (article != null)
+                {
+                    if (article.Author_Id == user.User_Id)
+                    {
+                        return View(article);
+                    }
+                    else
+                    {
+                        return new JavaScriptResult() { Script = "<script>alert('你没有操作权限！');javascript:history.go(-1)</script>" };// JavaScript("");
+                    }
+                }
+                else
+                {
+                    throw new HttpException(404, "Not Found!");
+                }
+            }
+            return View();
         }
 
         [HttpGet]
@@ -66,34 +107,6 @@ namespace Nutshell.Blog.Mvc.Controllers
             return View(list);
         }
 
-        // GET:/username/p/1.html
-        public ActionResult Detail(string author, int? id)
-        {
-            if (!id.HasValue || string.IsNullOrEmpty(author))
-            {
-                return HttpNotFound();
-            }
-            var article = articleService.LoadEntity(a => a.Article_Id == id && a.Author.Login_Name.Equals(author, StringComparison.CurrentCultureIgnoreCase) && a.State == (int)ArticleStateEnum.Published);
-            ViewBag.Author = author;
-            if (article == null)
-            {
-                return HttpNotFound();
-            }
-            var user = article.Author;
-            // 随笔档案
-            ViewBag.Archives = articleService.GetArchivesByUserId<Archives>(user.User_Id);
-            // 随笔分类
-            ViewBag.Categories = articleService.GetCustomCategoriesByUserId<CustomCategories>(user.User_Id);
-
-            // 上一篇 下一篇
-            var articles = articleService.LoadEntities(a => a.Author_Id == article.Author_Id && a.State == (int)ArticleStateEnum.Published && a.Article_Id != id);
-            ViewBag.Before = articles.OrderBy(a => a.Creation_Time).Where(a => a.Creation_Time >= article.Creation_Time).FirstOrDefault();
-            ViewBag.Next = articles.OrderByDescending(a => a.Creation_Time).Where(a => a.Creation_Time <= article.Creation_Time).FirstOrDefault();
-
-            ViewBag.UserInfo = user;
-            return View(article);
-        }
-
         // 用户博客
         // GET:/username
         public ActionResult Blogs(string author, int? page = 1)
@@ -103,6 +116,11 @@ namespace Nutshell.Blog.Mvc.Controllers
             {
                 var pageIndex = page.HasValue ? (page.Value <= 0 ? 1 : page.Value) : 1;
                 var pageSize = PageSize;
+
+                // 文章档案
+                ViewBag.Archives = articleService.GetArchivesByUserId<Archives>(user.User_Id);
+                // 文章分类
+                ViewBag.Categories = articleService.GetCustomCategoriesByUserId<CustomCategories>(user.User_Id);
                 ViewBag.UserInfo = user;
 
                 // 上一页、下一页
@@ -133,20 +151,29 @@ namespace Nutshell.Blog.Mvc.Controllers
 
                     // 其他文章数量 = 设定数量 - 置顶文章数量
                     pageSize -= topList.Count();
+                    if (pageSize > 0)
+                    {
+                        // 按日期分组的文章 类型为 IEnumerable<IGrouping<DateTime, Article>>
+                        var articles = articleService.LoadEntities(a => a.Author_Id == user.User_Id && a.State == 3 && !a.IsTop)
+                            .OrderByDescending(a => a.Creation_Time)
+                            .Take(pageSize)
+                            .GroupBy(new Func<Article, DateTime>(a =>
+                            {
+                                var date = Convert.ToDateTime(a.Creation_Time.ToShortDateString());
+                                return date;
+                            }));
+                        return View(articles);
+                    }
                 }
-
-                // 文章档案
-                ViewBag.Archives = articleService.GetArchivesByUserId<Archives>(user.User_Id);
-                // 文章分类
-                ViewBag.Categories = articleService.GetCustomCategoriesByUserId<CustomCategories>(user.User_Id);
-
-
-                // 设定的pagesize大小减去置顶文章数 为取其他文章的数量
-                if (pageSize > 0)
+                // 其他非置顶文章（排序：置顶在前，跳过第一页）
+                else
                 {
-                    int count = 0;
                     // 按日期分组的文章 类型为 IEnumerable<IGrouping<DateTime, Article>>
-                    var articles = articleService.LoadPageEntities(pageIndex, pageSize, out count, a => a.Author_Id == user.User_Id && !a.IsTop && a.State == 3, a => a.Creation_Time, false)
+                    var articles = articleService.LoadEntities(a => a.Author_Id == user.User_Id && a.State == 3)
+                        .OrderByDescending(a => a.Creation_Time)
+                        .OrderByDescending(a => a.IsTop)
+                        .Skip((pageIndex-1)*pageSize)
+                        .Take(pageSize)
                         .GroupBy(new Func<Article, DateTime>(a =>
                         {
                             var date = Convert.ToDateTime(a.Creation_Time.ToShortDateString());
@@ -156,55 +183,198 @@ namespace Nutshell.Blog.Mvc.Controllers
                 }
                 return View();
             }
-            return HttpNotFound();
+            throw new HttpException(404, "Not Found!");
+            //return HttpNotFound();
+        }
+
+        // GET:/username/p/1.html
+        public ActionResult Detail(string author, int? id)
+        {
+            if (!id.HasValue || string.IsNullOrEmpty(author))
+            {
+                throw new HttpException(404, "Not Found!");
+                //return HttpNotFound();
+            }
+            var article = articleService.LoadEntity(a => a.Article_Id == id && a.Author.Login_Name.Equals(author, StringComparison.CurrentCultureIgnoreCase) && a.State == (int)ArticleStateEnum.Published);
+            ViewBag.Author = author;
+            if (article == null)
+            {
+                throw new HttpException(404, "Not Found!");
+                //return HttpNotFound();
+            }
+            var user = article.Author;
+            // 随笔档案
+            ViewBag.Archives = articleService.GetArchivesByUserId<Archives>(user.User_Id);
+            // 随笔分类
+            ViewBag.Categories = articleService.GetCustomCategoriesByUserId<CustomCategories>(user.User_Id);
+            ViewBag.UserInfo = user;
+
+            // 上一篇 下一篇
+            var articles = articleService.LoadEntities(a => a.Author_Id == article.Author_Id && a.State == (int)ArticleStateEnum.Published && a.Article_Id != id);
+            ViewBag.Before = articles.OrderBy(a => a.Creation_Time).Where(a => a.Creation_Time >= article.Creation_Time).FirstOrDefault();
+            ViewBag.Next = articles.OrderByDescending(a => a.Creation_Time).Where(a => a.Creation_Time <= article.Creation_Time).FirstOrDefault();
+            var account = GetCurrentAccount();
+            if (account != null)
+            {
+                ViewBag.HavaCollection = favoritesService.HaveCollection(account.User_Id, id.Value);
+            }
+
+            return View(article);
         }
 
         [CheckUserLogin]
         [HttpPost]
-        public JsonResult GetBlogs()
+        public JsonResult Comment(string content, int? id)
         {
+            var res = new JsonModel { code = 0, msg = "评论失败！" };
             var account = GetCurrentAccount();
-
-            var temp = articleService.LoadEntities(a => a.Author_Id == account.User_Id && a.State != (int)ArticleStateEnum.Deleted).OrderByDescending(a=>a.Creation_Time);
-            if (temp == null)
+            if (!id.HasValue)
             {
-                return Json(new { code = 1 });
+                return Json(res);
             }
-            var list = temp.Select(a => new
+            commentService.AddEntity(new Discussion
             {
-                a.Article_Id,
-                a.Title,
-                a.Creation_Time,
-                a.State,
-                a.CustomCategory.CategoryName
+                Article_Id = id.Value,
+                Content = content,
+                User_Id = account.User_Id
             });
-            return Json(new { code = 0, res = list });
+            if (commentService.SaveChanges())
+            {
+                res.code = 0;
+                res.msg = "评论成功！";
+            }
+            return Json(res);
         }
 
-        [CheckUserLogin]
+        public JsonResult GetComments(int? id)
+        {
+            var res = new JsonModel { code = 1, msg = "获取评论失败！" };
+            if (!id.HasValue)
+            {
+                return Json(res, JsonRequestBehavior.AllowGet);
+            }
+            var comments = commentService.LoadEntities(c => c.Article_Id == id.Value).OrderBy(c => c.Discussion_Time).Select(m => new
+            {
+                m.Id,
+                m.Reply_Id,
+                m.User.Nickname,
+                userName = m.User.Login_Name,
+                m.Content,
+                parentNick = m.ParentDiscussion.User.Nickname,
+                parentName = m.ParentDiscussion.User.Login_Name,
+                m.Discussion_Time
+            })?.ToList();
+            res.code = 0;
+            res.msg = "获取评论成功！";
+            res.res = comments;
+            return Json(res, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult UploadImage()
+        {
+            var date = DateTime.Now.ToString("yyyy-MM-dd");
+
+            var saveUrl = $"/upload/images/{date}/";
+            //文件保存目录路径
+            string savePath = Server.MapPath(saveUrl);
+            if (!Directory.Exists(savePath))
+            {
+                Directory.CreateDirectory(savePath);
+            }
+
+            //定义允许上传的文件扩展名
+            Hashtable extTable = new Hashtable();
+            extTable.Add("image", "gif,jpg,jpeg,png,bmp");
+            extTable.Add("flash", "swf,flv");
+            extTable.Add("media", "swf,flv,mp3,wav,wma,wmv,mid,avi,mpg,asf,rm,rmvb");
+            extTable.Add("file", "doc,docx,xls,xlsx,ppt,htm,html,txt,zip,rar,gz,bz2");
+
+            //最大文件大小
+            int maxSize = 1000000;
+
+            //HttpPostedFileBase imgFile = Request.Files["imgFile"];
+            HttpPostedFileBase imgFile = Request.Files[0];
+            if (imgFile == null)
+            {
+                return Json(new { error = 1, message = "请选择文件！" });
+            }
+
+            string fileName = imgFile.FileName;
+            string fileExt = Path.GetExtension(fileName).ToLower();
+
+            if (imgFile.InputStream == null || imgFile.InputStream.Length > maxSize)
+            {
+                return Json(new { error = 1, message = "上传文件大小超过限制！" });
+            }
+            if (string.IsNullOrEmpty(fileExt) || Array.IndexOf(extTable["image"].ToString().Split(','), fileExt.Substring(1).ToLower()) < 0)
+            {
+                return Json(new { error = 1, message = $"上传文件扩展名是不允许的扩展名！\n只允许{extTable["image"].ToString()}。" });
+            }
+
+
+            string newFileName = Guid.NewGuid().ToString("N") + fileExt;
+            string filePath = savePath + newFileName;
+
+            imgFile.SaveAs(filePath);
+
+            string fileUrl = Path.Combine(saveUrl, newFileName);
+
+            return Json(new { error = 0, url = fileUrl });
+        }
+
         [HttpPost]
-        public JsonResult GetFavorites()
+        [ValidateInput(false)]
+        public JsonResult PostArticle(Article article, int? articleid)
         {
+            var res = new { code = 1, msg = "保存失败" };
+
             var account = GetCurrentAccount();
-            var list = favoritesService.LoadEntities(f => f.User_Id == account.User_Id).OrderByDescending(f=>f.Collection_Time).Select(f=>new {
-                f.Article_Id,
-                author=f.Article.Author.Login_Name,
-                f.Remark,
-                f.Article.Title,
-                f.Collection_Time
-            });
-            if (list == null)
+
+            if (account != null)
             {
-                return Json(new JsonModel { code = 1 });
+                var user = userService.LoadEntity(u => u.User_Id == account.User_Id);
+                if (user != null)
+                {
+                    var customCate = customCategoryService.LoadEntity(c => c.Author.User_Id == user.User_Id && c.Id == article.CustomCategory_Id);
+
+                    article.Author_Id = user.User_Id;
+                    if (ModelState.IsValid && customCate != null)
+                    {
+
+
+                        article.Title = Server.HtmlEncode(article.Title);
+                        article.Body = Server.HtmlEncode(article.Body);
+                        article.Content = article.Content.Replace("\n", " ").Replace("\r", " ").Replace("\t", " ").Replace(" ", "");
+                        article.Introduction = article.Content.Length > 200 ? article.Content.Substring(0, 190) + "..." : article.Content;
+                        // 编辑文章
+                        if (articleid.HasValue)
+                        {
+                            var newArticle = articleService.LoadEntity(a => a.Article_Id == articleid);
+                            if (newArticle != null)
+                            {
+                                newArticle.Title = article.Title;
+                                newArticle.Body = article.Body;
+                                newArticle.Content = article.Content;
+                                newArticle.Introduction = article.Introduction;
+                                newArticle.SystemCategory_Id = article.SystemCategory_Id;
+                                newArticle.CustomCategory_Id = article.CustomCategory_Id;
+                            }
+
+                            articleService.EditEntity(newArticle);
+                        }
+                        else
+                        {
+                            articleService.AddEntity(article);
+                        }
+                        if (articleService.SaveChanges())
+                        {
+                            res = new { code = 0, msg = "提交成功！" };
+                        }
+                    }
+
+                }
             }
-            return Json(new JsonModel { code = 0, res = list });
-        }
-
-        [CheckUserLogin]
-        public JsonResult Comment(string content)
-        {
-
-            return Json(content);
+            return Json(res);
         }
     }
 }

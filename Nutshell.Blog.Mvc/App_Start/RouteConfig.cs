@@ -22,11 +22,18 @@ namespace Nutshell.Blog.Mvc
                 namespaces: new string[] { "Nutshell.Blog.Mvc.Controllers" },
                 constraints: new { }
             );
+
             routes.MapRoute(
                 name: "BlogHome",
                 url: "{author}",
                 defaults: new { controller = "Article", action = "Blogs" },
                 namespaces: new string[] { "Nutshell.Blog.Mvc.Controllers" }
+            );
+
+            routes.MapRoute(
+                name: "UserCategory",
+                url: "{author}/category/{CategoryId}.html",
+                defaults: new { controller = "User", action = "Category" }
             );
 
             routes.MapRoute(
@@ -37,16 +44,16 @@ namespace Nutshell.Blog.Mvc
                 constraints: new { }
             );
             
-            routes.MapRoute(
-                name: "UserHome",
-                url: "u/me",
-                defaults: new { controller = "User", action = "UserHome" }
-            );
-            routes.MapRoute(
-                name: "Favorite",
-                url: "u/favorite",
-                defaults: new { controller = "User", action = "Favorite" }
-            );
+            //routes.MapRoute(
+            //    name: "UserHome",
+            //    url: "u/me",
+            //    defaults: new { controller = "User", action = "UserHome" }
+            //);
+            //routes.MapRoute(
+            //    name: "Favorite",
+            //    url: "u/favorite",
+            //    defaults: new { controller = "User", action = "Favorite" }
+            //);
             routes.MapRoute(
                 name: "Category",
                 url: "cate/{category}/{index}",

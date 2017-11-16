@@ -65,7 +65,7 @@ namespace Nutshell.Blog.Repository
 
         public T LoadEntity(Expression<Func<T, bool>> whereLambda)
         {
-            return _dbSet.Where(whereLambda).FirstOrDefault() ?? null;
+            return _dbSet.FirstOrDefault(whereLambda) ?? null;
         }
 
         public IQueryable<T> LoadPageEntities<TResult>(int pageIndex, int pageSize, out int totalCount, Expression<Func<T, bool>> whereLambda, Expression<Func<T, TResult>> orderbyLambda, bool isAsc = true)

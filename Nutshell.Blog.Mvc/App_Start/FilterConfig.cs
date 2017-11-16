@@ -13,6 +13,7 @@ namespace Nutshell.Blog.Mvc
         {
             //filters.Add(new CheckUserLoginAttribute());
             //filters.Add(new SupportFilterAttribute());
+            filters.Add(new GlobalExceptionAttribute());
         }
     }
 }

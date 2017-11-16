@@ -36,5 +36,7 @@ namespace Nutshell.Blog.Common
         public static readonly string Categories = "_categories";
 
         public static readonly string UserId = "_userid";
+
+        public static readonly string Exception = "_exception";
     }
 }

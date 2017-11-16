@@ -29,10 +29,16 @@ using System.Threading.Tasks;
 
 namespace Nutshell.Blog.Model.ViewModel
 {
+    /// <summary>
+    ///  返回json值对象
+    /// </summary>
     public class JsonModel
     {
         public int code { get; set; }
         public string msg { get; set; }
         public object res { get; set; }
+        public int total { get; set; }
+        public int index { get; set; }
+        public int size { get; set; }
     }
 }

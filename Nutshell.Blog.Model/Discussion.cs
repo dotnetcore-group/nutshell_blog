@@ -34,6 +34,10 @@ namespace Nutshell.Blog.Model
     [Table("discussion")]
     public class Discussion
     {
+        public Discussion()
+        {
+            Discussion_Time = DateTime.Now;
+        }
         [Key]
         public int Id { get; set; }
 

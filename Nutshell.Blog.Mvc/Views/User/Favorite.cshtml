@@ -1,17 +1,66 @@
 ﻿
 @{
-    Layout = null;
+    ViewBag.Title = "我的收藏";
+    Layout = "~/Views/Shared/_UserHomeLayout.cshtml";
 }
 
-<!DOCTYPE html>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Favorite</title>
-</head>
-<body>
-    <div> 
+<div class="tabs">
+    <ul class="tabs-nav">
+        <li class="active"><a href="javascript:void(0);" onclick="loadFavorites();">收藏列表</a></li>
+        <li><a href="javascript:void(0);">我的分类</a></li>
+    </ul>
+    <div class="tabs-content">
+        <div class="tab-panel active">
+            <table id="favorites" class="mDataTable" cellspacing="0" style="width:100%">
+                <thead>
+                    <tr>
+                        <th class="hidden">Id</th>
+                        <th>标题</th>
+                        <th class="center">操作</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="tab-panel">
+            我的分类
+        </div>
     </div>
-</body>
-</html>
+</div>
+@section script{
+    <script>
+        $(function () {
+            loadFavorites();
+        });
+
+        function loadFavorites() {
+            $('#favorites').mDataTable({
+                ajax: {
+                    url: "/user/getfavorites",
+                    type: 'POST'
+                },
+                columns: [
+                    { data: 'Article_Id', hidden: true },
+                    {
+                        data: 'Title', render: function (data, row) {
+                            if (row["IsTop"]) {
+                                return '[置顶]' + data;
+                            } else {
+                                return data;
+                            }
+                        }
+                    },
+                    {
+                        data: 'Article_Id', class: 'center', render: function (data, row) {
+                            if (row["IsTop"]) {
+                                return '<a href="/article/edit/' + data + '">编辑</a> | <a href="javascript:void(0);" onclick="unTop(this,' + data + ')">取消置顶</a> | <a href="?t=del&amp;id=78543746" name="del">删除</a> | <a href="javascript:void(0);" onclick="javascript:return setcat(this,78543746);" class="cat">分类</a>';
+                            } else {
+                                return '<a href="/article/edit/' + data + '">编辑</a> | <a href="javascript:void(0);" onclick="setTop(this,' + data + ')">置顶</a> | <a href="?t=del&amp;id=78543746" name="del">删除</a> | <a href="javascript:void(0);" onclick="javascript:return setcat(this,78543746);" class="cat">分类</a>';
+                            }
+                        }
+                    }
+                ]
+            });
+        }
+    </script>
+}

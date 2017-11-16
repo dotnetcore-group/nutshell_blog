@@ -21,6 +21,7 @@ namespace Nutshell.Blog.Mvc.Controllers
         protected IRoleService roleService;
         protected ICategoryService categoryService;
         protected IFavoritesService favoritesService;
+        protected ICommentService commentService;
 
         protected int PageSize
         {

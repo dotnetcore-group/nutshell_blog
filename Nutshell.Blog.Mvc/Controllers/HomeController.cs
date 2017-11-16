@@ -22,7 +22,6 @@ namespace Nutshell.Blog.Mvc.Controllers
             int pageIndex = Convert.ToInt32(index ?? "1");
             int pageSize = PageSize;
             int totalCount = 0;
-
             var articles = articleService.LoadPageEntities(pageIndex, pageSize, out totalCount, a => a.State == 3, a => a.Creation_Time, false)?.ToList();
 
             ViewBag.Account = GetCurrentAccount();
@@ -42,7 +41,8 @@ namespace Nutshell.Blog.Mvc.Controllers
             var cate = categoryService.LoadEntity(c=>c.CategoryName.Equals(category, StringComparison.CurrentCultureIgnoreCase));
             if (cate == null)
             {
-                return HttpNotFound();
+                throw new HttpException(404, "Not Found!");
+                //return HttpNotFound();
             }
             var articles = articleService.LoadPageEntities(pageIndex, pageSize, out totalCount, a => a.State == 3 && a.SystemCategory_Id==cate.Cate_Id, a => a.Creation_Time, false)?.ToList();
 

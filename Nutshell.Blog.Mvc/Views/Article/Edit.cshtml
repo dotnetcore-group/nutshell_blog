@@ -1,0 +1,197 @@
+﻿@{
+    Layout = null;
+    var isEditMode = (bool)ViewBag.IsEditMode;
+}
+@model Nutshell.Blog.Model.Article
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@ViewBag.Title - 果壳园</title>
+
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="icon" type="image/png" href="~/favicon.png">
+    <link rel="apple-touch-icon-precomposed" href="~/Content/amazeui/assets/i/app-icon72x72@2x.png">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    <link rel="stylesheet" href="~/Content/amazeui/assets/css/amazeui.min.css" />
+    <link rel="stylesheet" href="~/Content/amazeui/assets/css/app.css">
+    <script src="~/Content/amazeui/assets/js/jquery.min.js"></script>
+    <script src="~/Content/amazeui/assets/js/amazeui.min.js"></script>
+    <link href="~/Content/layer/2.4/skin/layer.css" rel="stylesheet" />
+    <link href="~/Content/kindeditor/themes/default/default.css" rel="stylesheet" />
+    <link href="~/Content/kindeditor/plugins/code/prettify.css" rel="stylesheet" />
+    <style>
+        .container {
+            position: relative;
+            margin: 0px auto;
+            width: 1100px;
+        }
+    </style>
+</head>
+<body>
+    <script src="~/Content/amazeui/assets/js/theme.js"></script>
+    <div class="container">
+        <div class="row-content am-cf">
+            <form class="am-form">
+                <fieldset>
+                    <legend>@ViewBag.Title</legend>
+                    <div class="am-form-group">
+                        <label for="articletitle">文章标题</label>
+                        <input type="text" name="articletitle" class="" value="@(Model?.Title)" id="articletitle" placeholder="输入文章标题">
+                    </div>
+
+                    <div class="am-form-inline">
+                        <div class="am-form-group">
+                            <label for="articlecolumn">我的分类</label>
+                            <select name="articlecolumn" id="articlecolumn" style="width:180px">
+                                @{
+                                    var categories = ViewBag.CustomCategories as List<Nutshell.Blog.Model.CustomCategory>;
+                                    if (categories != null)
+                                    {
+                                        foreach (var category in categories)
+                                        {
+                                            <option value="@category.Id">@category.CategoryName</option>
+                                        }
+                                    }
+                                }
+                            </select>
+                            <span class="am-form-caret"></span>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="articletype">系统分类</label>
+                            <select class="" id="articletype" style="width:180px">
+                                @{
+                                    var syscategories = ViewBag.SystemCategories as List<Nutshell.Blog.Model.Article_Category>;
+                                    if (syscategories != null)
+                                    {
+                                        foreach (var category in syscategories)
+                                        {
+                                            <option value="@category.Cate_Id">@category.Cate_Name</option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="abstract">文章摘要</label>
+                        <textarea name="abstract" id="abstract" cols="3" placeholder="简单的描述..."></textarea>
+                    </div>
+                    @*<div class="am-form-group">
+                            <label for="sources">文章来源</label>
+                            <input type="text" name="sources" class="" id="sources" placeholder="输入来源">
+                        </div>*@
+                    <div class="am-form-group">
+                        <label for="editor_body">文章内容</label>
+                        <textarea name="editor_body" id="editor_body" style="width:100%;height:400px;">
+                        @Html.Raw(HttpUtility.HtmlDecode(Model?.Body))
+                        </textarea>
+                    </div>
+                    <div class="am-form-group am-form-inline">
+                        @if (isEditMode)
+                        {
+                            <a id="btnSubmit" class="am-btn am-btn-primary am-radius am-btn-sm">
+                                <i class="am-icon-save"></i>
+                                保存修改
+                            </a>
+                        }
+                        else
+                        {
+                            <a id="btnSubmit" class="am-btn am-btn-primary am-radius am-btn-sm">
+                                <i class="am-icon-save"></i>
+                                保存并提交审核
+                            </a>
+                            <a class="am-btn am-btn-secondary am-radius am-btn-sm">
+                                <i class="am-icon-save"></i>
+                                保存草稿
+                            </a>
+                        }
+                        <button class="am-btn am-btn-danger am-radius am-btn-sm">
+                            <i class="am-icon-close"></i>
+                            取消
+                        </button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+    <script src="~/Content/layer/2.4/layer.js"></script>
+    <script src="~/Content/kindeditor/kindeditor-all-min.js"></script>
+    <script src="~/Content/kindeditor/lang/zh-CN.js"></script>
+    <script src="~/Content/kindeditor/plugins/code/prettify.js"></script>
+    <script>
+
+
+        $(function () {
+            var editor_body = null;
+            KindEditor.ready(function (K) {
+                editor_body = K.create("#editor_body", {
+                    @if (isEditMode) {
+                        @("designMode: false,")
+                     }
+                    resizeType: 1,
+                    allowPreviewEmoticons: false,
+                    allowImageUpload: true,
+                    uploadJson: "/article/uploadimage",
+                    items: [
+                        'source', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+                        'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+                        'insertunorderedlist', '|', 'emoticons', 'image', 'link']
+                })
+            });
+
+            var $title = $("#articletitle");
+            var $customCate = $("#articlecolumn");
+            var $sysCategory = $("#articletype");
+
+            $customCate.val(@(Model?.CustomCategory_Id));
+            $sysCategory.val(@(Model?.SystemCategory_Id));
+
+            //$(".ke-icon-source").trigger('click');
+            $("#btnSubmit").click(function () {
+                var title = $title.val();
+                var body = editor_body.html();
+                var customCate = $customCate.val();
+                var sysCate = $sysCategory.val();
+                if (title.trim().length > 0 && body.length > 0) {
+                    $.post("/article/postArticle", { Title: title, Body: body, Content: editor_body.text(), CustomCategory_Id: customCate, SystemCategory_Id: sysCate, isEdit: '@isEditMode', articleid:'@(Model?.Article_Id)' }, function (data) {
+                        console.log(data);
+                        if (data.code == 0) {
+                            //layer.alert('提交成功，点击确认关闭窗口。', { icon: 6 }, function () {
+                            //    CloseWebPage();
+                            //});
+                            layer.msg(data.msg, { icon: 6 });
+                        } else {
+                            layer.msg(data.msg, { icon: 5 });
+                        }
+                    })
+                };
+                return false;
+            });
+        });
+        function CloseWebPage() {
+            if (navigator.userAgent.indexOf("MSIE") > 0) {
+                if (navigator.userAgent.indexOf("MSIE 6.0") > 0) {
+                    window.opener = null;
+                    window.close();
+                } else {
+                    window.open('', '_top');
+                    window.top.close();
+                }
+            }
+            else if (navigator.userAgent.indexOf("Firefox") > 0) {
+                window.location.href = 'about:blank ';
+            } else {
+                window.opener = null;
+                window.open('', '_self', '');
+                window.close();
+            }
+        }
+    </script>
+
+</body>
+</html>

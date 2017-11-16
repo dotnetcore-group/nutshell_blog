@@ -1,0 +1,66 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title - 果壳园</title>
+    <link href="~/Content/style/reset.css" rel="stylesheet" />
+    <link href="~/Content/style/user.css" rel="stylesheet" />
+    <link href="~/Content/mDataTable/mDataTable.css" rel="stylesheet" />
+    <link href="~/Content/layer/2.4/skin/layer.css" rel="stylesheet" />
+    @RenderSection("style", false)
+</head>
+<body>
+    <div id="top">
+        <ul>
+            <li><a href="/">首页</a></li>
+            <li><a href="/">新闻</a></li>
+            <li><a href="/article/search">搜索</a></li>
+        </ul>
+    </div>
+    <div id="wrapper">
+        <div id="header">
+            头部
+        </div>
+        <div id="container">
+            <!--左侧导航开始-->
+            <div id="left_bar">
+                <ul>
+                    <li><a href="/user/me"><i class=""></i> 关于我</a></li>
+                    <li><a href="/user/blog">博客</a></li>
+                    <li><a href="#">新闻</a></li>
+                    <li><a href="/user/favorite">收藏</a></li>
+                    <li><a href="#">关注</a></li>
+                </ul>
+                <div>
+                    <a href="#">建议反馈</a>
+                </div>
+            </div>
+            <!--左侧导航结束-->
+            <!--中间内容开始-->
+            <div id="main_content">
+                @RenderBody()
+            </div>
+            <!--中间内容结束-->
+        </div>
+        <div id="footer">
+            <a href="/home/about">关于</a>
+            <a href="/home/about">联系我们</a>
+            <a href="/home/about">广告服务</a>
+            &copy; 2017
+            <a href="/">果壳园</a>
+            Powered by ASP.NET MVC
+        </div>
+    </div>
+    <script src="~/Content/scripts/jquery-1.8.0.min.js"></script>
+    <script src="~/Content/scripts/user.js"></script>
+    <script src="~/Content/mDataTable/mDataTable.js"></script>
+    <script src="~/Content/layer/2.4/layer.js"></script>
+    @RenderSection("script", false)
+</body>
+</html>
