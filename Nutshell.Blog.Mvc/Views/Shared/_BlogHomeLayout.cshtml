@@ -13,6 +13,7 @@
     <link href="~/Content/style/reset.css" rel="stylesheet" />
     <link rel="stylesheet" href="@user.Theme.Resources" />
     <link href="~/Content/style/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/layer/2.4/skin/layer.css" rel="stylesheet" />
     @RenderSection("style", false)
 </head>
 <body>
@@ -29,7 +30,7 @@
                     <li><a href="/">果壳园</a></li>
                     <li><a href="/@user.Login_Name">首页</a></li>
                     <li><a href="/article/edit">文章</a></li>
-                    <li><a href="/">管理</a></li>
+                    <li><a href="/user/blog">管理</a></li>
                 </ul>
             </div>
         </div>
@@ -71,7 +72,7 @@
                                                 foreach (var category in categories)
                                                 {
                                                     <li>
-                                                        <a href="">
+                                                        <a href="/@user.Login_Name/category/@(category.Id).html">
                                                             @category.CategoryName (@category.Count)
                                                         </a>
                                                     </li>
@@ -108,6 +109,13 @@
         </div>
     </div>
     <script src="~/Content/scripts/jquery-1.8.0.min.js"></script>
+    <link href="~/Content/kindeditor/themes/default/default.css" rel="stylesheet" />
+    <link href="~/Content/kindeditor/plugins/code/prettify.css" rel="stylesheet" />
+    <script src="~/Content/kindeditor/kindeditor-all-min.js"></script>
+    <script src="~/Content/kindeditor/lang/zh-CN.js"></script>
+    <script src="~/Content/kindeditor/plugins/code/prettify.js"></script>
+    <script src="~/Content/scripts/common.js"></script>
+    <script src="~/Content/layer/2.4/layer.js"></script>
     @RenderSection("script", false)
 </body>
 </html>

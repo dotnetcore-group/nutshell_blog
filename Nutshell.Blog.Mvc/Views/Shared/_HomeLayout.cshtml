@@ -1,4 +1,4 @@
-﻿@{ 
+﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @model IList<Nutshell.Blog.Model.Article>
@@ -12,33 +12,38 @@
     <div class="header-top">
         <p class="header-top-left">果壳中的新世界</p>
         <p class="header-top-right">
-
             @{
                 var account = ViewBag.Account as Nutshell.Blog.Model.ViewModel.Account;
                 if (account != null)
                 {
-                    <a href="/u/me">@account.Nickname</a>
-                    <a href="/@account.UserName">我的博客</a>
-                    <a href="/message">消息 (3)</a>
-                    <a href='/account/loginout' class="fa fa-sign-out">退出</a>
+            <a href="/user/me">@account.Nickname</a>
+            <a href="/@account.UserName">我的博客</a>
+            <a href="/message">消息 (3)</a>
+            <a href='/user/loginout' class="fa fa-sign-out">退出</a>
                 }
                 else
                 {
-                    @("[")<a href='/user/register'>注册</a>@("·")<a href='/user/signin'>登录</a>@("]")
+            @("[")<a href='/account/register'>注册</a>@("·")<a href='/account/signin'>登录</a>@("]")
                 }
             }
         </p>
 
         <div class="header-logo">
-
+            <a href="/">
+                <div class="logo_box">
+                    <img src="~/Content/images/nut_64.png" />
+                    <h1>果壳园博客网</h1> <br/>
+                    <p>NUTSHELL BLOG</p>
+                </div>
+            </a>
         </div>
 
         <nav class="header-nav">
             <ul>
-                <li><a href="">首页</a></li>
+                <li><a href="/">首页</a></li>
                 <li><a href="/">新闻</a></li>
-                <li><a href="/u/favorite">收藏</a></li>
-                <li><a href="/admin/article/edit">写博客</a></li>
+                <li><a href="/user/favorite">收藏</a></li>
+                <li><a href="/article/edit">写博客</a></li>
                 <li><a href="/article/search">搜索</a></li>
             </ul>
         </nav>
@@ -56,34 +61,34 @@
                     {
                         foreach (var article in Model)
                         {
-                            <li class="list-item">
-                                <div>
-                                    <h5 class="item-title">
-                                        <a target="_blank" href="/@(article.Author?.Login_Name)/p/@(article.Article_Id).html" title="@article.Title">@article.Title</a>
-                                    </h5>
-                                    <div class="item-body">
-                                        <a href="/@(article.Author?.Login_Name)">
-                                            <img class="item-pic" src='@(article.Author.Photo ?? "/upload/photos/default.png")' alt="加载失败……" />
-                                        </a>
-                                        <p class="item-desc">
-                                            @article.Introduction
-                                        </p>
-                                    </div>
-                                    <div class="item-footer">
-                                        <a target="_blank" href="/@(article.Author?.Login_Name)" class="item-author">@(article.Author?.Nickname)</a>
-                                        <span class="item-time">@article.Creation_Time</span>
-                                        <span class="fa fa-commenting-o"> 评论(@article.Discussions.Count)</span>
-                                        <span class="fa fa-eye"> 浏览(18)</span>
-                                    </div>
-                                </div>
-                            </li>
+                <li class="list-item">
+                    <div>
+                        <h5 class="item-title">
+                            <a target="_blank" href="/@(article.Author?.Login_Name)/p/@(article.Article_Id).html" title="@article.Title">@article.Title</a>
+                        </h5>
+                        <div class="item-body">
+                            <a href="/@(article.Author?.Login_Name)">
+                                <img class="item-pic" src='@(article.Author.Photo ?? "/upload/photos/default.png")' alt="加载失败……" />
+                            </a>
+                            <p class="item-desc">
+                                @article.Introduction
+                            </p>
+                        </div>
+                        <div class="item-footer">
+                            <a target="_blank" href="/@(article.Author?.Login_Name)" class="item-author">@(article.Author?.Nickname)</a>
+                            <span class="item-time">@article.Creation_Time</span>
+                            <span class="fa fa-commenting-o"> 评论(@article.Discussions.Count)</span>
+                            <span class="fa fa-eye"> 浏览(18)</span>
+                        </div>
+                    </div>
+                </li>
                         }
                     }
                     else
                     {
-                        <div style="padding:50px 0px;">
-                            <p style="text-align: center;">暂无数据！</p>
-                        </div>
+                <div style="padding:50px 0px;">
+                    <p style="text-align: center;">暂无数据！</p>
+                </div>
                     }
 
                 }
@@ -117,18 +122,46 @@
                 {
                     foreach (var category in categories)
                     {
-                        <li>
-                            <a href="/cate/@category.CategoryName">@category.Cate_Name</a>
-                        </li>
+            <li>
+                <a href="/cate/@category.CategoryName">@category.Cate_Name</a>
+            </li>
                     }
                 }
             }
         </ul>
 
+        <div class="nav-left-other nav-links">
+            <h6>常用链接</h6>
+            <ul>
+                <li><a href="#">建议反馈</a></li>
+                <li><a href="/zengande">官方博客</a></li>
+            </ul>
+        </div>
+
+        <div class="nav-left-other nav-links">
+            <h6>积分排行</h6>
+            <ul>
+                <li><a href="#">建议反馈</a></li>
+                <li><a href="#">官方博客</a></li>
+            </ul>
+        </div>
     </div>
 
     <div class="body-right">
-        右侧导航
+        <div class="search_block">
+            <div class="search_box">
+                <form action="/article/search" method="get">
+                    <input type="text" maxlength="50" name="q" />
+                    <input type="submit" value="站内搜索" />
+                </form>
+            </div>
+            <div class="search_box">
+                <form action="https://www.baidu.com/s" method="get">
+                    <input type="text" maxlength="50" name="wd" />
+                    <input type="submit" value="百度搜索" />
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -151,6 +184,6 @@
             <a href="">博客园</a>
         </li>
     </ul>
-    <p class="copyright">Email : contact@cyqdata.com Copyright © 2010-2020 Powered by <a href="/">Nutshell Blog - 果壳园</a> All Rights Reserved</p>
+    <p class="copyright">Email : 835290734@qq.com Copyright © 2010-2020 Powered by <a href="/">Nutshell Blog - 果壳园</a> All Rights Reserved</p>
 </footer>
-@RenderSection("script",false)
+@RenderSection("script", false)

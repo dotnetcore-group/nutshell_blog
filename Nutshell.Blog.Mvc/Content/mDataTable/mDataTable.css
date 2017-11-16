@@ -1,0 +1,64 @@
+﻿.mDataTable {
+    font-size: 13px;
+    position: relative;
+    padding-bottom: 20px;
+}
+
+    .mDataTable td, .mDataTable th {
+        min-width: 50px;
+        height:35px;
+        padding-left:8px;
+    }
+
+    .mDataTable th {
+        text-align: left;
+        border-bottom: 1px solid #ccc;
+    }
+
+        .mDataTable td.hidden, .mDataTable th.hidden {
+            display: none;
+        }
+
+        .mDataTable td.center, .mDataTable th.center {
+            text-align: center;
+        }
+
+    .mDataTable tbody tr {
+        height: 40px;
+    }
+
+        .mDataTable tbody tr:hover {
+            background: #F9FAD1
+        }
+
+        .mDataTable tbody tr.altitem td {
+            background: #f9f9f9;
+        }
+
+        .mDataTable tbody tr td {
+            border-bottom: 1px solid #eee;
+        }
+
+    .mDataTable tbody td a {
+        color: #3B5998;
+        font-size: 12px;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+        .mDataTable tbody td a:hover {
+            text-decoration: underline;
+        }
+
+.mLoading {
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    line-height: 100px;
+}
+.mFooter{
+    width:100%;
+    text-align:center;
+    position:absolute;
+    padding-top:10px;
+}

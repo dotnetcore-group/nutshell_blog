@@ -21,6 +21,7 @@
  * 描述：
  * 
  *********************************************************************************/
+using Newtonsoft.Json;
 using Nutshell.Blog.Model.Attributes;
 using System;
 using System.Collections.Generic;
@@ -84,7 +85,7 @@ namespace Nutshell.Blog.Model
 
         [ForeignKey("SystemCategory")]
         public int? SystemCategory_Id { get; set; }
-        
+
         public virtual User Author { get; set; }
         public virtual ICollection<Discussion> Discussions { get; set; }
         public virtual ICollection<Favorites> Favorites { get; set; }

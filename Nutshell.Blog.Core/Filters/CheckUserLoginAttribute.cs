@@ -43,6 +43,7 @@ namespace Nutshell.Blog.Core.Filters
                         {
                             // 滑动过期时间
                             cookie.Expires = DateTime.Now.AddMinutes(20);
+                            cookie.HttpOnly = true;
                             response.Cookies.Add(cookie);
                             MemcacheHelper.Set(sessionid, obj, DateTime.Now.AddMinutes(20));
                             Account = account;
@@ -51,14 +52,15 @@ namespace Nutshell.Blog.Core.Filters
                     }
                 }
             }
-
-            response.StatusCode = 401;
+            
             if (request.IsAjaxRequest())
             {
                 filterContext.Result = new AjaxUnauthorizedResult();
                 return;
             }
-            filterContext.Result = new RedirectResult("/account/signin");
+            response.StatusCode = 401;
+            var from = filterContext.HttpContext.Server.UrlEncode(filterContext.HttpContext.Request.Url.ToString());
+            filterContext.Result = new RedirectResult($"/account/signin?returnUrl={from}");
             base.OnActionExecuting(filterContext);
         }
     }

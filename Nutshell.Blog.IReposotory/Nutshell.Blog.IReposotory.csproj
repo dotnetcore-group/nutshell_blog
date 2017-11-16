@@ -43,6 +43,7 @@
     <Compile Include="IArticleRepository.cs" />
     <Compile Include="IBaseRepository.cs" />
     <Compile Include="ICategoryRepository.cs" />
+    <Compile Include="ICommentRepository.cs" />
     <Compile Include="ICustomCategoryRepository.cs" />
     <Compile Include="IFavoritesRepository.cs" />
     <Compile Include="IMessageRepository.cs" />

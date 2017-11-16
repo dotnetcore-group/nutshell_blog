@@ -1,0 +1,30 @@
+﻿@{
+    Layout = "~/Views/Shared/_BlogHomeLayout.cshtml";
+    var user = ViewBag.UserInfo as Nutshell.Blog.Model.User;
+    ViewBag.Title = $"{Model.CategoryName} - 果壳园";
+}
+@model Nutshell.Blog.Model.CustomCategory
+
+@{
+    <h1 class="listTitle">文章分类 - @Model.CategoryName</h1>
+    var articles = Model.Articles.Where(a => a.State == (int)Nutshell.Blog.Common.ArticleStateEnum.Published).OrderByDescending(a => a.Creation_Time);
+    foreach (var article in articles)
+    {
+        <div class="blog-item">
+            <div class="title">
+                <a href="/@article.Author.Login_Name/p/@(article.Article_Id).html">@article.Title</a>
+            </div>
+            <div class="content">
+                <div class="desc">
+                    摘要: @article.Introduction
+                    <a href="/@article.Author.Login_Name/p/@(article.Article_Id).html">阅读全文</a>
+                </div>
+                <div class="info">
+                    posted @@ @article.Creation_Time @article.Author.Nickname 阅读(0) 评论(0)
+                    <a href="/article/edit?postid=@article.Article_Id">编辑</a>
+                </div>
+            </div>
+            <div class="separator"></div>
+        </div>
+    }
+}

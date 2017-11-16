@@ -68,13 +68,16 @@
         </div>
     }
 }
-@{
-    if (ViewBag.HasPre ?? false)
-    {
-        <a href="/@user.Login_Name?page=@ViewBag.Pre">上一页</a>
+<div class="topicListFooter">
+    @{
+        if (ViewBag.HasPre ?? false)
+        {
+            <a href="/@user.Login_Name?page=@ViewBag.Pre">上一页</a>
+        }
+        if (ViewBag.HasNext ?? false)
+        {
+            <a href="/@user.Login_Name?page=@ViewBag.Next">下一页</a>
+        }
     }
-    if (ViewBag.HasNext ?? false)
-    {
-        <a href="/@user.Login_Name?page=@ViewBag.Next">下一页</a>
-    }
-}
+</div>
+

@@ -40,5 +40,17 @@ namespace Nutshell.Blog.Service
             this.favoritesRepository = favoritesRepository;
             baseDal = favoritesRepository;
         }
+
+        /// <summary>
+        /// 是否收藏过该文章
+        /// </summary>
+        /// <param name="user_id"></param>
+        /// <param name="article_id"></param>
+        /// <returns></returns>
+        public bool HaveCollection(int user_id, int article_id)
+        {
+            var fav = favoritesRepository.LoadEntity(f => f.User_Id == user_id && f.Article_Id == article_id);
+            return fav != null;
+        }
     }
 }

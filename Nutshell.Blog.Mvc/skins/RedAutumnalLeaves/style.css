@@ -1,0 +1,333 @@
+﻿a {
+    color: black !important;
+    text-decoration: none;
+}
+
+ul {
+    word-break: break-all;
+}
+
+body {
+    color: #000;
+    background: #eee !important;
+    font-family: Verdana,Arial,Helvetica,sans-serif;
+    font-size: 9pt;
+    min-height: 101%;
+    margin: 0px;
+    font-size: 12px !important;
+}
+
+#home {
+    margin: 0 auto;
+    width: 95%;
+    min-width: 930px;
+    background-attachment: scroll;
+    background: url(images/bg1.png) no-repeat;
+    background-position: 50% 0%;
+}
+
+#header {
+    padding-bottom: 5px;
+}
+
+#header-title h1 {
+    font-size: 30px;
+    font-weight: bold;
+    line-height: 1.5em;
+    margin-left: 1em;
+    margin-top: 10px;
+    margin-bottom:0px;
+    width: 50%;
+    float: left;
+}
+
+    #header-title h1 a {
+        font-family: "Comic Sans MS";
+        color: #000;
+    }
+
+        #header-title h1 a:hover {
+            color: #F60;
+        }
+
+#header-title h2 {
+    font-weight: normal;
+    font-size: 13px;
+    color: #999;
+    line-height: 1.5em;
+    margin-top: 10px;
+    margin-left: 30px;
+    width: 50%;
+    margin-left: 10em;
+    float: left;
+}
+
+#navigator {
+    margin-top: 30px;
+    height: 30px;
+    clear: both;
+    position: relative;
+}
+
+#navList {
+    min-height: 30px;
+    float: right;
+}
+
+    #navList li {
+        float: left;
+    }
+
+    #navList a:link, #navList a:visited, #navList a:active {
+        color: #540404;
+        font-weight: bold;
+    }
+
+    #navList a {
+        display: block;
+        width: 5em;
+        height: 22px;
+        float: left;
+        text-align: center;
+        padding-top: 8px;
+        font-size: 13px;
+    }
+
+#main {
+    width: 100%;
+    min-width: 950px;
+    margin-top: 40px;
+    text-align: left;
+}
+
+#mainContent {
+    min-height: 200px;
+    padding: 0px 0px 10px 0;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-break: break-all;
+    float: left;
+    margin-left: -22em;
+    width: 100%;
+}
+
+    #mainContent .forFlow {
+        margin-left: 22em;
+        float: none;
+        width: auto;
+    }
+
+.blog-item {
+    background: url(images/tp.png);
+    min-height: 10px;
+    _height: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 5px;
+    -webkit-box-shadow: 1px 2px 3px #ddd;
+    box-shadow: 1px 2px 3px #ddd;
+    border: 1px solid #ddd;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.date {
+    width: 100%;
+    color: #666;
+    height: 40px;
+    font-weight: bold;
+    line-height: 1.5em;
+    font-size: 115%;
+    margin-top: 10px;
+    clear: both;
+    text-align: center;
+}
+
+.title {
+    font-size: 130%;
+    font-weight: bold;
+    margin-top: 10px;
+    float: right;
+    line-height: 1.5em;
+    width: 100%;
+    clear: both;
+}
+
+    .title a:link, .title a:visited, .title a:active {
+        color: #444;
+    }
+
+    .title a {
+        background: url(images/titlebg.png) no-repeat;
+        padding-left: 50px;
+        padding-bottom: 10px;
+        padding-top: 2px;
+    }
+
+        .title a:hover {
+            color: #F60;
+        }
+
+.content {
+    margin-left: 20px;
+    line-height: 1.5em;
+    color: #757575;
+    width: 96%;
+    clear: both;
+    padding: 10px 0;
+}
+
+.desc {
+    word-wrap: break-word;
+    word-break: break-all;
+    overflow: hidden;
+    line-height: 1.5;
+}
+
+.info {
+    clear: both;
+    text-align: right;
+    padding-right: 5px;
+    color: #666;
+    margin-top: 5px;
+    border-top: 1px solid #ddd;
+    padding-top: 1.6em;
+    margin-bottom: 10px;
+}
+
+    .info a:link, .info a:visited, .info a:active {
+        color: #666;
+    }
+
+#sideBar {
+    width: 230px;
+    min-height: 200px;
+    padding: 0px 0 0px 20px;
+    float: left;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-break: break-all;
+}
+
+#authorItem, .sidebar-block {
+    background: #fff;
+    -webkit-box-shadow: 1px 2px 3px #ddd;
+    box-shadow: 1px 2px 3px #ddd;
+    margin-bottom: 30px;
+    word-wrap: break-word;
+}
+
+    #sideBarMain h3, #authorItem h3 {
+        padding: 15px 20px;
+        font-size: 9pt;
+        border-bottom: 1px solid #ddd;
+        font-weight: normal;
+    }
+
+    #sideBarMain ul, #authorItem #authorInfo {
+        font-size: 9pt;
+        padding: 15px 20px;
+    }
+
+#profile_block {
+    margin-top: 5px;
+    line-height: 1.5;
+    text-align: left;
+}
+
+#sideBarMain ul {
+    line-height: 1.5em;
+    font-size: 13px;
+}
+
+#sideBarMain a {
+    font-size:13px;
+}
+
+#sideBarMain ul li a:hover {
+    text-decoration: underline;
+    color: #F60;
+}
+
+#footer {
+    color: #999;
+    text-align: center;
+    min-height: 15px;
+    margin-bottom: 10px;
+    text-align: center;
+    margin-top: 10px;
+    background: url(images/fo.png) no-repeat 220px 0;
+    padding: 40px 0px;
+    clear: both;
+    font-size:13px;
+}
+
+.topicListFooter {
+    text-align: right;
+    margin-right: 10px;
+    margin-top: 10px;
+    color: #000000;
+}
+
+    .topicListFooter a {
+        border: 0px;
+        padding: 5px 10px;
+        color: #999;
+        background: #ddd;
+    }
+
+        .topicListFooter a:hover {
+            background: #F60;
+            color: #fff;
+            text-decoration: none;
+        }
+
+#topics {
+    background: url(images/tp.png);
+    width: 100%;
+    min-height: 200px;
+    padding: 0px 0px 10px 0;
+    margin-bottom: 10px;
+    float: left;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-break: break-all;
+}
+
+    #topics .postTitle {
+        margin-top: 20px;
+        padding-bottom: 20px;
+        font-size: 18px;
+        font-weight: bold;
+        border-bottom: 1px solid #ddd;
+        float: left;
+        line-height: 1.5em;
+        width: 100%;
+        padding-left: 5px;
+    }
+
+.postTitle a {
+    background: url(images/titlebg.png) no-repeat;
+    padding-left: 50px;
+    padding-bottom: 10px;
+    padding-top: 2px;
+}
+
+.postBody {
+    line-height: 1.5;
+    clear: both;
+    padding: 10px 20px 20px 20px;
+    line-height: 1.5;
+    color: #000;
+    font-size: 15px;
+}
+
+.catListTitle, #sideTitle {
+    margin-bottom: 0px !important;
+}
+
+#sideBarMain ul {
+    margin: 0px !important;
+}

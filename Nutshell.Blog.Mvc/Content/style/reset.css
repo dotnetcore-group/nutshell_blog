@@ -1,10 +1,13 @@
 ﻿* {
-    padding:0px;
-    margin:0px;
+    padding: 0px;
+    margin: 0px;
+    box-sizing:border-box;
 }
+
 a {
-    text-decoration:none;
+    text-decoration: none;
 }
+
 ul, li {
-    list-style:none;
+    list-style: none;
 }

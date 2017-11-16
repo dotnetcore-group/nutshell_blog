@@ -52,6 +52,10 @@
       <HintPath>..\packages\Autofac.Mvc5.4.0.2\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Lucene.Net, Version=3.0.3.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Bin\Lucene.Net.dll</HintPath>
@@ -110,6 +114,7 @@
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
+    <Reference Include="ServiceStack.Redis, Version=4.5.14.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -844,11 +849,15 @@
     <Content Include="Content\easyui\plugins\jquery.treegrid.js" />
     <Content Include="Content\easyui\plugins\jquery.validatebox.js" />
     <Content Include="Content\easyui\plugins\jquery.window.js" />
+    <Content Include="Content\mDataTable\mDataTable.css" />
     <Content Include="Content\scripts\admin-menus.js" />
     <Content Include="Content\scripts\article.js" />
     <Content Include="Content\scripts\common.js" />
+    <Content Include="Content\mDataTable\mDataTable.js" />
     <Content Include="Content\scripts\paging.js" />
+    <Content Include="Content\scripts\user.js" />
     <Content Include="Content\style\account.css" />
+    <Content Include="Content\style\user.css" />
     <Content Include="Content\style\index-admin.css" />
     <Content Include="Content\style\paging.css" />
     <Content Include="Content\style\reset.css" />
@@ -881,12 +890,12 @@
     <Content Include="Content\treegrid\js\jquery.treegrid.js" />
     <Content Include="error\404.html" />
     <Content Include="error\500.html" />
-    <Content Include="error\css\dandelion.css" />
-    <Content Include="error\images\500err.png" />
-    <Content Include="error\images\blueprint.png" />
-    <Content Include="error\images\carbon.png" />
-    <Content Include="error\images\error-hanger.png" />
-    <Content Include="error\images\error-pin.png" />
+    <Content Include="Content\style\dandelion.css" />
+    <Content Include="Content\images\500err.png" />
+    <Content Include="Content\images\blueprint.png" />
+    <Content Include="Content\images\carbon.png" />
+    <Content Include="Content\images\error-hanger.png" />
+    <Content Include="Content\images\error-pin.png" />
     <Content Include="favicon.ico" />
     <Content Include="Content\images\nut_64.png" />
     <Content Include="Content\style\font-awesome.css.map" />
@@ -913,6 +922,8 @@
     <Content Include="Content\amazeui\assets\fonts\fontawesome-webfont.woff2" />
     <Content Include="Content\amazeui\assets\fonts\FontAwesome.otf" />
     <Content Include="Areas\Admin\Views\Article\Preview.cshtml" />
+    <Content Include="Areas\Admin\Views\Account\SignIn.cshtml" />
+    <Content Include="Areas\Admin\Views\Account\Register.cshtml" />
     <None Include="Content\scripts\jquery-1.8.0.intellisense.js" />
     <Content Include="Content\style\font-awesome.css" />
     <Content Include="Content\style\font-awesome.min.css" />
@@ -981,6 +992,11 @@
     <Content Include="skins\codinglife\images\body_bg.png" />
     <Content Include="skins\codinglife\images\title-yellow.png" />
     <Content Include="skins\codinglife\style.css" />
+    <Content Include="skins\RedAutumnalLeaves\images\bg1.png" />
+    <Content Include="skins\RedAutumnalLeaves\images\fo.png" />
+    <Content Include="skins\RedAutumnalLeaves\images\titlebg.png" />
+    <Content Include="skins\RedAutumnalLeaves\images\tp.png" />
+    <Content Include="skins\RedAutumnalLeaves\style.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -990,6 +1006,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Areas\Admin\Controllers\ArticleController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
@@ -1014,18 +1032,22 @@
     <Content Include="Views\Home\All.cshtml" />
     <Content Include="Views\Article\Search.cshtml" />
     <Content Include="Views\Article\Detail.cshtml" />
-    <Content Include="Views\User\SignIn.cshtml" />
-    <Content Include="Views\User\Register.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Article\Blogs.cshtml" />
     <None Include="Properties\PublishProfiles\publish.pubxml" />
-    <Content Include="Views\User\UserHome.cshtml" />
+    <Content Include="Views\User\Me.cshtml" />
     <Content Include="Views\Shared\_BlogHomeLayout.cshtml" />
     <Content Include="Views\Message\Index.cshtml" />
     <Content Include="Views\Home\Category.cshtml" />
     <Content Include="Views\Shared\_HomeLayout.cshtml" />
     <Content Include="Views\User\Favorite.cshtml" />
+    <Content Include="Views\Article\Edit.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
+    <Content Include="Views\Error\ServerError.cshtml" />
+    <Content Include="Views\User\Category.cshtml" />
+    <Content Include="Views\Shared\_UserHomeLayout.cshtml" />
+    <Content Include="Views\User\Blog.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1036,6 +1058,8 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="error\css\" />
+    <Folder Include="error\images\" />
     <Folder Include="Models\" />
     <Folder Include="Views\Category\" />
   </ItemGroup>
