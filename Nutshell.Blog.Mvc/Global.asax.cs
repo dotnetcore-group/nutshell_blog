@@ -76,7 +76,7 @@ namespace Nutshell.Blog.Mvc
                     {
                         string exception = GlobalExceptionAttribute.client.DequeueItemFromList(Keys.Exception);
                         ILog logger = LogManager.GetLogger(Keys.Exception);
-                        logger.Error(exception);
+                        //logger.Error(exception);
                     }
                     else
                     {

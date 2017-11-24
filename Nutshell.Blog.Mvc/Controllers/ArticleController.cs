@@ -17,6 +17,7 @@ using Nutshell.Blog.Common;
 
 namespace Nutshell.Blog.Mvc.Controllers
 {
+    [CheckUserLogin]
     public class ArticleController : BaseController
     {
         public ArticleController(IArticleService artService, IUserService uService, IFavoritesService favoritesService, ICommentService commentService, ICustomCategoryService customCategoryService, ICategoryService categoryService)
@@ -33,7 +34,6 @@ namespace Nutshell.Blog.Mvc.Controllers
         // 当 postid 为null 写文章
         // 不为null 判断此文章是否为此登录用户的
         // false 不能编辑 true 显示文章信息 可编辑
-        [CheckUserLogin]
         public ActionResult Edit(int? postid)
         {
             ViewBag.IsEditMode = false;
@@ -68,6 +68,7 @@ namespace Nutshell.Blog.Mvc.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult Search(string q)
         {
             var pageIndex = Convert.ToInt32(Request["pageIndex"] ?? "1");
@@ -140,7 +141,7 @@ namespace Nutshell.Blog.Mvc.Controllers
                 {
                     pageIndex = 1;
                 }
-
+                // TODO : 可以优化
                 // 置顶文章只在第一页（置顶文章数量最多20）
                 if (pageIndex <= 1)
                 {
@@ -169,11 +170,7 @@ namespace Nutshell.Blog.Mvc.Controllers
                 else
                 {
                     // 按日期分组的文章 类型为 IEnumerable<IGrouping<DateTime, Article>>
-                    var articles = articleService.LoadEntities(a => a.Author_Id == user.User_Id && a.State == 3)
-                        .OrderByDescending(a => a.Creation_Time)
-                        .OrderByDescending(a => a.IsTop)
-                        .Skip((pageIndex-1)*pageSize)
-                        .Take(pageSize)
+                    var articles = articleService.LoadPageEntities(a => a.Author_Id == user.User_Id && a.State == 3, pageIndex, pageSize)
                         .GroupBy(new Func<Article, DateTime>(a =>
                         {
                             var date = Convert.ToDateTime(a.Creation_Time.ToShortDateString());
@@ -184,10 +181,10 @@ namespace Nutshell.Blog.Mvc.Controllers
                 return View();
             }
             throw new HttpException(404, "Not Found!");
-            //return HttpNotFound();
         }
 
         // GET:/username/p/1.html
+        [AllowAnonymous]
         public ActionResult Detail(string author, int? id)
         {
             if (!id.HasValue || string.IsNullOrEmpty(author))
@@ -222,7 +219,6 @@ namespace Nutshell.Blog.Mvc.Controllers
             return View(article);
         }
 
-        [CheckUserLogin]
         [HttpPost]
         public JsonResult Comment(string content, int? id)
         {
@@ -246,6 +242,7 @@ namespace Nutshell.Blog.Mvc.Controllers
             return Json(res);
         }
 
+        [AllowAnonymous]
         public JsonResult GetComments(int? id)
         {
             var res = new JsonModel { code = 1, msg = "获取评论失败！" };
@@ -340,8 +337,6 @@ namespace Nutshell.Blog.Mvc.Controllers
                     article.Author_Id = user.User_Id;
                     if (ModelState.IsValid && customCate != null)
                     {
-
-
                         article.Title = Server.HtmlEncode(article.Title);
                         article.Body = Server.HtmlEncode(article.Body);
                         article.Content = article.Content.Replace("\n", " ").Replace("\r", " ").Replace("\t", " ").Replace(" ", "");
@@ -375,6 +370,30 @@ namespace Nutshell.Blog.Mvc.Controllers
                 }
             }
             return Json(res);
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public JsonResult PostDraft(Article article)
+        {
+            var data = new JsonModel { code = 1, msg = "保存失败，请重试！" };
+            var account = GetCurrentAccount();
+            if (ModelState.IsValid)
+            {
+                article.Author_Id = account.User_Id;
+                article.Title = Server.HtmlEncode(article.Title);
+                article.Body = Server.HtmlEncode(article.Body);
+                article.Content = article.Content.Replace("\n", " ").Replace("\r", " ").Replace("\t", " ").Replace(" ", "");
+                article.Introduction = article.Content.Length > 200 ? article.Content.Substring(0, 190) + "..." : article.Content;
+                article.State = (int)ArticleStateEnum.Draft;
+                articleService.AddEntity(article);
+                if (articleService.SaveChanges())
+                {
+                    data.code = 0;
+                    data.msg = "保存成功！";
+                }
+            }
+            return Json(data);
         }
     }
 }

@@ -21,6 +21,7 @@
  * 描述：
  * 
  *********************************************************************************/
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -45,13 +46,23 @@ namespace Nutshell.Blog.Model
         [Key, Column(Order = 2), ForeignKey("Article")]
         public int Article_Id { get; set; }
 
+        [Required]
+        [MaxLength(100)]
+        public string Url { get; set; }
+
+        [Required]
+        [MaxLength(50)]
+        public string Title { get; set; }
+
         public DateTime? Collection_Time { get; set; }
 
         [MaxLength(200)]
         public string Remark { get; set; }
 
+        [JsonIgnore]
         [ForeignKey("User_Id")]
         public virtual User User { get; set; }
+        [JsonIgnore]
         public virtual Article Article { get; set; }
     }
 }

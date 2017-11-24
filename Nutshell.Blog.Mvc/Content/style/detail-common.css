@@ -1,0 +1,27 @@
+﻿a:link {
+    text-decoration: none;
+    color: #105CB6;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #eb6313
+}
+pre {
+    font-family: Monaco,Menlo,Consolas,"Courier New",FontAwesome,monospace;
+    display: block;
+    padding: 1rem;
+    margin: 1rem 0;
+    font-size: 14px;
+    line-height: 1.6;
+    word-break: break-all;
+    word-wrap: break-word;
+    color: #555;
+    background-color: #f8f8f8;
+    border: 1px solid #dedede;
+    border-radius: 0;
+    white-space: pre-wrap;
+}
+#post_body img {
+    max-width:100%;
+}

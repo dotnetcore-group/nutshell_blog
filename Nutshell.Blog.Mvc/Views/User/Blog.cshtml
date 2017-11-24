@@ -5,17 +5,21 @@
 }
 
 <div class="tabs">
-    <ul class="tabs-nav">
-        <li class="active"><a href="javascript:void(0);" onclick="loadBlogs();">文章列表</a></li>
-        <li><a href="javascript:void(0);">类别管理</a></li>
-        <li><a href="javascript:void(0);">草稿箱</a></li>
-        <li><a href="javascript:void(0);">回收站</a></li>
-    </ul>
+    <div class="tabs-header">
+        <ul class="tabs-nav">
+            <li id="list" class="active"><a href="#list">文章列表</a></li>
+            <li id="category"><a href="#category">类别管理</a></li>
+            <li id="draft"><a href="#draft">草稿箱</a></li>
+            <li id="deleted"><a href="#deleted">回收站</a></li>
+        </ul>
+        <a href="/article/edit" id="write_article">写文章</a>
+    </div>
     <div class="tabs-content">
+        <!--文章列表开始-->
         <div class="tab-panel active">
-            <div class="selector_box">
+            <div class="top_content">
                 分类：
-                <select id="category">
+                <select id="sel_category">
                     <option value="0">全部</option>
                     @{
                         var categories = ViewBag.Categories as List<Nutshell.Blog.Model.CustomCategory>;
@@ -29,55 +33,109 @@
                     }
                 </select>
                 状态：
-                <select id="state">
+                <select id="sel_state">
                     <option value="0">全部</option>
                     <option value="@((int)Nutshell.Blog.Common.ArticleStateEnum.Published)">已发布</option>
                     <option value="@((int)Nutshell.Blog.Common.ArticleStateEnum.NotAudited)">未审核</option>
                     <option value="@((int)Nutshell.Blog.Common.ArticleStateEnum.NotPass)">未通过</option>
                 </select>
+
             </div>
             <table id="articles" class="mDataTable" cellspacing="0" style="width:100%">
                 <thead>
                     <tr>
                         <th class="hidden">Id</th>
-                        <th>标题</th>
-                        <th>状态</th>
-                        <th class="center">操作</th>
+                        <th>文章标题</th>
+                        <th width="70px">状态</th>
+                        <th class="center" width="200px">操作</th>
                     </tr>
                 </thead>
             </table>
         </div>
+        <!--文章列表结束-->
+        <!--分类列表开始-->
         <div class="tab-panel">
-            2
+            <div class="top_content">
+                <input type="text" name="name" id="txtName" />
+                <input type="button" value="添加分类" id="btnAddCate" />
+            </div>
+            <table id="categories" class="mDataTable" cellspacing="0" style="width:100%">
+                <thead>
+                    <tr>
+                        <th class="hidden">Id</th>
+                        <th>类别</th>
+                        <th width="70px">文章</th>
+                        <th class="center" width="100px">操作</th>
+                    </tr>
+                </thead>
+            </table>
         </div>
+        <!--分类列表结束-->
+        <!--草稿列表开始-->
         <div class="tab-panel">
-            3
+            <table id="drafts" class="mDataTable" cellspacing="0" style="width:100%">
+                <thead>
+                    <tr>
+                        <th class="hidden">Id</th>
+                        <th>文章标题</th>
+                        <th class="center" width="120px">操作</th>
+                    </tr>
+                </thead>
+            </table>
         </div>
+        <!--草稿列表结束-->
+        <!--回收列表开始-->
         <div class="tab-panel">
-            4
+            <table id="deletedlist" class="mDataTable" cellspacing="0" style="width:100%">
+                <thead>
+                    <tr>
+                        <th class="hidden">Id</th>
+                        <th>文章标题</th>
+                        <th class="center" width="120px">操作</th>
+                    </tr>
+                </thead>
+            </table>
         </div>
+        <!--回收列表结束-->
     </div>
 </div>
 
 @section script{
+    <script src="~/Content/scripts/common.js"></script>
     <script>
         $(function () {
+
             loadBlogs();
-            $("#category").change(function () {
+            loadCategories();
+            loadDrafts();
+            loadDeleted();
+            $("#sel_category").change(function () {
                 loadBlogs();
             });
-            $("#state").change(function () {
+            $("#sel_state").change(function () {
                 loadBlogs();
+            });
+            $("#btnAddCate").on('click', function () {
+                var name = $("#txtName").val().trim();
+                if (name.length > 0) {
+                    $.post("/category/addcategory", { name: name }, function (data) {
+                        console.log(data)
+                        if (data.code == 0) {
+                            loadCategories();
+                            $("#txtName").val("")
+                        }
+                    });
+                }
             });
         });
 
         // 加载文章列表
         function loadBlogs() {
-            var categoryid = $("#category").val();
-            var state = $("#state").val();
+            var categoryid = $("#sel_category").val();
+            var state = $("#sel_state").val();
             $('#articles').mDataTable({
-                pagesize: 20,
-                pageindex: 2,
+                pager:true,
+                pagesize: 10,
                 ajax: {
                     url: "/user/getblogs",
                     type: 'POST',
@@ -90,10 +148,12 @@
                     { data: 'Article_Id', hidden: true },
                     {
                         data: 'Title', render: function (data, row) {
+                            var date = row["Creation_Time"];
+                            date.replace(/Date\([\d+]+\)/, function (a) { eval('d = new ' + a) });
                             if (row["IsTop"]) {
                                 data = "[置顶]" + data;
                             }
-                            return '<a target="_blank" href="/' + row["Author"] + '/p/' + row["Article_Id"] + '.html">' + data + '</a>';
+                            return '<a target="_blank" href="/' + row["Author"] + '/p/' + row["Article_Id"] + '.html">' + data + '</a><span class="time">(' + d.format("yyyy-MM-dd hh:mm:ss") +')</span>';
                         }
                     },
                     {
@@ -114,6 +174,88 @@
                             } else {
                                 return '<a href="/article/edit?postid=' + data + '">编辑</a> | <a href="javascript:void(0);" onclick="setTop(this,' + data + ')">置顶</a> | <a href="javascript:void(0);" onclick="article_delete(' + data +')">删除</a> | <a href="javascript:void(0);" onclick="javascript:return setcat(this,78543746);" class="cat">分类</a>';
                             }
+                        }
+                    }
+                ]
+            });
+        }
+
+        // 加载分类列表
+        function loadCategories() {
+            $('#categories').mDataTable({
+                pager:false,
+                pagesize: 20,
+                ajax: {
+                    url: "/category/getcategories",
+                    type: 'POST',
+                    data: {
+                    }
+                },
+                columns: [
+                    { data: 'Id', hidden: true },
+                    {
+                        data: 'CategoryName', render: function (data, row) {
+                            return "<span>"+data+"</span>";
+                        }
+                    },
+                    { data: 'Count' },
+                    {
+                        data: 'Id', class: 'center', render: function (data, row) {
+                            return '<a href="javascript:void(0);" onclick="edit_cate(this,\'' + row["CategoryName"]+'\','+data+')">编辑</a> | <a href="javascript:void(0);" onclick="cate_delete(' + data + ')">删除</a>';
+
+                        }
+                    }
+                ]
+            });
+        }
+
+        // 加载草稿列表
+        function loadDrafts() {
+            $('#drafts').mDataTable({
+                pagesize: 20,
+                ajax: {
+                    url: "/user/getdrafts",
+                    type: 'POST'
+                },
+                columns: [
+                    { data: 'Article_Id', hidden: true },
+                    {
+                        data: 'Title', render: function (data, row) {
+                            var date = row["Creation_Time"];
+                            date.replace(/Date\([\d+]+\)/, function (a) { eval('d = new ' + a) });
+                            return '<a target="_blank" href="/' + row["Author"] + '/p/' + row["Article_Id"] + '.html">' + data + '</a><span class="time">(' + d.format("yyyy-MM-dd hh:mm:ss") + ')</span>';
+                        }
+                    },
+                    {
+                        data: 'Article_Id', class: 'center', render: function (data, row) {
+                            return '<a href="/article/edit?postid=' + data + '">编辑</a> | <a href="javascript:void(0);" onclick="article_publish(' + data + ')">发表</a> | <a href="javascript:void(0);" onclick="article_delete(' + data + ')">删除</a>';
+                        }
+                    }
+                ]
+            });
+        }
+
+        // 加载回收站列表
+        function loadDeleted() {
+            $('#deletedlist').mDataTable({
+                pager:true,
+                pagesize: 10,
+                ajax: {
+                    url: "/user/getdeleted",
+                    type: 'POST'
+                },
+                columns: [
+                    { data: 'Article_Id', hidden: true },
+                    {
+                        data: 'Title', render: function (data, row) {
+                            var date = row["Creation_Time"];
+                            date.replace(/Date\([\d+]+\)/, function (a) { eval('d = new ' + a) });
+                            return '<a target="_blank" href="/' + row["Author"] + '/p/' + row["Article_Id"] + '.html">' + data + '</a><span class="time">(' + d.format("yyyy-MM-dd hh:mm:ss") +')</span>';
+                        }
+                    },
+                    {
+                        data: 'Article_Id', class: 'center', render: function (data, row) {
+                                return '<a href="javascript:void(0);" onclick="article_delete(' + data +')">永久删除</a> | <a href="javascript:void(0);" onclick="javascript:return setcat(this,78543746);" class="cat">还原</a>';
                         }
                     }
                 ]
@@ -144,6 +286,68 @@
             });
         }
 
+        // 删除类别
+        function cate_delete(id) {
+            layer.confirm('确认要删除吗？', function (index) {
+                var index = layer.load(1, {
+                    shade: [0.1, '#fff'] //0.1透明度的白色背景
+                });
+                $.post("/category/delcategory", { id: id }, function (data) {
+                    if (data.code == 0) {
+                        layer.msg('已删除!', { icon: 1, time: 1000 });
+                        loadCategories();
+                    } else {
+                        layer.msg(data.msg, { icon: 2, time: 1000 });
+                    }
+                    layer.close(index);
+                });
+            });
+        }
+
+        // 编辑分类
+        function edit_cate(obj, name, id) {
+            $(".mDataTable span:hidden").show();
+            $(".edit_box").remove();
+            var $obj = $(obj);
+            var $tr = $obj.parents("tr");
+            var $name = $tr.children("td").eq(1);
+            var $span = $name.children("span");
+
+            $span.hide();
+            $name.append("<span class='edit_box'></span>");
+            var $box = $(".edit_box");
+            var $txtCateName = $("<input type='text' value='" + name + "' id='txtCateName'/>");
+            $box.append($txtCateName);
+            $box.append(" <a href='#' onclick='save_cate(this, " + id + ");return false;'>保存</> <a onclick='cancel_cate(this);return false;'>取消</>");
+            $txtCateName.focus();
+            //$txtCateName.blur(function () {
+            //    $name.text($txtCateName.val());
+            //});
+        }
+
+        // 保存分类
+        function save_cate(obj,id) {
+            var $obj = $(obj);
+            var $name = $obj.prev("input");
+            var name = $name.val().trim();
+            if (name.length > 0) {
+                $.post("/category/editcategory", { Id: id, CategoryName: name }, function (data) {
+                    if (data.code == 0) {
+                        loadCategories();
+                    } else {
+                        alert(data.msg);
+                    }
+                });
+            }
+        }
+
+        // 取消保存
+        function cancel_cate(obj) {
+            $(obj).parent().remove();
+            $(".mDataTable span:hidden").show();
+        }
+
+        // 删除文章
         function article_delete(id) {
             layer.confirm('确认要删除吗？', function (index) {
                 var index = layer.load(1, {

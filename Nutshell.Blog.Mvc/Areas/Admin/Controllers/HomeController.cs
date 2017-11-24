@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
 {
-    [CheckUserLogin]
+    [SupportFilter(Action = "Index")]
     public class HomeController : BaseController
     {
         public HomeController(IModuleService moduleService)
@@ -37,7 +37,7 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
             if (account != null)
             {
                 menu = moduleService.GetMenuByPersonId(account.User_Id)
-                    .Select(m => new { m.Id, m.Name, m.Url, m.Parent_Id , m.IsLast, m.Iconic});
+                    .Select(m => new { m.Id, m.Name, m.Url, m.Parent_Id, m.IsLast, m.Iconic });
             }
 
             return Json(new { menu }, JsonRequestBehavior.AllowGet);

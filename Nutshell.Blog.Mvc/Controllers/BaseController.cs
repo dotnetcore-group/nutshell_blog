@@ -37,6 +37,14 @@ namespace Nutshell.Blog.Mvc.Controllers
             }
         }
 
+        protected Account Account
+        {
+            get
+            {
+                return GetCurrentAccount();
+            }
+        }
+
         /// <summary>
         /// 获取当前登陆人的账户信息
         /// </summary>
@@ -60,7 +68,7 @@ namespace Nutshell.Blog.Mvc.Controllers
         {
             string filePath = HttpContext.Request.FilePath;
             var account = GetCurrentAccount();
-            List<Permission> perm = (List<Permission>)Session[filePath+ account.User_Id];
+            List<Permission> perm = (List<Permission>)Session[filePath + account.User_Id];
             return perm;
         }
     }

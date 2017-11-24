@@ -72,5 +72,34 @@ namespace Nutshell.Blog.Service
             }
             return user;
         }
+
+        public User ChangePassword(int userId, string oldPwd, string newPwd, out string msg)
+        {
+            var user = currentRepository.LoadEntity(u=>u.User_Id==userId);
+            if (user != null)
+            {
+                if (user.Login_Password.Equals(oldPwd.Md5_Base64(), StringComparison.CurrentCultureIgnoreCase))
+                {
+                    user.Login_Password = newPwd.Md5_Base64();
+                    if (currentRepository.SaveChanges())
+                    {
+                        msg = "修改成功！";
+                        return user;
+                    }
+                    else
+                    {
+                        msg = "保存失败！";
+                        return null;
+                    }
+                }
+                else
+                {
+                    msg = "原密码不匹配，修改失败！";
+                    return null;
+                }
+            }
+            msg = "修改失败！";
+            return null;
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Nutshell.Blog.Common;
 using Nutshell.Blog.Core;
+using Nutshell.Blog.Core.Filters;
 using Nutshell.Blog.IService;
 using Nutshell.Blog.Model.ViewModel;
 using Nutshell.Blog.Mvc.Controllers;
@@ -54,9 +55,9 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
             try
             {
                 var sessionid = Guid.NewGuid().ToString();
-                MemcacheHelper.Set(sessionid, SerializerHelper.SerializeToString(account), DateTime.Now.AddMinutes(20));
+                MemcacheHelper.Set(sessionid, SerializerHelper.SerializeToString(account), DateTime.Now.AddHours(1));
                 Response.Cookies[Keys.SessionId].Value = sessionid;
-                Response.Cookies[Keys.SessionId].Expires = DateTime.Now.AddMinutes(20);
+                Response.Cookies[Keys.SessionId].Expires = DateTime.Now.AddHours(1);
                 Response.Cookies[Keys.SessionId].HttpOnly = true;
                 //Response.Cookies[Keys.UserId].Value = account.User_Id.ToString();
             }
@@ -71,6 +72,26 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
         {
             ViewBag.Return = returnUrl;
             return View();
+        }
+
+        [HttpPost]
+        [CheckUserLogin]
+        public JsonResult ChangePwd(string oldPwd, string newPwd)
+        {
+            string msg = string.Empty;
+            var user = userService.ChangePassword(Account.User_Id, oldPwd, newPwd, out msg);
+
+            var data = new { code = 1, msg = msg };
+            if (user != null)
+            {
+                var sessionid = Guid.NewGuid().ToString();
+                MemcacheHelper.Set(sessionid, SerializerHelper.SerializeToString(user.ToAccount()), DateTime.Now.AddHours(1));
+                Response.Cookies[Keys.SessionId].Value = sessionid;
+                Response.Cookies[Keys.SessionId].Expires = DateTime.Now.AddHours(1);
+                data = new { code = 0, msg = "修改成功！" };
+            }
+
+            return Json(data);
         }
 
         [HttpPost]
@@ -94,8 +115,9 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
                     res.res = returnurl;
                     res.msg = "注册成功！";
                     var sessionid = Guid.NewGuid().ToString();
-                    MemcacheHelper.Set(sessionid, SerializerHelper.SerializeToString(userInfo.ToAccount()), DateTime.Now.AddMinutes(20));
+                    MemcacheHelper.Set(sessionid, SerializerHelper.SerializeToString(userInfo.ToAccount()), DateTime.Now.AddHours(1));
                     Response.Cookies[Keys.SessionId].Value = sessionid;
+                    Response.Cookies[Keys.SessionId].Expires = DateTime.Now.AddHours(1);
                 }
             }
             return Json(res);

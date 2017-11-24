@@ -1,13 +1,4 @@
-﻿a:link {
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-    color: #eb6313
-}
-
-#post_body h1 {
+﻿#post_body h1 {
     font-size: 28px;
     font-weight: bold;
     line-height: 1.5;
@@ -34,17 +25,6 @@ a:hover {
     font-weight: bold;
     margin: 10px 0;
 }
-
-pre {
-    white-space: pre-wrap;
-    white-space: -moz-pre-wrap !important;
-    white-space: -pre-wrap;
-    white-space: -o-pre-wrap;
-    word-wrap: break-word;
-}
-
-
-
 
 body {
     padding-top: 10px;

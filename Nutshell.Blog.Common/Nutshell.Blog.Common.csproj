@@ -35,6 +35,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,6 +48,7 @@
     <Compile Include="ArticleSateEnum.cs" />
     <Compile Include="DateTimeUtil.cs" />
     <Compile Include="Encrypt.cs" />
+    <Compile Include="ImageHelper.cs" />
     <Compile Include="Keys.cs" />
     <Compile Include="PagerHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

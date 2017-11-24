@@ -4,10 +4,13 @@
             if ($(this).hasClass("active")) {
                 return;
             }
-            $(".active").removeClass("active");
+            $("li.active").removeClass("active");
+            $("div.active").removeClass("active");
             $(this).addClass("active");
             $($(".tab-panel")[i]).addClass("active");
         });
     });
-});
 
+    var hash = location.hash;
+    $(hash).trigger("click");
+});

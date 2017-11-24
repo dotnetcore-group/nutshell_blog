@@ -3,7 +3,12 @@
     ViewBag.Title = "我的收藏";
     Layout = "~/Views/Shared/_UserHomeLayout.cshtml";
 }
+@model Nutshell.Blog.Model.Favorites
 
+@section style{
+
+    <link href="~/Content/mWindow/mWindow.css" rel="stylesheet" />
+}
 
 <div class="tabs">
     <ul class="tabs-nav">
@@ -16,8 +21,8 @@
                 <thead>
                     <tr>
                         <th class="hidden">Id</th>
-                        <th>标题</th>
-                        <th class="center">操作</th>
+                        <th>文章标题</th>
+                        <th class="center" width="100px">操作</th>
                     </tr>
                 </thead>
             </table>
@@ -27,12 +32,21 @@
         </div>
     </div>
 </div>
+<div id="editwindow" style="display:none;">
+    <h1>编辑收藏</h1>
+    <form>
+        <input type="text" name="" />
+        <input type="text" name="" />
+        <input type="button" value="完成" />
+    </form>
+</div>
 @section script{
+    <script src="~/Content/scripts/common.js"></script>
+    <script src="~/Content/mWindow/mWindow.js"></script>
     <script>
         $(function () {
             loadFavorites();
         });
-
         function loadFavorites() {
             $('#favorites').mDataTable({
                 ajax: {
@@ -43,23 +57,46 @@
                     { data: 'Article_Id', hidden: true },
                     {
                         data: 'Title', render: function (data, row) {
-                            if (row["IsTop"]) {
-                                return '[置顶]' + data;
-                            } else {
-                                return data;
-                            }
+                            var date = row["Collection_Time"];
+                            date.replace(/Date\([\d+]+\)/, function (a) { eval('d = new ' + a) });
+                            return '<a target="_blank" href="/' + row["author"] + '/p/' + row["Article_Id"] + '.html">' + data + '</a><span class="time">(' + d.format("yyyy-MM-dd hh:mm:ss") + ')</span>';
                         }
                     },
                     {
                         data: 'Article_Id', class: 'center', render: function (data, row) {
-                            if (row["IsTop"]) {
-                                return '<a href="/article/edit/' + data + '">编辑</a> | <a href="javascript:void(0);" onclick="unTop(this,' + data + ')">取消置顶</a> | <a href="?t=del&amp;id=78543746" name="del">删除</a> | <a href="javascript:void(0);" onclick="javascript:return setcat(this,78543746);" class="cat">分类</a>';
-                            } else {
-                                return '<a href="/article/edit/' + data + '">编辑</a> | <a href="javascript:void(0);" onclick="setTop(this,' + data + ')">置顶</a> | <a href="?t=del&amp;id=78543746" name="del">删除</a> | <a href="javascript:void(0);" onclick="javascript:return setcat(this,78543746);" class="cat">分类</a>';
-                            }
+                            return '<a href="#" onclick=\'edit_favorite(' + data + ');return false;\'">编辑</a> | <a href="#" onclick="del_favorite(' + data + ')" name="del">删除</a>';
                         }
                     }
                 ]
+            });
+        }
+
+        function edit_favorite(id) {
+            layer.open({
+                type: 2,
+                title: '编辑收藏',
+                area: ['450px', '400px'],
+                fixed: false, //不固定
+                content: '/favorite/edit?articleId=' + id
+            });
+        }
+
+        function del_favorite(id) {
+            layer.confirm('确定删除该收藏吗？', {
+                title: '删除确认',
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                $.post('/user/DeleteFavorite', { articleid: id }, function (data) {
+                    if (data.code == 0) {
+                        layer.msg('删除成功', { icon: 1 });
+                        loadFavorites();
+                    } else {
+                        layer.msg('删除失败，请重试！', { icon: 2 });
+                    }
+                });
+
+            }, function () {
+
             });
         }
     </script>

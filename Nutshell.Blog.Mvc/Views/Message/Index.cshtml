@@ -1,32 +1,5 @@
 ﻿
 @{
-    Layout = null;
+    ViewBag.Title = "消息中心";
+    Layout = "~/Views/Shared/_UserHomeLayout.cshtml";
 }
-@model List<Nutshell.Blog.Model.Module>
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-</head>
-<body>
-    <div>
-        @foreach(var menu in Model)
-        {
-            if (menu.Parent_Id == null)
-            {
-                <ul>@menu.Name
-                    @foreach (var item in Model)
-                    {
-                        if (item.Parent_Id == menu.Id)
-                        {
-                            <li>@item.Name</li>
-                        }
-                    }
-                </ul>
-            }
-        }
-    </div>
-</body>
-</html>

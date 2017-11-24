@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -25,6 +26,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <Use64BitIISExpress />
+    <TypeScriptToolsVersion>2.3</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -199,12 +201,6 @@
     <Content Include="Content\amazeui\assets\js\jquery.min.js" />
     <Content Include="Content\amazeui\assets\js\moment.js" />
     <Content Include="Content\amazeui\assets\js\theme.js" />
-    <Content Include="Content\cropper\cropper.common.js" />
-    <Content Include="Content\cropper\cropper.css" />
-    <Content Include="Content\cropper\cropper.esm.js" />
-    <Content Include="Content\cropper\cropper.js" />
-    <Content Include="Content\cropper\cropper.min.css" />
-    <Content Include="Content\cropper\cropper.min.js" />
     <Content Include="Content\easyui\locale\easyui-lang-af.js" />
     <Content Include="Content\easyui\locale\easyui-lang-am.js" />
     <Content Include="Content\easyui\locale\easyui-lang-ar.js" />
@@ -593,6 +589,31 @@
     <Content Include="Content\easyui\themes\metro\validatebox.css" />
     <Content Include="Content\easyui\themes\metro\window.css" />
     <Content Include="Content\easyui\themes\mobile.css" />
+    <Content Include="Content\images\me.png" />
+    <Content Include="Content\images\news.png" />
+    <Content Include="Content\images\favorite.png" />
+    <Content Include="Content\images\users.png" />
+    <Content Include="Content\images\message.png" />
+    <Content Include="Content\images\write.png" />
+    <Content Include="Content\Jcrop-0.9.12\css\Jcrop.gif" />
+    <Content Include="Content\Jcrop-0.9.12\css\jquery.Jcrop.css" />
+    <Content Include="Content\Jcrop-0.9.12\css\jquery.Jcrop.min.css" />
+    <Content Include="Content\Jcrop-0.9.12\js\jquery.color.js" />
+    <Content Include="Content\Jcrop-0.9.12\js\jquery.Jcrop.js" />
+    <Content Include="Content\Jcrop-0.9.12\js\jquery.Jcrop.min.js" />
+    <Content Include="Content\Jcrop-0.9.12\js\jquery.min.js" />
+    <Content Include="Content\jquery-upload-file\css\uploadfile.css" />
+    <Content Include="Content\jquery-upload-file\css\uploadfile.custom.css" />
+    <Content Include="Content\jquery-upload-file\demo\demo.html" />
+    <Content Include="Content\jquery-upload-file\java\FileUploadController.java" />
+    <Content Include="Content\jquery-upload-file\js\jquery.form.js" />
+    <Content Include="Content\jquery-upload-file\js\jquery.uploadfile.js" />
+    <Content Include="Content\jquery-upload-file\js\jquery.uploadfile.min.js" />
+    <Content Include="Content\jquery-upload-file\MIT-License.txt" />
+    <Content Include="Content\jquery-upload-file\php\delete.php" />
+    <Content Include="Content\jquery-upload-file\php\download.php" />
+    <Content Include="Content\jquery-upload-file\php\load.php" />
+    <Content Include="Content\jquery-upload-file\php\upload.php" />
     <Content Include="Content\layer\2.4\layer.js" />
     <Content Include="Content\layer\2.4\skin\default\icon-ext.png" />
     <Content Include="Content\layer\2.4\skin\default\icon.png" />
@@ -850,6 +871,8 @@
     <Content Include="Content\easyui\plugins\jquery.validatebox.js" />
     <Content Include="Content\easyui\plugins\jquery.window.js" />
     <Content Include="Content\mDataTable\mDataTable.css" />
+    <Content Include="Content\mWindow\mWindow.css" />
+    <Content Include="Content\mWindow\mWindow.js" />
     <Content Include="Content\scripts\admin-menus.js" />
     <Content Include="Content\scripts\article.js" />
     <Content Include="Content\scripts\common.js" />
@@ -857,6 +880,7 @@
     <Content Include="Content\scripts\paging.js" />
     <Content Include="Content\scripts\user.js" />
     <Content Include="Content\style\account.css" />
+    <Content Include="Content\style\detail-common.css" />
     <Content Include="Content\style\user.css" />
     <Content Include="Content\style\index-admin.css" />
     <Content Include="Content\style\paging.css" />
@@ -924,6 +948,10 @@
     <Content Include="Areas\Admin\Views\Article\Preview.cshtml" />
     <Content Include="Areas\Admin\Views\Account\SignIn.cshtml" />
     <Content Include="Areas\Admin\Views\Account\Register.cshtml" />
+    <Content Include="Content\jquery-upload-file\c#\Home\Index.cshtml" />
+    <Content Include="Content\jquery-upload-file\package.json" />
+    <Content Include="Content\jquery-upload-file\README.md" />
+    <Content Include="Content\jquery-upload-file\uploadfile.jquery.json" />
     <None Include="Content\scripts\jquery-1.8.0.intellisense.js" />
     <Content Include="Content\style\font-awesome.css" />
     <Content Include="Content\style\font-awesome.min.css" />
@@ -1007,7 +1035,11 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AccountController.cs" />
+    <Compile Include="Content\jquery-upload-file\c#\HomeController.cs" />
+    <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\FavoriteController.cs" />
+    <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Areas\Admin\Controllers\ArticleController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
@@ -1029,7 +1061,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\Home\All.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Article\Search.cshtml" />
     <Content Include="Views\Article\Detail.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
@@ -1048,6 +1080,10 @@
     <Content Include="Views\User\Category.cshtml" />
     <Content Include="Views\Shared\_UserHomeLayout.cshtml" />
     <Content Include="Views\User\Blog.cshtml" />
+    <Content Include="Views\User\Settings.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Favorite\Add.cshtml" />
+    <Content Include="Views\Favorite\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1061,7 +1097,7 @@
     <Folder Include="error\css\" />
     <Folder Include="error\images\" />
     <Folder Include="Models\" />
-    <Folder Include="Views\Category\" />
+    <Folder Include="Views\File\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nutshell.Blog.Common\Nutshell.Blog.Common.csproj">
@@ -1081,11 +1117,15 @@
       <Name>Nutshell.Blog.Model</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <ProjectExtensions>

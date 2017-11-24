@@ -21,6 +21,8 @@
  * 描述：
  * 
  *********************************************************************************/
+using Nutshell.Blog.Common;
+using Nutshell.Blog.Core;
 using Nutshell.Blog.IReposotory;
 using Nutshell.Blog.IService;
 using Nutshell.Blog.Model;
@@ -49,8 +51,25 @@ namespace Nutshell.Blog.Service
         /// <returns></returns>
         public bool HaveCollection(int user_id, int article_id)
         {
-            var fav = favoritesRepository.LoadEntity(f => f.User_Id == user_id && f.Article_Id == article_id);
-            return fav != null;
+            var fav = CurrentUserFavorites(user_id).Where(f => f.Article_Id == article_id);
+            return fav != null && fav.Count() > 0;
+        }
+
+        public List<Favorites> CurrentUserFavorites(int userId)
+        {
+            List<Favorites> favorites = null;
+            var obj = MemcacheHelper.Get(userId.ToString());
+            if (obj != null)
+            {
+                favorites = SerializerHelper.DeserializeToObject<List<Favorites>>(obj.ToString());
+            }
+            else
+            {
+                favorites = favoritesRepository.LoadEntities(f => f.User_Id == userId)?.ToList();
+                MemcacheHelper.Set(userId.ToString(), SerializerHelper.SerializeToString(favorites), DateTime.Now.AddMinutes(10));
+            }
+
+            return favorites;
         }
     }
 }

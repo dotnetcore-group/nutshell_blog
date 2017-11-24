@@ -42,10 +42,10 @@ namespace Nutshell.Blog.Core.Filters
                         if (account != null)
                         {
                             // 滑动过期时间
-                            cookie.Expires = DateTime.Now.AddMinutes(20);
+                            cookie.Expires = DateTime.Now.AddHours(1);
                             cookie.HttpOnly = true;
                             response.Cookies.Add(cookie);
-                            MemcacheHelper.Set(sessionid, obj, DateTime.Now.AddMinutes(20));
+                            MemcacheHelper.Set(sessionid, obj, DateTime.Now.AddHours(1));
                             Account = account;
                             return;
                         }

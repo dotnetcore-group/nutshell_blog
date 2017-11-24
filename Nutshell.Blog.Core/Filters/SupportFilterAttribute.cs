@@ -67,6 +67,7 @@ namespace Nutshell.Blog.Core.Filters
                         filterContext.Result = new JsonResult() { Data = new { code=1,msg= "你没有操作权限，请联系管理员！" } };
                         return;
                     }
+                    filterContext.HttpContext.Response.StatusCode = 403;
                     filterContext.Result = new ContentResult() { Content = "你没有操作权限，请联系管理员！" };
                     return;
                 }

@@ -17,7 +17,7 @@ namespace Nutshell.Blog.Mvc.Controllers
         }
 
         // GET: Home
-        public ActionResult All(string index)
+        public ActionResult Index(string index)
         {
             int pageIndex = Convert.ToInt32(index ?? "1");
             int pageSize = PageSize;
@@ -38,13 +38,13 @@ namespace Nutshell.Blog.Mvc.Controllers
             int pageIndex = Convert.ToInt32(index ?? "1");
             int pageSize = PageSize;
             int totalCount = 0;
-            var cate = categoryService.LoadEntity(c=>c.CategoryName.Equals(category, StringComparison.CurrentCultureIgnoreCase));
+            var cate = categoryService.LoadEntity(c => c.CategoryName.Equals(category, StringComparison.CurrentCultureIgnoreCase));
             if (cate == null)
             {
                 throw new HttpException(404, "Not Found!");
                 //return HttpNotFound();
             }
-            var articles = articleService.LoadPageEntities(pageIndex, pageSize, out totalCount, a => a.State == 3 && a.SystemCategory_Id==cate.Cate_Id, a => a.Creation_Time, false)?.ToList();
+            var articles = articleService.LoadPageEntities(pageIndex, pageSize, out totalCount, a => a.State == 3 && a.SystemCategory_Id == cate.Cate_Id, a => a.Creation_Time, false)?.ToList();
 
             ViewBag.Account = GetCurrentAccount();
 
@@ -55,6 +55,11 @@ namespace Nutshell.Blog.Mvc.Controllers
             ViewBag.Key = category;
             ViewBag.Name = cate.Cate_Name;
             return View(articles);
+        }
+
+        public ActionResult About()
+        {
+            return View();
         }
     }
 }

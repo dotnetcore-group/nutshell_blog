@@ -29,6 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -74,6 +75,11 @@ namespace Nutshell.Blog.Service
             return currentRepository.ExecuteSelectQuery<CustomCategories>("PROC_GET_CustomCategories @User_Id=@User_Id", new SqlParameter("@User_Id", UserId));
         }
 
+        public List<Article> LoadPageEntities(Expression<Func<Article,bool>> where, int pageIndex, int pageSize)
+        {
+            var articles = currentRepository.LoadEntities(where).OrderByDescending(a => a.Creation_Time).OrderByDescending(a => a.IsTop).Skip((pageIndex - 1) * pageSize).Take(pageSize)?.ToList();
+            return articles;
+        }
         
     }
 }

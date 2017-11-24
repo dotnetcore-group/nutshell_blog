@@ -1,0 +1,108 @@
+﻿
+@{
+    ViewBag.Title = "编辑收藏- 果壳园";
+}
+@model Nutshell.Blog.Model.Favorites
+
+@section style{
+    <style>
+        .main-content {
+            width: 415px;
+            height: 315px;
+            border: 1px solid #e0e0e0;
+            background: #F6F6F6;
+            margin: 0px auto;
+            padding: 8px 10px;
+        }
+
+        .content-header {
+            height: 50px;
+            border-bottom: 1px solid #e6e6e6;
+        }
+
+        .content-panel table {
+            font-size: 12px;
+            width: 100%;
+        }
+
+        #txtUrl, #txtTitle {
+            width: 267px;
+            border: 1px solid #aaa;
+            padding: 2px;
+        }
+
+        #txtUrl {
+            color: #666699;
+        }
+
+        .content-panel .error {
+            color: #c41313;
+        }
+
+        .isAdded {
+            font-size: 12px;
+            text-align: center;
+        }
+
+            .isAdded p {
+                color: #018101;
+                line-height: 6.5em;
+            }
+
+            .isAdded a {
+                margin-right: 5px;
+            }
+    </style>
+}
+<form>
+    <input type="hidden" value="@Model.Article_Id" id="txtArticle_Id" />
+    <div class="main-content">
+        <div class="content-header">
+
+        </div>
+        <div class="content-panel">
+            <table cellspacing="7">
+                <tr>
+                    <td width="40px">
+                        网址：
+                    </td>
+                    <td>
+                        <input type="text" value="/@Model.Url" id="txtUrl" />
+                        <span class="error" id="msg_url">* </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="40px">
+                        标题：
+                    </td>
+                    <td>
+                        <input type="text" value="@Model.Title" id="txtTitle" />
+                        <span class="error" id="msg_title">* </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="40px">
+                        摘要：
+                    </td>
+                    <td>
+                        <textarea id="txtSummary">@Model.Remark</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="40px"></td>
+                    <td>
+                        <input type="button" value="保存" id="btnSubmit" onclick="saveFavorite();" />
+                        <input type="button" value="取消" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</form>
+@section script{
+    <script>
+        $(function () {
+            
+        });
+    </script>
+}

@@ -196,7 +196,8 @@ body {
     padding-right: 80px;
     position: relative;
     left: 70px;
-    margin-top: -70px;
+    word-wrap: break-word;
+    margin-top: -65px;
 }
 
 .item-footer a, span {
@@ -211,6 +212,7 @@ body {
     padding: 25px;
     box-shadow: 0px 5px 5px -5px rgba(0,0,0,0.2);
     text-align: center;
+    padding-left:140px;
 }
 
 .footer {
@@ -337,5 +339,8 @@ body {
     }
     .body-right{
         display:none;
+    }
+    .list-pager{
+        padding-left:0px;
     }
 }

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Nutshell.Blog.Model;
+using System.Linq.Expressions;
 
 namespace Nutshell.Blog.Mvc.Controllers
 {
@@ -33,6 +34,12 @@ namespace Nutshell.Blog.Mvc.Controllers
                 return View(user);
             }
             return HttpNotFound();
+        }
+
+        public ActionResult Settings()
+        {
+            var user = userService.LoadEntity(u => u.User_Id == Account.User_Id);
+            return View(user);
         }
 
         public ActionResult Favorite()
@@ -70,50 +77,57 @@ namespace Nutshell.Blog.Mvc.Controllers
             return View();
         }
 
-        // 添加收藏
         [HttpPost]
-        public JsonResult PostFavorite(int articleid)
+        public JsonResult DeleteFavorite(int articleid)
         {
-            var json = new JsonModel { code = 0, msg = "收藏失败，刷新后重试！" };
-            var account = GetCurrentAccount();
-            var temp = favoritesService.LoadEntity(f => f.Article_Id == articleid && f.User_Id == account.User_Id);
-            if (temp != null)
+            var data = new { code = 1, msg = "删除失败，请重试！" };
+
+            var favorite = favoritesService.LoadEntity(f => f.Article_Id == articleid && f.User_Id == Account.User_Id);
+            if (favorite != null)
             {
-                json.msg = "该文章已经收藏过了，不能重复收藏！";
-                return Json(json);
+                favoritesService.DeleleEntity(favorite);
+                if (favoritesService.SaveChanges())
+                {
+                    data = new { code = 0, msg = "删除成功" };
+                }
             }
-            favoritesService.AddEntity(new Favorites() { Article_Id = articleid, User_Id = account.User_Id });
-            if (favoritesService.SaveChanges())
-            {
-                json.msg = "收藏成功！";
-            }
-            return Json(json);
+
+            return Json(data);
         }
 
+        // 文章列表
         [HttpPost]
         public JsonResult GetBlogs()
         {
+            var data = new JsonModel() { code = 1, msg = "加载数据失败，请重试！" };
             var account = GetCurrentAccount();
 
             var state = Convert.ToInt32(Request["state"] ?? "0");
             var categoryid = Convert.ToInt32(Request["categoryid"] ?? "0");
+            var pageIndex = Convert.ToInt32(Request["pageindex"] ?? "1");
+            var pageSize = Convert.ToInt32(Request["pagesize"] ?? "20");
 
-            var temp = articleService.LoadEntities(a => a.Author_Id == account.User_Id && a.State!=(int)ArticleStateEnum.Deleted && a.State != (int)ArticleStateEnum.Draft);
+            //var temp = articleService.LoadEntities(a => a.Author_Id == account.User_Id && a.State != (int)ArticleStateEnum.Deleted && a.State != (int)ArticleStateEnum    .Draft);
+
+            Expression<Func<Article, bool>> baseWhere = a => a.Author_Id == account.User_Id && a.State != (int)ArticleStateEnum.Deleted && a.State != (int)ArticleStateEnum.Draft;
 
             if (state != 0)
             {
-                temp = temp.Where(a => a.State == state);
+                //temp = temp.Where(a => a.State == state);
+                Expression<Func<Article, bool>> expression = a => a.State == state;
+
+                baseWhere = LinqExtensions.And(baseWhere, expression);
             }
             if (categoryid != 0)
             {
-                temp = temp.Where(a => a.CustomCategory_Id == categoryid);
+                //temp = temp.Where(a => a.CustomCategory_Id == categoryid);
+                Expression<Func<Article, bool>> expression = a => a.CustomCategory_Id == categoryid;
+
+                baseWhere = LinqExtensions.And(baseWhere, expression);
+
             }
 
-            if (temp == null)
-            {
-                return Json(new { code = 1, msg = "数据为空" });
-            }
-            var list = temp.OrderByDescending(a => a.Creation_Time).OrderByDescending(a => a.IsTop).Select(a => new
+            var list = articleService.LoadPageEntities(baseWhere, pageIndex, pageSize).Select(a => new
             {
                 a.Article_Id,
                 Author = a.Author.Login_Name,
@@ -122,7 +136,57 @@ namespace Nutshell.Blog.Mvc.Controllers
                 a.State,
                 a.IsTop
             });
-            return Json(new { code = 0, res = list, total = list.Count() });
+            var count = articleService.LoadEntities(baseWhere).Count();
+            if (list != null)
+            {
+                data.code = 0;
+                data.msg = "";
+                data.res = list;
+                data.total = count;
+                data.index = pageIndex;
+            }
+
+            return Json(data);
+        }
+
+        [HttpPost]
+        public JsonResult GetDrafts()
+        {
+            var data = new JsonModel() { code = 1, msg = "获取数据失败，请重试！" };
+            var account = GetCurrentAccount();
+
+            data.res = articleService.LoadEntities(a => a.Author_Id == account.User_Id && a.State == (int)ArticleStateEnum.Draft).Select(a => new
+            {
+                a.Article_Id,
+                a.Title,
+                a.Creation_Time
+            });
+
+            if (data.res != null)
+            {
+                data.code = 0;
+                data.msg = "获取数据成功";
+            }
+
+            return Json(data);
+        }
+
+        [HttpPost]
+        public JsonResult GetDeleted()
+        {
+            var data = new JsonModel() { code = 0, msg = "获取数据失败，请重试！" };
+            data.res = articleService.LoadEntities(a => a.Author_Id == Account.User_Id && a.State == (int)ArticleStateEnum.Deleted).Select(a => new
+            {
+                a.Article_Id,
+                a.Title,
+                a.Creation_Time
+            });
+            if (data.res != null)
+            {
+                data.code = 0;
+                data.msg = "获取数据成功";
+            }
+            return Json(data);
         }
 
         // 删除文章
@@ -216,14 +280,35 @@ namespace Nutshell.Blog.Mvc.Controllers
                 f.Article_Id,
                 author = f.Article.Author.Login_Name,
                 f.Remark,
-                f.Article.Title,
+                f.Title,
                 f.Collection_Time
             });
             if (list == null)
             {
                 return Json(new JsonModel { code = 1 });
             }
-            return Json(new JsonModel { code = 0, res = list, total=list.Count()});
+            return Json(new JsonModel { code = 0, res = list, total = list.Count() });
+        }
+
+        [HttpPost]
+        public JsonResult SetPhoto(int x, int y, int w, int h, string imgsrc)
+        {
+            var data = new { code = 1, msg = "保存头像失败，请重试！", url = "" };
+            var url = ImageHelper.CutAvatar(imgsrc, x, y, w, h);
+            if (!string.IsNullOrEmpty(url))
+            {
+                var user = userService.LoadEntity(u => u.User_Id == Account.User_Id);
+                if (user != null)
+                {
+                    user.Photo = url;
+                    userService.EditEntity(user);
+                    if (userService.SaveChanges())
+                    {
+                        data = new { code = 0, msg = "保存成功！", url = url };
+                    }
+                }
+            }
+            return Json(data);
         }
 
         [AllowAnonymous]

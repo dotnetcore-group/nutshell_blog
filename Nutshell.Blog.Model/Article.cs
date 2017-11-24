@@ -39,6 +39,7 @@ namespace Nutshell.Blog.Model
         public Article()
         {
             Creation_Time = DateTime.Now;
+            Edit_Time = DateTime.Now;
             //Article_State = 1;
             IsTop = false;
             State = 2;

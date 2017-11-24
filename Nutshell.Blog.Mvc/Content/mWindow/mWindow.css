@@ -1,0 +1,34 @@
+﻿.mWindow {
+    position: fixed;
+    z-index: 999;
+    border: 1px solid #e9e4e4;
+    top: 50%;
+    left: 50%;
+    background: #ffffff;
+    border-radius: 3px;
+    box-shadow: 5px 5px 10px 0px rgba(0,0,0,0.2);
+    padding: 10px 5px;
+}
+
+.m-bg {
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    left: 0px;
+    background: rgba(0,0,0,0.3);
+}
+
+.m-w-close {
+    font-size: 15px;
+    position: absolute;
+    top: 5px;
+    right: 7px;
+    cursor: pointer;
+    color: #616161;
+    z-index: 999;
+}
+
+    .m-w-close:hover {
+        color: #000;
+    }

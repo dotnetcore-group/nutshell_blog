@@ -1,0 +1,420 @@
+﻿
+@{
+    ViewBag.Title = "账户设置";
+    Layout = "~/Views/Shared/_UserHomeLayout.cshtml";
+}
+@model Nutshell.Blog.Model.User
+@section style{
+    <link href="~/Content/Jcrop-0.9.12/css/jquery.Jcrop.min.css" rel="stylesheet" />
+    <link href="~/Content/jquery-upload-file/css/uploadfile.css" rel="stylesheet" />
+    <style>
+        div {
+            box-sizing: unset;
+        }
+
+        .crop_holder > div {
+            display: table-cell;
+            /*overflow:hidden;*/
+        }
+
+        .crop_holder .crop_area {
+            height: 400px;
+            width: 400px;
+            border: 1px solid #ccc;
+            background: #f0f0ee;
+            vertical-align: bottom;
+        }
+
+        .crop_area > img {
+            width: 400px;
+        }
+
+        #preview-pane {
+            position: absolute;
+            left: 410px;
+            bottom: 0px;
+        }
+
+            #preview-pane div {
+                overflow: hidden;
+            }
+
+            #preview-pane p {
+                font-weight: bold;
+                font-size: 12px;
+                line-height: 28px;
+            }
+
+            #preview-pane img {
+                height: 100%;
+            }
+
+            /*#preview-pane #preview_small_wrap {
+                height: 48px;
+                width: 48px;
+            }*/
+
+            #preview-pane #preview_large_wrap {
+                height: 180px;
+                width: 180px;
+            }
+
+        .m-form {
+            margin: 10px 0px;
+        }
+
+        .m-btn-submit {
+            padding: 5px 15px;
+            color: #fff;
+            border: none;
+            font-size: 12px;
+            background: #1184db;
+            border-radius: 3px;
+            cursor: pointer;
+            background-image: linear-gradient(to bottom,#1184db,#146290);
+            background-repeat: repeat-x;
+            text-shadow: 0 -1px 0 rgba(0,0,0,0.25);
+        }
+
+            .m-btn-submit:hover {
+                background: #096cb7;
+            }
+
+        .account_block {
+            margin: 25px 0px;
+            width: 580px;
+        }
+
+            .account_block h3 {
+                border-bottom: 1px solid #BFD1EB;
+                font-size: 12px;
+                padding: 0px 3px 3px 7px;
+                margin: 8px 0px 5px 0px;
+            }
+
+            .account_block table tr td {
+                padding-top: 3px;
+            }
+
+                .account_block table tr td input[type=button] {
+                    margin-top: 5px;
+                    margin-right: 3px;
+                    padding: 0px 5px;
+                }
+
+            .account_block h3 a {
+                float: right;
+                color: #808080;
+                font-weight: normal;
+                text-decoration: underline;
+            }
+
+            .account_block .account_title {
+                color: #666;
+            }
+
+            .account_block h3 a:hover {
+                color: #FF6600
+            }
+
+            .account_block > div {
+                padding: 0px 3px 0px 7px;
+            }
+
+            .account_block .account_right_info {
+                float: right;
+            }
+
+            .account_block .error {
+                color: #b61111;
+            }
+
+            .account_block .info {
+                color: #808080;
+            }
+    </style>
+}
+
+<div class="tabs">
+    <div class="tabs-header">
+        <ul class="tabs-nav">
+            <li id="photo" class="active"><a href="#photo">上传头像</a></li>
+            <li id="account"><a href="#account">账户设置</a></li>
+            <li id="profile"><a href="#profile">基本资料</a></li>
+        </ul>
+    </div>
+    <div class="tabs-content">
+        <!--上传头像页开始-->
+        <div class="tab-panel active">
+            <div id="fileuploader">上传头像图片</div>
+            <div class="crop_holder">
+                <div class="crop_area">
+                    <img src="" id="crop_image" />
+                </div>
+                <div id="preview-pane">
+                    <p>头像预览（180 * 180）</p>
+                    <div id="preview_large_wrap">
+                        <img id="preview_large" src="@Model.Photo" />
+                    </div>
+                </div>
+            </div>
+            @using (Ajax.BeginForm("SetPhoto", "User", null, new AjaxOptions() { HttpMethod = "POST", OnSuccess="setSuccess" }, new { @class = "m-form" }))
+            {
+                @Html.Hidden("x", 0, new { id = "x" })
+                @Html.Hidden("y", 0, new { id = "y" })
+                @Html.Hidden("w", 0, new { id = "w" })
+                @Html.Hidden("h", 0, new { id = "h" })
+                @Html.Hidden("imgsrc", "", new { id = "imgsrc" })
+                <input type="submit" class="m-btn-submit" value="裁切并保存" />
+            }
+        </div>
+        <!--上传头像页结束-->
+        <!--账户设置页开始-->
+        <div class="tab-panel">
+            <form id="form_account">
+                <div class="account_block">
+                    <h3>
+                        用户名
+                    </h3>
+                    <div id="dispaly_username">
+                        <span class="account_right_info">@Model.Login_Name</span>
+                        <span>您的用户名</span>
+                    </div>
+                </div>
+                <div class="account_block">
+                    <h3>
+                        <a href="javascript:void(0);" onclick="editToggle(this); return false;">修改</a>
+                        密码
+                    </h3>
+                    <div id="dispaly_password">
+                        <span class="account_right_info">******</span>
+                        <span>您的密码</span>
+                    </div>
+                    <div id="edit_password" style="display:none;">
+                        <table>
+                            <tr>
+                                <td class="account_title">旧密码：</td>
+                                <td>
+                                    <input type="password" id="txtOldPwd" />
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="account_title">新密码：</td>
+                                <td>
+                                    <input type="password" id="txtNewPwd" />
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="account_title">确认密码：</td>
+                                <td>
+                                    <input type="password" id="txtConfirmPwd" />
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <input type="button" onclick="changePwd();" value="保存" />
+                                    <input type="button" onclick="cancelPwd();" value="取消" />
+                                    <span id="error_pwd" class="error"></span>
+                                    <span id="info_pwd" class="info"></span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="account_block">
+                    <h3>
+                        <a href="javascript:void(0);" onclick="editToggle(this); return false;">修改</a>
+                        绑定邮箱
+                    </h3>
+                    <div id="dispaly_password">
+                        <span class="account_right_info">835290734@qq.com</span>
+                        <span>您的绑定邮箱</span>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!--账户设置页结束-->
+        <!--基本资料页开始-->
+        <div class="tab-panel">
+            基本资料
+        </div>
+        <!--基本资料页结束-->
+    </div>
+</div>
+@section script{
+    <script src="~/Content/scripts/jquery-1.8.0.min.js"></script>
+    <script src="~/Content/scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Content/Jcrop-0.9.12/js/jquery.Jcrop.min.js"></script>
+    <script src="~/Content/jquery-upload-file/js/jquery.form.js"></script>
+    <script src="~/Content/jquery-upload-file/js/jquery.uploadfile.js"></script>
+    <script>
+        $(function () {
+            // jcrop配置
+            var bounds = [];
+            var jcrop_api,
+                boundx,
+                boundy,
+
+                // Grab some information about the preview pane
+                $preview = $('#preview-pane'),
+                $pcnt = $('#preview-pane #preview_large_wrap'),
+                $pimglarge = $('#preview-pane #preview_large'),
+
+                xsize = $pcnt.width(),
+                ysize = $pcnt.height();
+
+            var $crop_image = $('#crop_image').Jcrop({
+                onChange: preview,
+                onSelect: select,
+                aspectRatio: xsize / ysize
+            }, function () {
+                bounds = this.getBounds();
+                boundx = bounds[0];
+                boundy = bounds[1];
+                jcrop_api = this;
+
+                $preview.appendTo(jcrop_api.ui.holder);
+            });
+
+            // 图片上传
+            var upload = $("#fileuploader").uploadFile({
+                url: "/file/uploadfile",                 //文件上传url
+                fileName: "image",               //提交到服务器的文件名
+                uploadStr: "<i class='fa fa-upload'></i>上传头像图片",
+                dragDropStr: "<span><b>（支持文件拖放上传，只能上传单张10M以下jpg,jpeg,png,gif图片）</b></span>",
+                maxFileCount: 1,                //上传文件个数（多个时修改此处)
+                maxFileCountErrorStr: '队列中已经有一个文件了，如果您想重新上传，请先删除该文件。',
+                showDelete: true,
+                returnType: 'json',              //服务返回数据
+                allowedTypes: 'jpg,jpeg,png,gif',  //允许上传的文件式
+                onLoad: function (obj) {
+                    //页面加载时，onLoad回调。如果有需要在页面初始化时显示（比如：文件修改时）的文件需要在此方法中处理
+                    //obj.createProgress('/tmpImage.jpg');      //createProgress方法可以创建一个已上传的文件
+                },
+                deleteCallback: function (data, pd) {
+                    //文件删除时的回调方法。
+                    //如：以下ajax方法为调用服务器端删除方法删除服务器端的文件
+                    $.ajax({
+                        cache: false,
+                        url: "file/upload",
+                        type: "DELETE",
+                        dataType: "json",
+                        data: { file: data.url },
+                        success: function (data) {
+                            if (data.code === 0) {
+                                pd.statusbar.hide();        //删除成功后隐藏进度条等
+                                $imgsrc.val('');
+                            } else {
+                                console.log(data.message);  //打印服务器返回的错误信息
+                            }
+                        }
+                    });
+                },
+                onSuccess: function (files, data, xhr, pd) {
+                    //上传成功后的回调方法。本例中是将返回的文件名保到一个hidden类开的input中，以便后期数据处理
+                    if (data && data.code === 0) {
+                        //$('#image').val(data.url);
+                        console.log(data);
+                        $imgsrc.val(data.url);
+                        jcrop_api.setImage(data.url);
+                        $pimglarge.attr('src', data.url);
+                        var select = [0, 0, bounds[1], bounds[1]];
+                        jcrop_api.setSelect(select);
+                    } else {
+
+                    }
+                }
+            });
+
+            var $x = $("#x");
+            var $y = $("#y");
+            var $w = $("#w");
+            var $h = $("#h");
+            var $imgsrc = $("#imgsrc");
+
+
+
+            function preview(c) {
+                if (parseInt(c.w) > 0) {
+                    var rx = xsize / c.w;
+                    var ry = ysize / c.h;
+
+                    $pimglarge.css({
+                        width: Math.round(rx * boundx) + 'px',
+                        height: Math.round(ry * boundy) + 'px',
+                        marginLeft: '-' + Math.round(rx * c.x) + 'px',
+                        marginTop: '-' + Math.round(ry * c.y) + 'px'
+                    });
+                }
+            };
+
+            function select(c) {
+                console.log(c);
+                $x.val(c.x);
+                $y.val(c.y);
+                $w.val(c.w);
+                $h.val(c.h);
+            }
+        });
+
+        function setSuccess(data) {
+            if (data.code == 0) {
+                location.reload(true);
+            } else {
+                alert(data.msg);
+            }
+        }
+
+        function editToggle(obj) {
+            var $divs = $(obj).parents(".account_block").find("div");
+            if ($divs) {
+                $divs.toggle();
+            }
+        }
+
+        function changePwd() {
+            var $txtOldPwd = $("#txtOldPwd");
+            var $txtNewPwd = $("#txtNewPwd");
+            var $txtConfirmPwd = $("#txtConfirmPwd");
+            var $errorpwd = $("#error_pwd");
+            var $infopwd = $("#info_pwd");
+
+            $errorpwd.text("");
+            $infopwd.text("");
+
+            var oldPwd = $txtOldPwd.val().trim();
+            var newPwd = $txtNewPwd.val().trim();
+            var confPwd = $txtConfirmPwd.val().trim();
+            if (oldPwd.length <= 0 || newPwd.length <= 0) {
+                $errorpwd.text('请输入密码');
+                return;
+            }
+            if (newPwd == oldPwd) {
+                $errorpwd.text('新密码不能与原密码一致');
+                return;
+            }
+            if (newPwd != confPwd) {
+                $errorpwd.text('两次输入的密码不一致');
+                return;
+            }
+            $errorpwd.text("");
+
+            $.post("/account/changepwd", { oldPwd: oldPwd, newPwd: newPwd }, function (data) {
+                console.log(data);
+                if (data.code == 0) {
+                    $infopwd.text(data.msg);
+                } else {
+                    $errorpwd.text(data.msg);
+                }
+            });
+        }
+
+        function cancelPwd() {
+            $("#dispaly_password").show();
+            $("#edit_password").hide();
+        }
+    </script>
+}

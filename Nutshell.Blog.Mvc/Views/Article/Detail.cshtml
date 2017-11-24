@@ -5,7 +5,7 @@
 }
 
 @section style{
-    <link href="~/Content/amazeui/assets/css/amazeui.min.css" rel="stylesheet" />
+    <link href="~/Content/style/detail-common.css" rel="stylesheet" />
 }
 <input id="article" type="hidden" value="@Model.Article_Id" />
 <div id="post_detail">
@@ -140,7 +140,6 @@
 </div>
 
 @section script{
-    <script src="~/Content/amazeui/assets/js/amazeui.min.js"></script>
     <script>
         $(function () {
             var id = $("#article").val();
@@ -164,9 +163,13 @@
             });
 
             $("#green_channel_favorite").click(function () {
-                $.post("/user/postfavorite", { articleid: id }, function (data) {
-                    alert(data.msg);
-                })
+                layer.open({
+                    type: 2,
+                    title:'添加收藏',
+                    area: ['450px', '400px'],
+                    fixed: false, //不固定
+                    content: '/favorite/add?articleId=' + id
+                });
             });
             getcomments();
         })

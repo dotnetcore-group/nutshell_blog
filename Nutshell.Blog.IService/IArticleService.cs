@@ -3,6 +3,7 @@ using Nutshell.Blog.Model.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,5 +18,7 @@ namespace Nutshell.Blog.IService
         List<CustomCategories> GetCustomCategoriesByUserId<CustomCategories>(int UserId);
 
         int GetArticlesTotalCount(int UserId);
+
+        List<Article> LoadPageEntities(Expression<Func<Article, bool>> where, int pageIndex, int pageSize);
     }
 }

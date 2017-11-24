@@ -1,5 +1,62 @@
 ﻿@{
-        ViewBag.Title = $"{Model.Nickname} 的主页";
+    ViewBag.Title = $"{Model.Nickname}的主页";
     Layout = "~/Views/Shared/_UserHomeLayout.cshtml";
 }
 @model Nutshell.Blog.Model.User
+@section style{
+    <style>
+        .me_content {
+            width: 100%;
+        }
+
+            .me_content img {
+                width: 186px;
+                height: 186px;
+                border: 1px solid #ccc;
+            }
+            .me_content .user_photo {
+                float:left;
+            }
+            .me_content .user_info {
+                padding-left: 200px;
+            }
+
+            .me_content .user_menu {
+                margin-top: 8px;
+            }
+
+                .me_content .user_menu li a {
+                    padding: 3px 0px;
+                    font-size: 13px;
+                    color: #075db3;
+                    display:inline-block;
+                }
+                    .me_content .user_menu li a:hover {
+                        color: #FF6600;
+                        text-decoration: underline;
+                    }
+                .user_info .user_time{
+                    color:#666;
+                    line-height:35px;
+                }
+    </style>
+}
+
+<div class="me_content">
+    <div class="user_photo">
+        <img src="@Model.Photo" />
+        <ul class="user_menu">
+            <li><a href="/user/settings#photo">修改头像</a></li>
+            <li><a href="/user/settings#profile">修改资料</a></li>
+            <li><a href="/@Model.Login_Name">博客主页</a></li>
+        </ul>
+    </div>
+    <div class="user_info">
+        <h1 class="user_name">
+            @Model.Nickname
+        </h1>
+        <p class="user_time">
+            园龄：@Nutshell.Blog.Common.DateTimeUtil.GetYearMonthDayString(Model.Registration_Time)
+        </p>
+    </div>
+</div>
