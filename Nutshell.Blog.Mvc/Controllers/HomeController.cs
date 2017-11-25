@@ -1,4 +1,5 @@
-﻿using Nutshell.Blog.IService;
+﻿using Nutshell.Blog.Common;
+using Nutshell.Blog.IService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,6 +61,18 @@ namespace Nutshell.Blog.Mvc.Controllers
         public ActionResult About()
         {
             return View();
+        }
+
+        public JsonResult Send()
+        {
+            var data = new { msg = "发送失败!" };
+
+            if (EmailHelper.Send("1809636031@qq.com", "测试邮件", "<span style='color:red'>这是一封测试邮件，您能收到此邮件，说明您的邮箱参数设置正确，请勿回复此邮件。</span>"))
+            {
+                data = new { msg="发送成功！"};
+            }
+
+            return Json(data);
         }
     }
 }

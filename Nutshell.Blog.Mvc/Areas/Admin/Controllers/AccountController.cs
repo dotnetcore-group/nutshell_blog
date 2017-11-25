@@ -2,6 +2,7 @@
 using Nutshell.Blog.Core;
 using Nutshell.Blog.Core.Filters;
 using Nutshell.Blog.IService;
+using Nutshell.Blog.Model;
 using Nutshell.Blog.Model.ViewModel;
 using Nutshell.Blog.Mvc.Controllers;
 using System;
@@ -74,6 +75,38 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
             return View();
         }
 
+        public ActionResult Valid(string returnUrl, string confirmatio)
+        {
+            if (string.IsNullOrEmpty(returnUrl))
+            {
+                returnUrl = "/";
+            }
+            if (!string.IsNullOrEmpty(confirmatio))
+            {
+                var obj = MemcacheHelper.Get(confirmatio);
+                if (obj != null)
+                {
+                    var user = SerializerHelper.DeserializeToObject<User>(obj.ToString());
+                    if (user != null)
+                    {
+                        // 邮箱验证成功
+                        user.IsValid = true;
+                        userService.EditEntity(user);
+                        if (userService.SaveChanges())
+                        {
+                            MemcacheHelper.Delete(confirmatio);
+                            var sessionid = Guid.NewGuid().ToString();
+                            MemcacheHelper.Set(sessionid, SerializerHelper.SerializeToString(user.ToAccount()), DateTime.Now.AddHours(1));
+                            Response.Cookies[Keys.SessionId].Value = sessionid;
+                            Response.Cookies[Keys.SessionId].Expires = DateTime.Now.AddHours(1);
+                            return Redirect(returnUrl);
+                        }
+                    }
+                }
+            }
+            return View();
+        }
+
         [HttpPost]
         [CheckUserLogin]
         public JsonResult ChangePwd(string oldPwd, string newPwd)
@@ -106,22 +139,30 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
                 {
                     Login_Name = user.UserName,
                     Login_Password = user.Password.Md5_Base64(),
-                    Nickname = user.Nickname
+                    Nickname = user.Nickname,
+                    Email = user.Email
                 });
                 // 注册成功
                 if (userService.SaveChanges())
                 {
-                    res.code = 0;
-                    res.res = returnurl;
-                    res.msg = "注册成功！";
-                    var sessionid = Guid.NewGuid().ToString();
-                    MemcacheHelper.Set(sessionid, SerializerHelper.SerializeToString(userInfo.ToAccount()), DateTime.Now.AddHours(1));
-                    Response.Cookies[Keys.SessionId].Value = sessionid;
-                    Response.Cookies[Keys.SessionId].Expires = DateTime.Now.AddHours(1);
+                    var id = Guid.NewGuid().ToString("N");
+                    var href = $"{Request.Url.Host}:{Request.Url.Port}/account/valid?confirmatio={id}";
+                    if (EmailHelper.Send(user.Email, "清激活您的账号，完成注册", $"点击连接完成注册<a href='{href}'>{href}</a>"))
+                    {
+                        res.code = 0;
+                        res.res = returnurl;
+                        res.msg = "注册成功！";
+                        MemcacheHelper.Set(id, SerializerHelper.SerializeToString(userInfo), DateTime.Now.AddHours(1));
+                    }
+                    else
+                    {
+                        res.msg = "邮件发送失败！";
+                    }
                 }
             }
             return Json(res);
         }
+
         [HttpPost]
         public JsonResult NotExitesUserName()
         {
@@ -133,6 +174,7 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
             var user = userService.LoadEntity(u => u.Login_Name.Equals(UserName, StringComparison.CurrentCultureIgnoreCase));
             return user == null ? Json(true) : Json(false);
         }
+        [HttpPost]
         public JsonResult NotExitesNickname()
         {
             string Nickname = Request.Params["Nickname"];
@@ -141,6 +183,17 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
                 return Json(false);
             }
             var user = userService.LoadEntity(u => u.Nickname.Equals(Nickname, StringComparison.CurrentCultureIgnoreCase));
+            return user == null ? Json(true) : Json(false);
+        }
+        [HttpPost]
+        public JsonResult NotExitesEmail()
+        {
+            string Email = Request.Params["Email"];
+            if (string.IsNullOrEmpty(Email))
+            {
+                return Json(false);
+            }
+            var user = userService.LoadEntity(u => u.Email.Equals(Email, StringComparison.CurrentCultureIgnoreCase));
             return user == null ? Json(true) : Json(false);
         }
     }

@@ -26,6 +26,13 @@
                 @Html.ValidationMessageFor(model => model.UserName, null, new { @class = "error" })
             </div>
             <div class="ctrl-group">
+                @Html.LabelFor(model => model.Email)
+                <div>
+                    @Html.TextBoxFor(model => model.Email)
+                </div>
+                @Html.ValidationMessageFor(model => model.Email, null, new { @class = "error" })
+            </div>
+            <div class="ctrl-group">
                 @Html.LabelFor(model => model.Nickname)
                 <div>
                     @Html.TextBoxFor(model => model.Nickname)
@@ -69,7 +76,7 @@
             loaded();
             alert(data.msg);
             if (data.code==0) {
-                location = data.res;
+                location = '/account/valid?returnUrl=' + data.res;
             }
         }
         function begin() {

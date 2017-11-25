@@ -1,17 +1,13 @@
-﻿
-@{
-    Layout = null;
+﻿@{ 
+    ViewBag.Title = "关于 - 果壳园";
 }
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>About</title>
-</head>
-<body>
     <div> 
+        <input type="button" value="发送" onclick="send();"/>
     </div>
-</body>
-</html>
+    <script>
+        function send() {
+            $.post("/home/send", {}, function (data) {
+
+            });
+        }
+    </script>

@@ -952,6 +952,7 @@
     <Content Include="Content\jquery-upload-file\package.json" />
     <Content Include="Content\jquery-upload-file\README.md" />
     <Content Include="Content\jquery-upload-file\uploadfile.jquery.json" />
+    <Content Include="Areas\Admin\Views\Account\Valid.cshtml" />
     <None Include="Content\scripts\jquery-1.8.0.intellisense.js" />
     <Content Include="Content\style\font-awesome.css" />
     <Content Include="Content\style\font-awesome.min.css" />

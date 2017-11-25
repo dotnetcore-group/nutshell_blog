@@ -39,6 +39,7 @@ namespace Nutshell.Blog.Model
         public User()
         {
             IsLock = false;
+            IsValid = false;
             Photo = "/upload/photos/default.png";
             Registration_Time = DateTime.Now;
             Theme_Id = 1;
@@ -66,6 +67,11 @@ namespace Nutshell.Blog.Model
 
         public DateTime Registration_Time { get; set; }
 
+        [Required]
+        [Index(IsUnique = true)]
+        [MaxLength(30)]
+        public string Email { get; set; }
+
         [MaxLength(50)]
         [DisplayName("个性签名")]
         public string Words { get; set; }
@@ -79,6 +85,8 @@ namespace Nutshell.Blog.Model
         public string Photo { get; set; }
 
         public bool IsLock { get; set; }
+
+        public bool IsValid { get; set; }
 
         [ForeignKey("Theme")]
         public int Theme_Id { get; set; }
@@ -94,7 +102,7 @@ namespace Nutshell.Blog.Model
         public virtual ICollection<CustomCategory> CustomCategories { get; set; }
         public virtual Theme Theme { get; set; }
         public virtual ICollection<Role> Roles { get; set; }
-        
+
 
         public Account ToAccount()
         {
@@ -103,7 +111,9 @@ namespace Nutshell.Blog.Model
                 User_Id = this.User_Id,
                 UserName = this.Login_Name,
                 Nickname = this.Nickname,
-                Photo = Photo
+                Photo = Photo,
+                IsValid = this.IsValid,
+                IsLock = this.IsLock
             };
         }
     }

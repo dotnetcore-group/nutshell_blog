@@ -42,6 +42,12 @@ namespace Nutshell.Blog.Model.ViewModel
         [RegularExpression(@"^\w+$", ErrorMessage ="只能输入数字、字母、下划线！")]
         public string UserName { get; set; }
 
+        [Required(ErrorMessage = "请输入邮箱！")]
+        [DisplayName("邮箱")]
+        [Remote("NotExitesEmail", "Account", ErrorMessage = "该邮箱已被占用！", HttpMethod = "Post")]
+        [RegularExpression(@"^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$", ErrorMessage = "请输入正确的邮箱格式！")]
+        public string Email { get; set; }
+
         [DisplayName("密码")]
         [PasswordPropertyText]
         [Required(ErrorMessage = "请输入密码！")]

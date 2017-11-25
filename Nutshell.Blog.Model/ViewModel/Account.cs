@@ -41,6 +41,10 @@ namespace Nutshell.Blog.Model.ViewModel
 
         public string Photo { get; set; }
 
+        public bool IsValid { get; set; }
+
+        public bool IsLock { get; set; }
+
         public IList<CustomCategory> CustomCategories { get; set; }
     }
 }
