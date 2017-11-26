@@ -158,14 +158,14 @@
                     </div>
                 </div>
             </div>
-            @using (Ajax.BeginForm("SetPhoto", "User", null, new AjaxOptions() { HttpMethod = "POST", OnSuccess="setSuccess" }, new { @class = "m-form" }))
+            @using (Ajax.BeginForm("SetPhoto", "User", null, new AjaxOptions() { HttpMethod = "POST", OnSuccess="setSuccess", OnBegin="setBegin" }, new { @class = "m-form" }))
             {
-                @Html.Hidden("x", 0, new { id = "x" })
-                @Html.Hidden("y", 0, new { id = "y" })
-                @Html.Hidden("w", 0, new { id = "w" })
-                @Html.Hidden("h", 0, new { id = "h" })
-                @Html.Hidden("imgsrc", "", new { id = "imgsrc" })
-                <input type="submit" class="m-btn-submit" value="裁切并保存" />
+            @Html.Hidden("x", 0, new { id = "x" })
+            @Html.Hidden("y", 0, new { id = "y" })
+            @Html.Hidden("w", 0, new { id = "w" })
+            @Html.Hidden("h", 0, new { id = "h" })
+            @Html.Hidden("imgsrc", "", new { id = "imgsrc" })
+            <input type="submit" class="m-btn-submit" value="裁切并保存" />
             }
         </div>
         <!--上传头像页结束-->
@@ -230,8 +230,11 @@
                         绑定邮箱
                     </h3>
                     <div id="dispaly_password">
-                        <span class="account_right_info">835290734@qq.com</span>
+                        <span class="account_right_info">@Model.Email</span>
                         <span>您的绑定邮箱</span>
+                    </div>
+                    <div id="edit_email" style="display:none;">
+                        <input type="email" name="email"/>
                     </div>
                 </div>
             </form>
@@ -365,6 +368,12 @@
                 location.reload(true);
             } else {
                 alert(data.msg);
+            }
+        }
+
+        function setBegin() {
+            if ($("#imgsrc").val() == "") {
+                return false;
             }
         }
 

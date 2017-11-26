@@ -372,6 +372,24 @@ namespace Nutshell.Blog.Mvc.Controllers
             return Json(res);
         }
 
+        // 由草稿箱发布
+        [HttpPost]
+        public JsonResult Publish(int id)
+        {
+            var data = new { code=1, msg="发布失败！"};
+            var article = articleService.LoadEntity(a=>a.Article_Id==id && a.Author_Id==Account.User_Id);
+            if (article != null)
+            {
+                article.State = (int)ArticleStateEnum.NotAudited;
+                articleService.EditEntity(article);
+                if (articleService.SaveChanges())
+                {
+                    data = new { code = 0, msg = "发布成功，请等待审核！" };
+                }
+            }
+            return Json(data);
+        }
+
         [HttpPost]
         [ValidateInput(false)]
         public JsonResult PostDraft(Article article)

@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "招聘 - 果壳园";
+}
+<div>
+    <input type="text" name="kw" id="kw" />
+    <button onclick="searchJob();">搜索</button>
+    <div id="content">
+        <table width="100%">
+            <thead>
+                <tr>
+                    <th>职位名称</th>
+                    <th>公司名称</th>
+                    <th>职位月薪</th>
+                    <th>工作地点</th>
+                    <th>发布时间</th>
+                    <th>数据来源</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+@section script{
+    <script>
+        function searchJob() {
+            var kw = $("#kw").val();
+            var kw = $.post("/job/search", { kw: kw }, function (data) {
+                $("#content table tbody").empty();
+                $.each(data, function (i, e) {
+                    $("#content table tbody").append('<tr><td><a target="_blank" href="' + e["Link"] + '">' + e["Name"] + '</a></td><td>' + e["Company"] + '</td><td>' + e["Wages"] + '</td><td>' + e["City"] + '</td><td>' + e["Date"] + '</td><td>' + e["Source"] + '</td></tr>');
+                });
+            });
+        }
+    </script>
+}

@@ -1,104 +1,60 @@
-﻿@{
-    Layout = null;
+﻿
+@{
+    ViewBag.Title = "用户登录 - 果壳园";
+    Layout = "~/Areas/Admin/Views/Shared/_AccountLayout.cshtml";
 }
 @model Nutshell.Blog.Model.ViewModel.UserLogin
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>用户登录 - 果壳园</title>
-    <meta name="description" content="这是一个 index 页面">
-    <meta name="keywords" content="index">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="Cache-Control" content="no-siteapp" />
-    <link rel="icon" type="image/png" href="~/favicon.png">
-    <link rel="apple-touch-icon-precomposed" href="~/Content/amazeui/assets/i/app-icon72x72@2x.png">
-    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
-    <link rel="stylesheet" href="~/Content/amazeui/assets/css/amazeui.min.css" />
-    <link rel="stylesheet" href="~/Content/amazeui/assets/css/amazeui.datatables.min.css" />
-    <link rel="stylesheet" href="~/Content/amazeui/assets/css/app.css">
-    <script src="~/Content/amazeui/assets/js/jquery.min.js"></script>
-    @*<script src="~/Scripts/jquery.signalR-2.2.2.min.js"></script>
-    <script src="~/signalr/hubs"></script>*@
-</head>
-
-<body data-type="login">
-    <script src="~/Content/amazeui/assets/js/theme.js"></script>
-    <div class="am-g tpl-g">
-        <!-- 风格切换 -->
-        <div class="tpl-skiner">
-            <div class="tpl-skiner-toggle am-icon-cog">
+<h2 class="title">用户登录</h2>
+<div class="left">
+    @using (Ajax.BeginForm("/signin", new { returnUrl = ViewBag.Return }, new AjaxOptions() { OnBegin = "begin", OnSuccess = "success", OnComplete = "complate" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "error" })
+        <div class="ctrl-group">
+            @Html.LabelFor(model => model.UserName)
+            <div>
+                @Html.TextBoxFor(m => m.UserName, new { id = "user-name", placeholder = "请输入账号", maxlength = "20" })
             </div>
-            <div class="tpl-skiner-content">
-                <div class="tpl-skiner-content-title">
-                    选择主题
-                </div>
-                <div class="tpl-skiner-content-bar">
-                    <span class="skiner-color skiner-white" data-color="theme-white"></span>
-                    <span class="skiner-color skiner-black" data-color="theme-black"></span>
-                </div>
-            </div>
+            @Html.ValidationMessageFor(m => m.UserName, null, new { @class = "error" })
         </div>
-        <div class="tpl-login">
-            <div class="tpl-login-content">
-                <div class="tpl-login-logo">
-
-                </div>
-
-                @using (Ajax.BeginForm("/signin", new { returnUrl = ViewBag.Return }, new AjaxOptions() { OnBegin = "begin", OnSuccess = "success", OnComplete = "complate" }, new { @class = "am-form tpl-form-line-form" }))
-                {
-                    @Html.AntiForgeryToken()
-                    @Html.ValidationSummary(true, "", new { @class = "error-msg" })
-                    <div class="am-form-group">
-                        @Html.TextBoxFor(m => m.UserName, new { @class = "tpl-form-input", id = "user-name", placeholder = "请输入账号", maxlength="20" })
-                        @Html.ValidationMessageFor(m => m.UserName, null, new { @class="error-msg"})
-                    </div>
-                    <div class="am-form-group">
-                        @Html.PasswordFor(m => m.Password, new { @class = "tpl-form-input", id = "user-pwd", placeholder = "请输入密码", maxlength = "20" })
-                        @Html.ValidationMessageFor(m => m.Password, null, new { @class = "error-msg" })
-
-                    </div>
-                    <div class="am-form-group">
-
-                        <input type="submit" value="登录" data-am-loading="{loadingText: '登录中...'}" class="am-btn am-btn-primary  am-btn-block tpl-btn-bg-color-success tpl-login-btn"/>
-
-                    </div>
-                }
+        <div class="ctrl-group">
+            @Html.LabelFor(model => model.Password)
+            <div>
+                @Html.PasswordFor(m => m.Password, new { id = "user-pwd", placeholder = "请输入密码", maxlength = "20" })
             </div>
+            @Html.ValidationMessageFor(m => m.Password, null, new { @class = "error" })
         </div>
-    </div>
-    <script src="~/Content/amazeui/assets/js/amazeui.min.js"></script>
-    <script src="~/Content/amazeui/assets/js/app.js"></script>
-    <script src="~/Content/scripts/jquery-validation/jquery.validate.min.js"></script>
-    <script src="~/Content/scripts/jquery.unobtrusive-ajax.min.js"></script>
-    <script src="~/Content/scripts/jquery-validation/jquery.validate.unobtrusive.min.js"></script>
-    @*<script src="~/Scripts/pushmessage.js"></script>*@
+        <div class="ctrl-group">
+            @Html.LabelFor(model => model.ValidCode)
+            <div id="code_box">
+                @Html.TextBoxFor(m => m.ValidCode, new { id = "txtCode", placeholder = "请输入验证码", maxlength = "20" })
+            </div>
+            @Html.ValidationMessageFor(m => m.ValidCode, null, new { @class = "error" })
+            <img id="img_code" src="/account/getValidCode" alt="验证码加载失败" />
+        </div>
+        <div style="text-align:center">
+            <input type="submit" id="btnLogin" value="登录" data-am-loading="{loadingText: '登录中...'}" class="btn-submit" />
+        </div>
+    }
+</div>
+@section script{
     <script>
         $(function () {
-            
+
         });
 
         var begin = function () {
-            $(".tpl-login-btn").button("loading");
+
         }
         var success = function (data) {
             if (data.code == 0) {
-                //var hub = $.connection.pushHub;
-                //$.connection.hub.start().done(function () {
-                //    var res = hub.server.online(data.userId);
-                //    console.log(res)
-                //});
                 location = data.url;
             } else {
                 alert(data.msg);
             }
         }
         var complate = function () {
-            $(".tpl-login-btn").button("reset");
+
         }
     </script>
-</body>
-</html>
+}

@@ -38,5 +38,7 @@ namespace Nutshell.Blog.Common
         public static readonly string UserId = "_userid";
 
         public static readonly string Exception = "_exception";
+
+        public static string ValidCode = "_validcode";
     }
 }

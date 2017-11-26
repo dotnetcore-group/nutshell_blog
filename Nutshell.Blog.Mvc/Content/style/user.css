@@ -12,18 +12,20 @@
     position:relative
 }
 
-.tabs-header #write_article {
-    float: right;
-    display: block;
-    padding: 3px 15px;
-    background: #075db3;
-    color: #fff;
-    border-radius: 3px;
-    font-size: 12px;
-    position:absolute;
-    top:0px;
-    right:5px;
-}
+    .tabs-header #write_article {
+        float: right;
+        display: block;
+        padding: 3px 17px;
+        background: #1184db;
+        color: #fff;
+        border-radius: 3px;
+        font-size: 12px;
+        position: absolute;
+        top: 0px;
+        right: 5px;
+        background-image: linear-gradient(to bottom,#1184db,#146290);
+        text-shadow: 0 -1px 0 rgba(0,0,0,0.25);
+    }
 
     .tabs .tabs-nav li {
         border: 1px solid #c8d3de;

@@ -41,6 +41,10 @@ namespace Nutshell.Blog.Model.ViewModel
         [Required(ErrorMessage = "密码不能为空！")]
         public string Password { get; set; }
 
+        [DisplayName("验证码")]
+        [Required(ErrorMessage = "请输入验证码！")]
+        public string ValidCode { get; set; }
+
         [DisplayName("记住我？")]
         public bool RememberMe { get; set; }
     }

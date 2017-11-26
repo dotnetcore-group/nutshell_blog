@@ -37,10 +37,16 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
             dynamic data = null;
             if (ModelState.IsValid)
             {
+                var code = user.ValidCode;
+                if (!Session[Keys.ValidCode].Equals(code))
+                {
+                    data = new { code = 1, msg = "验证码错误", url = "" };
+                    return Json(data);
+                }
                 var userinfo = userService.ValidationUser(user.UserName, user.Password, out msg);
                 data = new { code = 1, msg = msg, url = "" };
                 // 验证通过
-                if (userinfo != null)
+                if (userinfo != null && userinfo.IsValid)
                 {
                     // 将用户信息存入memcache
                     // 返回客户端一个session id
@@ -107,6 +113,19 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
             return View();
         }
 
+        public ActionResult ForgetPassword()
+        {
+            return View();
+        }
+
+        public FileResult GetValidCode()
+        {
+            var code = ValidCodeHelper.CreateValidateCode(6);
+            Session[Keys.ValidCode] = code;
+            byte[] buffer = ValidCodeHelper.CreateValidateGraphic(code);//把验证码画到画布
+            return File(buffer, "image/jpeg");
+        }
+
         [HttpPost]
         [CheckUserLogin]
         public JsonResult ChangePwd(string oldPwd, string newPwd)
@@ -135,7 +154,7 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
             var res = new JsonModel { code = 1, msg = "注册失败！" };
             if (ModelState.IsValid)
             {
-                var userInfo = userService.AddEntity(new Model.User
+                var userInfo = userService.AddEntity(new User
                 {
                     Login_Name = user.UserName,
                     Login_Password = user.Password.Md5_Base64(),

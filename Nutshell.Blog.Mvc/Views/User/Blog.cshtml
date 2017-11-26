@@ -135,7 +135,7 @@
             var state = $("#sel_state").val();
             $('#articles').mDataTable({
                 pager:true,
-                pagesize: 10,
+                pagesize: 20,
                 ajax: {
                     url: "/user/getblogs",
                     type: 'POST',
@@ -362,6 +362,17 @@
                     }
                     layer.close(index);
                 });
+            });
+        }
+
+        function article_publish(id) {
+            $.post("/article/publish", { id: id }, function (data) {
+                if (data.code == 0) {
+                    layer.msg(data.msg, { icon: 1, time: 1000 });
+                    loadDrafts();
+                } else {
+                    layer.msg(data.msg, { icon: 2, time: 1000 });
+                }
             });
         }
     </script>

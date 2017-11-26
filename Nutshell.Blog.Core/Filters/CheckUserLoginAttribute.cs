@@ -41,11 +41,6 @@ namespace Nutshell.Blog.Core.Filters
                         var account = SerializerHelper.DeserializeToObject<Account>(obj.ToString());
                         if (account != null)
                         {
-                            // 未通过验证
-                            if (!account.IsValid)
-                            {
-                                filterContext.Result = new RedirectResult("/account/valid");
-                            }
                             // 滑动过期时间
                             cookie.Expires = DateTime.Now.AddHours(1);
                             cookie.HttpOnly = true;

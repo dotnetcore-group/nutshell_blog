@@ -33,6 +33,9 @@
     <Reference Include="Commons">
       <HintPath>..\packages\memcacheddotnet\trunk\clientlib\src\clientlib\bin\2.0\Debug\Commons.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.6.5.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.6.5\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>
@@ -78,6 +81,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -95,13 +99,17 @@
     <Compile Include="Filters\GlobalExceptionAttribute.cs" />
     <Compile Include="Filters\OnlyAllowAjaxRequestAttribute.cs" />
     <Compile Include="Filters\SupportFilterAttribute.cs" />
+    <Compile Include="JobSearch.cs" />
     <Compile Include="LinqExtensions.cs" />
     <Compile Include="MemcacheHelper.cs" />
     <Compile Include="Model\IndexContent.cs" />
+    <Compile Include="Model\Job.cs" />
+    <Compile Include="Model\SourceType.cs" />
     <Compile Include="MvcHtmlExtend.cs" />
     <Compile Include="OnlineUserPool.cs" />
     <Compile Include="PanGuLuceneHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ValidCodeHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

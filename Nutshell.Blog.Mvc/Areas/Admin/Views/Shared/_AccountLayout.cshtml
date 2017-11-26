@@ -1,0 +1,33 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en" class="fullscreen-bg">
+<head>
+    <title>@ViewBag.Title</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="shortcut icon" href="~/favicon.ico" />
+    <link href="~/Content/style/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/toastr/toastr.min.css" rel="stylesheet" />
+    <link href="~/Content/style/account.css" rel="stylesheet" />
+    @RenderSection("style", false)
+</head>
+<body>
+    <header>
+        <a href="/">返回主页</a>
+    </header>
+    <div class="main">
+        @RenderBody()
+    </div>
+
+    <script src="~/Content/scripts/jquery-1.8.0.min.js"></script>
+    <script src="~/Content/scripts/jquery-validation/jquery.validate.min.js"></script>
+    <script src="~/Content/scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Content/scripts/jquery-validation/jquery.validate.unobtrusive.min.js"></script>    
+    <script src="~/Content/toastr/toastr.min.js"></script>
+    @RenderSection("script", false)
+</body>
+</html>
