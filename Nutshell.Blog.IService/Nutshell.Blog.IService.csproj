@@ -46,6 +46,7 @@
     <Compile Include="ICommentService.cs" />
     <Compile Include="ICustomCategoryService.cs" />
     <Compile Include="IFavoritesService.cs" />
+    <Compile Include="IFriendLinksService.cs" />
     <Compile Include="IMessageService.cs" />
     <Compile Include="IModuleOperateService.cs" />
     <Compile Include="IModuleService.cs" />

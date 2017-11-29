@@ -6,7 +6,7 @@
 @model Nutshell.Blog.Model.ViewModel.UserLogin
 <h2 class="title">用户登录</h2>
 <div class="left">
-    @using (Ajax.BeginForm("/signin", new { returnUrl = ViewBag.Return }, new AjaxOptions() { OnBegin = "begin", OnSuccess = "success", OnComplete = "complate" }))
+    @using (Ajax.BeginForm("/signin", new { returnUrl = ViewBag.Return }, new AjaxOptions() { OnBegin = "login_begin", OnSuccess = "login_success", OnFailure = "login_failure" }))
     {
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true, "", new { @class = "error" })
@@ -30,31 +30,54 @@
                 @Html.TextBoxFor(m => m.ValidCode, new { id = "txtCode", placeholder = "请输入验证码", maxlength = "20" })
             </div>
             @Html.ValidationMessageFor(m => m.ValidCode, null, new { @class = "error" })
-            <img id="img_code" src="/account/getValidCode" alt="验证码加载失败" />
+            <img id="img_code" title="点击更换验证码" src="/account/getValidCode" alt="验证码加载失败" onclick="changecode()" />
         </div>
-        <div style="text-align:center">
-            <input type="submit" id="btnLogin" value="登录" data-am-loading="{loadingText: '登录中...'}" class="btn-submit" />
+        <div class="ctrl-btns" style="text-align:center;">
+            <input type="submit" id="btnLogin" value="登录" class="btn-submit" />
+
+            <p>
+                <a href="/account/register">还没有账号？请先注册。</a>
+                <a href="/account/forgetpassword">忘记密码？</a>
+            </p>
         </div>
     }
 </div>
 @section script{
     <script>
-        $(function () {
-
-        });
-
-        var begin = function () {
-
+        function login_begin() {
+            login_loading();
         }
-        var success = function (data) {
+        function login_loading() {
+            $("#btnLogin").removeClass("btn-submit");
+            $("#btnLogin").addClass("btn-disable");
+            $("#btnLogin").attr("disabled", true);
+            $("#btnLogin").val('登录中');
+        }
+        var login_success = function (data) {
+            login_loaded();
             if (data.code == 0) {
+                location = data.url;
+            } else if (data.code == 4) {
+                alert(data.msg);
                 location = data.url;
             } else {
                 alert(data.msg);
+                changecode();
             }
         }
-        var complate = function () {
+        function login_failure() {
+            login_loaded();
+        }
+        function login_loaded() {
+            $("#btnLogin").removeClass("btn-disable");
+            $("#btnLogin").addClass("btn-submit");
+            $("#btnLogin").val('登录');
+            $("#btnLogin").attr("disabled", false);
+        }
 
+        function changecode() {
+            var timestamp = new Date().getTime();
+            $("#img_code").attr('src', "/account/getValidCode?timestamp=" + timestamp);
         }
     </script>
 }

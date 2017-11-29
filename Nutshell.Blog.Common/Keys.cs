@@ -39,6 +39,7 @@ namespace Nutshell.Blog.Common
 
         public static readonly string Exception = "_exception";
 
-        public static string ValidCode = "_validcode";
+        public static readonly string ValidCode = "_validcode";
+        public static readonly string FriendLinks = "_friendlinks";
     }
 }

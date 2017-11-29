@@ -46,6 +46,7 @@
     <Compile Include="ICommentRepository.cs" />
     <Compile Include="ICustomCategoryRepository.cs" />
     <Compile Include="IFavoritesRepository.cs" />
+    <Compile Include="IFriendLinksRepository.cs" />
     <Compile Include="IMessageRepository.cs" />
     <Compile Include="IModuleOperateRepository.cs" />
     <Compile Include="IModuleRepository.cs" />

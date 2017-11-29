@@ -1,4 +1,5 @@
 ﻿using Nutshell.Blog.Common;
+using Nutshell.Blog.Core;
 using Nutshell.Blog.IService;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,9 @@ namespace Nutshell.Blog.Mvc.Controllers
 {
     public class HomeController : BaseController
     {
-        public HomeController(ICategoryService categoryService, IArticleService articleService, IUserService userService)
+        public HomeController(ICategoryService categoryService, IArticleService articleService, IUserService userService, IFriendLinksService friendLinksService)
         {
+            base.friendLinksService = friendLinksService;
             base.userService = userService;
             base.articleService = articleService;
             base.categoryService = categoryService;
@@ -31,6 +33,7 @@ namespace Nutshell.Blog.Mvc.Controllers
             ViewBag.Page = 1 + (totalCount / pageSize);
             ViewBag.Total = totalCount;
             ViewBag.Categories = categoryService.GetCategories();
+            ViewBag.FriendLinks = friendLinksService.GetFriendLinks();
             return View(articles);
         }
 
@@ -55,6 +58,7 @@ namespace Nutshell.Blog.Mvc.Controllers
             ViewBag.Categories = categoryService.GetCategories();
             ViewBag.Key = category;
             ViewBag.Name = cate.Cate_Name;
+            ViewBag.FriendLinks = friendLinksService.GetFriendLinks();
             return View(articles);
         }
 
@@ -67,7 +71,7 @@ namespace Nutshell.Blog.Mvc.Controllers
         {
             var data = new { msg = "发送失败!" };
 
-            if (EmailHelper.Send("1809636031@qq.com", "测试邮件", "<span style='color:red'>这是一封测试邮件，您能收到此邮件，说明您的邮箱参数设置正确，请勿回复此邮件。</span>"))
+            if (EmailHelper.Send("835290734@qq.com", "测试邮件", "<span style='color:red'>这是一封测试邮件，您能收到此邮件，说明您的邮箱参数设置正确，请勿回复此邮件。</span>"))
             {
                 data = new { msg="发送成功！"};
             }

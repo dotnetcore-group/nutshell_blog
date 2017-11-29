@@ -48,6 +48,7 @@ namespace Nutshell.Blog.Model
         public DbSet<ModuleOperate> ModuleOperate { get; set; }
         public DbSet<ArticleState> ArticleState { get; set; }
         public DbSet<Article_Category> Article_Category { get; set; }
+        public DbSet<FriendLinks> FriendLinks { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

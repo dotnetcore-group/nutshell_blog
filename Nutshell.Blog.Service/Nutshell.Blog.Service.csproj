@@ -46,6 +46,7 @@
     <Compile Include="CommentService.cs" />
     <Compile Include="CustomCategoryService.cs" />
     <Compile Include="FavoritesService.cs" />
+    <Compile Include="FriendLinksService.cs" />
     <Compile Include="MessageService.cs" />
     <Compile Include="ModuleOperateService.cs" />
     <Compile Include="ModuleService.cs" />

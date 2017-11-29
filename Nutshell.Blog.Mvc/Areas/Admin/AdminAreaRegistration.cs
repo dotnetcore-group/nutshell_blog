@@ -17,7 +17,7 @@ namespace Nutshell.Blog.Mvc.Areas.Admin
             context.MapRoute(
                 "Account",
                 "account/{action}/{id}",
-                new {area="Admin", controller="Account", action = "SignIn", id = UrlParameter.Optional }
+                new { area = "Admin", controller = "Account", action = "SignIn", id = UrlParameter.Optional }
             );
             context.MapRoute(
                 "Admin_default",

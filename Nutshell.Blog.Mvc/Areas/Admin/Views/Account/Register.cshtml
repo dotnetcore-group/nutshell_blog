@@ -66,25 +66,28 @@
     <script>
         function success(data) {
             loaded();
-            alert(data.msg);
             if (data.code == 0) {
-                location = '/account/valid?returnUrl=' + data.res;
+                layer.alert('注册完成，请登录邮箱完成验证才能使用。', { icon: 6 });
+            } else {
+                layer.msg(data.msg, { icon: 5 });
             }
         }
         function begin() {
             loadding();
-
-            //return false;
         }
         function failure() {
             loaded();
         }
         function loadding() {
             $("#btnRegister").attr("disabled", true);
+            $("#btnRegister").addClass("btn-disable");
+            $("#btnRegister").removeClass("btn-submit");
             $("#btnRegister").val("正在注册");
         }
         function loaded() {
             $("#btnRegister").removeAttr("disabled");
+            $("#btnRegister").removeClass("btn-disable");
+            $("#btnRegister").addClass("btn-submit");
             $("#btnRegister").val("注册");
         }
     </script>

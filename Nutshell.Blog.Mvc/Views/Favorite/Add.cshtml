@@ -67,7 +67,7 @@
                         网址：
                     </td>
                     <td>
-                        <input type="text" value="@Request.Url.Host/@Model.Author.Login_Name/p/@(Model.Article_Id).html" id="txtUrl" />
+                        <input type="text" value="@Request.Url.Host:@Request.Url.Port/@Model.Author.Login_Name/p/@(Model.Article_Id).html" id="txtUrl" />
                         <span class="error" id="msg_url">* </span>
                     </td>
                 </tr>

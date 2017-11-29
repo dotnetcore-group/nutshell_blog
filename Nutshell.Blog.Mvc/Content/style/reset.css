@@ -3,7 +3,9 @@
     margin: 0px;
     box-sizing:border-box;
 }
-
+img{
+    border:none;
+}
 a {
     text-decoration: none;
 }

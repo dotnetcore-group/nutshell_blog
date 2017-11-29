@@ -47,8 +47,6 @@
   <ItemGroup>
     <Compile Include="ArticleSateEnum.cs" />
     <Compile Include="DateTimeUtil.cs" />
-    <Compile Include="EmailConfig.cs" />
-    <Compile Include="EmailHelper.cs" />
     <Compile Include="Encrypt.cs" />
     <Compile Include="ImageHelper.cs" />
     <Compile Include="Keys.cs" />

@@ -1,0 +1,17 @@
+﻿<div style="width:480px;border:1px solid #e9e8e8;border-radius:5px;margin:0px auto;">
+    <div style="padding:10px;border-top-left-radius:5px;border-top-right-radius:5px;background:#1360bb;text-align:center">
+        <a style="color:#ffffff;font-size:18px;text-decoration:none;" href="http://nutshell.website">果壳园博客网</a>
+    </div>
+    <div style="padding:10px 30px;">
+        <p style="font-size:16px;line-height:25px;">亲爱的 [$ename]，欢迎加入果壳园！</p>
+        <p style="font-size:14px;line-height:25px;">
+            为了保证你的账号能正常安全的使用，请完成验证。
+        </p>
+        <a href="[$link]" style="margin:10px auto;margin-top:25px;display:block;background:#1360bb;color:#fff;line-height:45px;width:150px;text-align:center;text-decoration:none;border-radius:3px;">立即验证账号</a>
+        <hr style="color:#e9e8e8;margin:20px 0px 10px 0px;" />
+        <p style="font-size:14px;color:#7b7b7b">
+            如果以上按钮无法打开，请把下面的链接复制到浏览器地址栏中打开：
+            <a href="[$link]">[$link]</a>
+        </p>
+    </div>
+</div>

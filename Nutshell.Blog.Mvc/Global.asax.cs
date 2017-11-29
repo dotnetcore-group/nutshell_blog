@@ -18,7 +18,7 @@ namespace Nutshell.Blog.Mvc
         private readonly string[] staticFileExt = new string[] { ".axd", ".ashx", ".bmp", ".css", ".gif", ".ico", ".jpeg", ".jpg", ".js", ".png", ".rar", ".zip", ".woff", ".ttf", ".eot", ".svg" };
         protected void Application_Start()
         {
-            log4net.Config.XmlConfigurator.Configure();//读取Log4Net配置信息
+            //log4net.Config.XmlConfigurator.Configure();//读取Log4Net配置信息
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
@@ -30,7 +30,7 @@ namespace Nutshell.Blog.Mvc
             MvcHandler.DisableMvcResponseHeader = true;
             RemoveWebFormEngines();
 
-            RecordLog();
+            //RecordLog();
 
             PanGuLuceneHelper.Instance.StartThread();
         }

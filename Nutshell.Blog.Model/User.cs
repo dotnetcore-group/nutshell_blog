@@ -21,6 +21,7 @@
  * 描述：
  * 
  *********************************************************************************/
+using Newtonsoft.Json;
 using Nutshell.Blog.Model.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -92,15 +93,23 @@ namespace Nutshell.Blog.Model
         public int Theme_Id { get; set; }
 
         [NotMapped]
+        [JsonIgnore]
         public virtual ICollection<Message> SendMessages { get; set; }
         [NotMapped]
+        [JsonIgnore]
         public virtual ICollection<Message> ReceiveMessages { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<Article> Articles { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Discussion> Discussions { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Favorites> Favorites { get; set; }
+        [JsonIgnore]
         public virtual ICollection<CustomCategory> CustomCategories { get; set; }
+        [JsonIgnore]
         public virtual Theme Theme { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Role> Roles { get; set; }
 
 

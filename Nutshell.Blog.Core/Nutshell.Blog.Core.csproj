@@ -95,6 +95,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EmailHelper.cs" />
     <Compile Include="Filters\CheckUserLoginAttribute.cs" />
     <Compile Include="Filters\GlobalExceptionAttribute.cs" />
     <Compile Include="Filters\OnlyAllowAjaxRequestAttribute.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="JobSearch.cs" />
     <Compile Include="LinqExtensions.cs" />
     <Compile Include="MemcacheHelper.cs" />
+    <Compile Include="Model\EmailConfig.cs" />
     <Compile Include="Model\IndexContent.cs" />
     <Compile Include="Model\Job.cs" />
     <Compile Include="Model\SourceType.cs" />
@@ -109,6 +111,7 @@
     <Compile Include="OnlineUserPool.cs" />
     <Compile Include="PanGuLuceneHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TemplateHelper.cs" />
     <Compile Include="ValidCodeHelper.cs" />
   </ItemGroup>
   <ItemGroup>

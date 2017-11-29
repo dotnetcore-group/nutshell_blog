@@ -22,6 +22,7 @@ namespace Nutshell.Blog.Mvc.Controllers
         protected ICategoryService categoryService;
         protected IFavoritesService favoritesService;
         protected ICommentService commentService;
+        protected IFriendLinksService friendLinksService;
 
         protected int PageSize
         {

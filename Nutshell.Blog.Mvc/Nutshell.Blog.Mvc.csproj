@@ -592,6 +592,7 @@
     <Content Include="Content\images\me.png" />
     <Content Include="Content\images\news.png" />
     <Content Include="Content\images\favorite.png" />
+    <Content Include="Content\images\nutshell_logo.png" />
     <Content Include="Content\images\users.png" />
     <Content Include="Content\images\message.png" />
     <Content Include="Content\images\write.png" />
@@ -1028,6 +1029,7 @@
     <Content Include="skins\RedAutumnalLeaves\images\titlebg.png" />
     <Content Include="skins\RedAutumnalLeaves\images\tp.png" />
     <Content Include="skins\RedAutumnalLeaves\style.css" />
+    <Content Include="Templates\ValidEmail.txt" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

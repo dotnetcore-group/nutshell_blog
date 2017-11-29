@@ -110,6 +110,7 @@ namespace Nutshell.Blog.Mvc.Controllers
 
         // 用户博客
         // GET:/username
+        [AllowAnonymous]
         public ActionResult Blogs(string author, int? page = 1)
         {
             var user = userService.LoadEntity(u => u.Login_Name.Equals(author, StringComparison.CurrentCultureIgnoreCase));

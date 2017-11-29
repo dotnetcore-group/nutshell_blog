@@ -6,6 +6,7 @@ using Lucene.Net.Index;
 using System.IO;
 using Nutshell.Blog.Model;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Nutshell.Blog.Core.Tests
 {
@@ -54,6 +55,13 @@ namespace Nutshell.Blog.Core.Tests
         {
             var res = PanGuLuceneHelper.Instance.DeleteAll();
             Assert.AreEqual(true, res);
+        }
+
+        [TestMethod]
+        public void TestMemcache()
+        {
+            var obj = MemcacheHelper.Get("21f5823956c24075b294f9fb4d7ed123");
+            
         }
     }
 

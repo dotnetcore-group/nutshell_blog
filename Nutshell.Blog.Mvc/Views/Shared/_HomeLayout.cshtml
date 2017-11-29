@@ -30,11 +30,12 @@
 
         <div class="header-logo">
             <a href="/">
-                <div class="logo_box">
+                @*<div class="logo_box">
                     <img src="~/Content/images/nut_64.png" />
                     <h1>果壳园博客网</h1> <br/>
                     <p>NUTSHELL BLOG</p>
-                </div>
+                </div>*@
+                <img src="~/Content/images/nutshell_logo.png"/>
             </a>
         </div>
 
@@ -169,7 +170,19 @@
 <footer class="footer">
     <ul class="friend-links">
         <li>友情链接：</li>
-        <li>
+        @{
+            var links = ViewBag.FriendLinks as List<Nutshell.Blog.Model.FriendLinks>;
+            if (links != null)
+            {
+                foreach (var link in links)
+                {
+                    <li>
+                        <a target="_blank" href="@link.Link" title="@link.Title">@link.Text</a>
+                    </li>
+                }
+            }
+        }
+        @*<li>
             <a href="">博客园</a>
         </li>
         <li>
@@ -183,7 +196,7 @@
         </li>
         <li>
             <a href="">博客园</a>
-        </li>
+        </li>*@
     </ul>
     <p class="copyright">Email : 835290734@qq.com Copyright © 2010-2020 Powered by <a href="/">Nutshell Blog - 果壳园</a> All Rights Reserved</p>
 </footer>

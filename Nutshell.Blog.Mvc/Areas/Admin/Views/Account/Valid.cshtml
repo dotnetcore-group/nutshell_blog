@@ -1,18 +1,58 @@
 ﻿
 @{
-    Layout = null;
+    ViewBag.Title = "邮箱验证 - 果壳园";
+    Layout = "~/Areas/Admin/Views/Shared/_AccountLayout.cshtml";
 }
+<input type="hidden" value="@ViewBag.Model" id="confirmatio" />
+<input type="hidden" value="@ViewBag.Email" id="email" />
+<h2 class="title">邮箱验证</h2>
+<!--fa fa-spinner fa-spin , fa fa-check , fa fa-close -->
+<div class="valid-msg">
+    <p id="message">
+        @if (!string.IsNullOrEmpty(ViewBag.Email))
+        {
+            <i class="fa fa-send-o"></i> @($"我们已将邮件发送到您的邮箱（{ViewBag.Email}），请登录邮箱完成验证。")
+        }
+        else
+        {
+            <i class="fa fa-spinner fa-spin"></i> @("正在验证您的邮箱，请稍后。")
+        }
+    </p>
+    <p id="error"></p>
+    <a href="#" onclick="sendEmail();return false;">没收到？重新发送邮件。</a>
+</div>
+@section script{
+    <script>
+        $(function () {
+            var confirmatio = $("#confirmatio").val();
+            var email = $("#email").val();
+            var $message = $("#message");
+            // 正在验证
+            if (email == '') {
+                //$message.html('<i class="fa fa-spinner fa-spin"></i> ');
+                $.post('/account/validEmail', { confirmatio: confirmatio }, function (data) {
+                    if (data.code == 0) {
+                        showMsg($message, 'fa fa-check', '成功绑定邮箱。', '');
+                    } else {
+                        showMsg($message, 'fa fa-close', '邮箱验证失败，请重试！', data.error);
+                    }
+                });
+            }
+        });
 
-<!DOCTYPE html>
+        function showMsg($obj, icon, msg, error) {
+            setTimeout(function () {
+                $obj.html('<i class="' + icon + '"></i> ' + msg);
+                if (error != '') {
+                    $("#error").text(error);
+                }
+            }, 1500);
+        }
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Valid</title>
-</head>
-<body>
-    <div> 
-        我们已经发送了一条邮件带您的邮箱，请登录邮箱查看
-    </div>
-</body>
-</html>
+        function sendEmail() {
+            $.post('/account/ReSendValidEmail', {}, function (data) {
+                alert(data.msg);
+            });
+        }
+    </script>
+}
