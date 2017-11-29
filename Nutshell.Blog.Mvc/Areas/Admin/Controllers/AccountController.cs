@@ -39,7 +39,7 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 var code = user.ValidCode;
-                if (Session[Keys.ValidCode] == null || !Session[Keys.ValidCode].Equals(code))
+                if (Session[Keys.ValidCode] == null || !Session[Keys.ValidCode].ToString().Equals(code, StringComparison.CurrentCultureIgnoreCase))
                 {
                     data = new { code = 1, msg = "验证码错误", url = "" };
                     Session[Keys.ValidCode] = null;
@@ -152,6 +152,124 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
         public ActionResult ForgetPassword()
         {
             return View();
+        }
+
+        [HttpPost]
+        public JsonResult ForgetPassword(string name, string code)
+        {
+            var res = 1;
+            var msg = "";
+            var url = "";
+            if (string.IsNullOrEmpty(code))
+            {
+                msg = "输入验证码";
+            }
+            else
+            {
+                if(Session[Keys.ValidCode] == null || !Session[Keys.ValidCode].ToString().Equals(code, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    msg = "验证码错误";
+                    Session[Keys.ValidCode] = null;
+                }
+                else
+                {
+                    var user = userService.LoadEntity(u => u.Login_Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
+                    if (user != null)
+                    {
+                        res = 0;
+                        url = $"ForgetPasswordWay?email={user.Email}";
+                    }
+                    else
+                    {
+                        msg = "账号不存在";
+                    }
+                }
+            }
+            var data = new { code = res, msg = msg, res = url };
+            return Json(data);
+        }
+
+        [HttpGet]
+        public ActionResult ForgetPasswordWay(string email)
+        {
+            ViewBag.Email = email;
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult ForgetPasswordEmail(string email)
+        {
+            var data = new { code = 1, msg = "邮件发送失败，请重试。" };
+            var user = userService.LoadEntity(u => u.Email.Equals(email, StringComparison.CurrentCultureIgnoreCase));
+            if (user != null)
+            {
+                var id = Guid.NewGuid().ToString("N");
+                var link = $"localhost/account/resetpassword?active={id}";
+                var templetpath = Server.MapPath("~/Templates/RetrievePassword.txt");
+                NameValueCollection collection = new NameValueCollection();
+                var timespan = DateTime.Now.AddMinutes(10);
+                collection.Add("ename", user.Nickname);
+                collection.Add("link", link);
+                collection.Add("expired", timespan.ToString("yyyy-MM-dd HH:mm:ss"));
+                var body = TemplateHelper.BuildByFile(templetpath, collection);
+                if (EmailHelper.Send(user.Email, "找回您的账户密码", body))
+                {
+                    MemcacheHelper.Set(id, SerializerHelper.SerializeToString(user), timespan);
+                    data = new { code = 0, msg = "重置密码链接已经发送到您的邮箱中了，请注意查收。" };
+                }
+            }
+
+            return Json(data);
+        }
+
+        public ActionResult ResetPassword(string active)
+        {
+            if (!string.IsNullOrEmpty(active))
+            {
+                var obj = MemcacheHelper.Get(active);
+                if (obj != null)
+                {
+                    var user = SerializerHelper.DeserializeToObject<User>(obj.ToString());
+                    if (user != null)
+                    {
+                        ViewBag.Active = active;
+                        return View();
+                    }
+                }
+            }
+            ViewBag.Error = "重置密码链接失效，请重新找回密码";
+            return View("ForgetPassword");
+        }
+
+        [HttpPost]
+        public JsonResult ResetPassword(string active, string password, string code)
+        {
+            var data = new { code = 1, msg = "修改失败" };
+            if (!string.IsNullOrEmpty(active) && !string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(code))
+            {
+                if (Session[Keys.ValidCode] == null || !Session[Keys.ValidCode].ToString().Equals(code, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    data = new { code = 1, msg = "验证码错误" };
+                    Session[Keys.ValidCode] = null;
+                    return Json(data);
+                }
+                var obj = MemcacheHelper.Get(active);
+                if (obj != null)
+                {
+                    var user = SerializerHelper.DeserializeToObject<User>(obj.ToString());
+                    if (user != null)
+                    {
+                        user.Login_Password = password.Md5_32();
+                        userService.EditEntity(user);
+                        if (userService.SaveChanges())
+                        {
+                            data = new { code = 0, msg = "修改成功，请牢记新密码。" };
+                            MemcacheHelper.Set(active, null, DateTime.Now.AddHours(-1));
+                        }
+                    }
+                }
+            }
+            return Json(data);
         }
 
         public FileResult GetValidCode()

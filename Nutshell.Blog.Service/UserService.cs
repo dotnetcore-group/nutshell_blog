@@ -50,7 +50,7 @@ namespace Nutshell.Blog.Service
             {
                 if (!user.IsLock)
                 {
-                    if (user.Login_Password.Equals(password.Md5_Base64()))
+                    if (user.Login_Password.Equals(password.Md5_32()))
                     {
                         msg = "登录成功！";
                     }
@@ -78,9 +78,9 @@ namespace Nutshell.Blog.Service
             var user = currentRepository.LoadEntity(u=>u.User_Id==userId);
             if (user != null)
             {
-                if (user.Login_Password.Equals(oldPwd.Md5_Base64(), StringComparison.CurrentCultureIgnoreCase))
+                if (user.Login_Password.Equals(oldPwd.Md5_32(), StringComparison.CurrentCultureIgnoreCase))
                 {
-                    user.Login_Password = newPwd.Md5_Base64();
+                    user.Login_Password = newPwd.Md5_32();
                     if (currentRepository.SaveChanges())
                     {
                         msg = "修改成功！";

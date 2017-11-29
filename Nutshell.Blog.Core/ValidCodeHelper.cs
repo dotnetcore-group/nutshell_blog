@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CaptchaGen;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -140,7 +141,7 @@ namespace Nutshell.Blog.Core
         {
             return 22.5;
         }
-        
+
         //C# MVC 升级版
         /// <summary>
         /// 创建验证码的图片
@@ -190,6 +191,23 @@ namespace Nutshell.Blog.Core
                 g.Dispose();
                 image.Dispose();
             }
+        }
+
+        public static string GenerateCaptchaCode(int length)
+        {
+            return CaptchaCodeFactory.GenerateCaptchaCode(length);
+        }
+
+        public static MemoryStream GenerateImage(string code)
+        {
+            var imageStream = ImageFactory.GenerateImage(code);
+            imageStream.Position = 0;
+            return imageStream;
+        }
+
+        public static MemoryStream GenerateAudio(string code)
+        {
+            return AudioFactory.GenerateAudio(code);
         }
     }
 
