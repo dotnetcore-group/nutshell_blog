@@ -41,10 +41,10 @@ namespace Nutshell.Blog.Model
         }
 
         [Key, Column(Order = 1)]
-        public int User_Id { get; set; }
+        public long User_Id { get; set; }
 
         [Key, Column(Order = 2), ForeignKey("Article")]
-        public int Article_Id { get; set; }
+        public long Article_Id { get; set; }
 
         [Required]
         [MaxLength(100)]

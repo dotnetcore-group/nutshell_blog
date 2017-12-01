@@ -12,7 +12,7 @@ namespace Nutshell.Blog.Repository
 {
     public class RightRepository : BaseRepository<Right>, IRightRepository
     {
-        public List<Permission> GetPermission(int userId, string controller)
+        public List<Permission> GetPermission(long userId, string controller)
         {
             string sql = "[P_Sys_GetRightOperate] @User_Id=@User_Id,@Controller=@Controller";
             SqlParameter[] sqlParameter = new SqlParameter[] {

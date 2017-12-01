@@ -14,6 +14,7 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using Nutshell.Blog.Common;
+using Nutshell.Blog.Mvc.MvcHelper;
 
 namespace Nutshell.Blog.Mvc.Controllers
 {
@@ -117,7 +118,7 @@ namespace Nutshell.Blog.Mvc.Controllers
             if (user != null)
             {
                 var pageIndex = page.HasValue ? (page.Value <= 0 ? 1 : page.Value) : 1;
-                var pageSize = PageSize;
+                var pageSize = GlobalConfig.PageSize;
 
                 // 文章档案
                 ViewBag.Archives = articleService.GetArchivesByUserId<Archives>(user.User_Id);
@@ -127,7 +128,7 @@ namespace Nutshell.Blog.Mvc.Controllers
 
                 // 上一页、下一页
                 var totalCount = articleService.GetArticlesTotalCount(user.User_Id);
-                var totalPage = PagerHelper.GetTotalPage(PageSize, totalCount);// totalCount % PageSize == 0 ? totalCount / PageSize : (totalCount + PageSize) / PageSize;
+                var totalPage = PagerHelper.GetTotalPage(GlobalConfig.PageSize, totalCount);// totalCount % PageSize == 0 ? totalCount / PageSize : (totalCount + PageSize) / PageSize;
                 if (pageIndex > 1 && pageIndex <= totalPage)
                 {
                     ViewBag.HasPre = true;

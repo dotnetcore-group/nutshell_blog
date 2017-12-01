@@ -73,7 +73,7 @@ namespace Nutshell.Blog.Service
             return user;
         }
 
-        public User ChangePassword(int userId, string oldPwd, string newPwd, out string msg)
+        public User ChangePassword(long userId, string oldPwd, string newPwd, out string msg)
         {
             var user = currentRepository.LoadEntity(u=>u.User_Id==userId);
             if (user != null)

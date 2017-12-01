@@ -47,10 +47,10 @@ namespace Nutshell.Blog.Model
         public DateTime? Discussion_Time { get; set; }
 
         [ForeignKey("User")]
-        public int User_Id { get; set; }
+        public long User_Id { get; set; }
 
         [ForeignKey("Article")]
-        public int Article_Id { get; set; }
+        public long Article_Id { get; set; }
 
         [ForeignKey("ParentDiscussion")]
         public int? Reply_Id { get; set; }

@@ -10,8 +10,8 @@ namespace Nutshell.Blog.IService
 {
     public interface IFavoritesService : IBaseService<Favorites>
     {
-        bool HaveCollection(int user_id, int article_id);
+        bool HaveCollection(long user_id, long article_id);
 
-        List<Favorites> CurrentUserFavorites(int userId);
+        List<Favorites> CurrentUserFavorites(long userId);
     }
 }

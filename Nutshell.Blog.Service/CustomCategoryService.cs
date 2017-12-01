@@ -25,7 +25,7 @@ namespace Nutshell.Blog.Service
         /// </summary>
         /// <param name="UserId"></param>
         /// <returns></returns>
-        public List<CustomCategories> GetCustomCategoriesByUserId(int UserId)
+        public List<CustomCategories> GetCustomCategoriesByUserId(long UserId)
         {
             return customCategoryRepository.ExecuteSelectQuery<CustomCategories>("[dbo].[PROC_GET_CustomCategoriesALL] @User_Id=@User_Id", new System.Data.SqlClient.SqlParameter("@User_Id", UserId));
         }

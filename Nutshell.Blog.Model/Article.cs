@@ -46,7 +46,7 @@ namespace Nutshell.Blog.Model
         }
 
         [Key]
-        public int Article_Id { get; set; }
+        public long Article_Id { get; set; }
 
         [StringLength(100)]
         [Required]
@@ -76,7 +76,7 @@ namespace Nutshell.Blog.Model
         public bool IsTop { get; set; }
 
         [ForeignKey("Author")]
-        public int Author_Id { get; set; }
+        public long Author_Id { get; set; }
 
         [ForeignKey("ArticleState")]
         public int State { get; set; }

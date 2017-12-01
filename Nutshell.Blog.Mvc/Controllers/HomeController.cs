@@ -1,6 +1,7 @@
 ﻿using Nutshell.Blog.Common;
 using Nutshell.Blog.Core;
 using Nutshell.Blog.IService;
+using Nutshell.Blog.Mvc.MvcHelper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace Nutshell.Blog.Mvc.Controllers
         public ActionResult Index(string index)
         {
             int pageIndex = Convert.ToInt32(index ?? "1");
-            int pageSize = PageSize;
+            int pageSize = GlobalConfig.PageSize;
             int totalCount = 0;
             var articles = articleService.LoadPageEntities(pageIndex, pageSize, out totalCount, a => a.State == 3, a => a.Creation_Time, false)?.ToList();
 
@@ -40,7 +41,7 @@ namespace Nutshell.Blog.Mvc.Controllers
         public ActionResult Category(string category, string index)
         {
             int pageIndex = Convert.ToInt32(index ?? "1");
-            int pageSize = PageSize;
+            int pageSize = GlobalConfig.PageSize;
             int totalCount = 0;
             var cate = categoryService.LoadEntity(c => c.CategoryName.Equals(category, StringComparison.CurrentCultureIgnoreCase));
             if (cate == null)

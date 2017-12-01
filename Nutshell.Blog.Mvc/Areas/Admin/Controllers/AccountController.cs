@@ -5,12 +5,9 @@ using Nutshell.Blog.IService;
 using Nutshell.Blog.Model;
 using Nutshell.Blog.Model.ViewModel;
 using Nutshell.Blog.Mvc.Controllers;
+using Nutshell.Blog.Mvc.MvcHelper;
 using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
@@ -155,25 +152,29 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public JsonResult ForgetPassword(string name, string code)
+        public JsonResult ForgetPassword(ForgetPwd forgetPwd)
         {
             var res = 1;
             var msg = "";
             var url = "";
-            if (string.IsNullOrEmpty(code))
+            if (!ModelState.IsValid)
+            {
+                return Json(new { code=1,msg="输入的数据有误，请重新输入。"});
+            }
+            if (string.IsNullOrEmpty(forgetPwd.Code))
             {
                 msg = "输入验证码";
             }
             else
             {
-                if(Session[Keys.ValidCode] == null || !Session[Keys.ValidCode].ToString().Equals(code, StringComparison.CurrentCultureIgnoreCase))
+                if(Session[Keys.ValidCode] == null || !Session[Keys.ValidCode].ToString().Equals(forgetPwd.Code, StringComparison.CurrentCultureIgnoreCase))
                 {
                     msg = "验证码错误";
                     Session[Keys.ValidCode] = null;
                 }
                 else
                 {
-                    var user = userService.LoadEntity(u => u.Login_Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
+                    var user = userService.LoadEntity(u => u.Login_Name.Equals(forgetPwd.UserName, StringComparison.CurrentCultureIgnoreCase));
                     if (user != null)
                     {
                         res = 0;
@@ -204,7 +205,7 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
             if (user != null)
             {
                 var id = Guid.NewGuid().ToString("N");
-                var link = $"localhost/account/resetpassword?active={id}";
+                var link = GlobalConfig.UrlPrefix + $"/account/resetpassword?active={id}";
                 var templetpath = Server.MapPath("~/Templates/RetrievePassword.txt");
                 NameValueCollection collection = new NameValueCollection();
                 var timespan = DateTime.Now.AddMinutes(10);
@@ -242,12 +243,12 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public JsonResult ResetPassword(string active, string password, string code)
+        public JsonResult ResetPassword(string active, ResetPwd resetPwd)
         {
             var data = new { code = 1, msg = "修改失败" };
-            if (!string.IsNullOrEmpty(active) && !string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(code))
+            if (!string.IsNullOrEmpty(active) && ModelState.IsValid)
             {
-                if (Session[Keys.ValidCode] == null || !Session[Keys.ValidCode].ToString().Equals(code, StringComparison.CurrentCultureIgnoreCase))
+                if (Session[Keys.ValidCode] == null || !Session[Keys.ValidCode].ToString().Equals(resetPwd.Code, StringComparison.CurrentCultureIgnoreCase))
                 {
                     data = new { code = 1, msg = "验证码错误" };
                     Session[Keys.ValidCode] = null;
@@ -259,7 +260,7 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
                     var user = SerializerHelper.DeserializeToObject<User>(obj.ToString());
                     if (user != null)
                     {
-                        user.Login_Password = password.Md5_32();
+                        user.Login_Password = resetPwd.Password.Md5_32();
                         userService.EditEntity(user);
                         if (userService.SaveChanges())
                         {
@@ -350,7 +351,7 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
                 return false;
             }
             Session["_email"] = email;
-            var href = $"{Request.Url.Host}:{Request.Url.Port}/account/valid?confirmatio={id}";
+            var href = GlobalConfig.UrlPrefix + $"/account/valid?confirmatio={id}";
             var templetpath = Server.MapPath("~/Templates/ValidEmail.txt");
             NameValueCollection collection = new NameValueCollection();
             collection.Add("ename", user.Nickname);

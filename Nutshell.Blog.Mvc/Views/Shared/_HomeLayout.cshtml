@@ -16,14 +16,14 @@
                 var account = ViewBag.Account as Nutshell.Blog.Model.ViewModel.Account;
                 if (account != null)
                 {
-            <a href="/user/me">@account.Nickname</a>
-            <a href="/@account.UserName">我的博客</a>
-            <a href="/message">消息 (3)</a>
-            <a href='/user/loginout' class="fa fa-sign-out">退出</a>
+                    <a href="/user/me">@account.Nickname</a>
+                    <a href="/@account.UserName">我的博客</a>
+                    <a href="/message/index">消息 (<span nut-unreadcount-label>0</span>)</a>
+                    <a href='/user/loginout' class="fa fa-sign-out">退出</a>
                 }
                 else
                 {
-            @("[")<a href='/account/register'>注册</a>@("·")<a href='/account/signin'>登录</a>@("]")
+                    @("[")<a href='/account/register'>注册</a>@("·")<a href='/account/signin'>登录</a>@("]")
                 }
             }
         </p>
@@ -31,11 +31,11 @@
         <div class="header-logo">
             <a href="/">
                 @*<div class="logo_box">
-                    <img src="~/Content/images/nut_64.png" />
-                    <h1>果壳园博客网</h1> <br/>
-                    <p>NUTSHELL BLOG</p>
-                </div>*@
-                <img src="~/Content/images/nutshell_logo.png"/>
+                        <img src="~/Content/images/nut_64.png" />
+                        <h1>果壳园博客网</h1> <br/>
+                        <p>NUTSHELL BLOG</p>
+                    </div>*@
+                <img src="~/Content/images/nutshell_logo.png" />
             </a>
         </div>
 
@@ -63,34 +63,34 @@
                     {
                         foreach (var article in Model)
                         {
-                <li class="list-item">
-                    <div>
-                        <h5 class="item-title">
-                            <a target="_blank" href="/@(article.Author?.Login_Name)/p/@(article.Article_Id).html" title="@article.Title">@article.Title</a>
-                        </h5>
-                        <div class="item-body">
-                            <a href="/@(article.Author?.Login_Name)">
-                                <img class="item-pic" src='@(article.Author.Photo ?? "/upload/photos/default.png")' alt="加载失败……" />
-                            </a>
-                            <p class="item-desc">
-                                @article.Introduction
-                            </p>
-                        </div>
-                        <div class="item-footer">
-                            <a target="_blank" href="/@(article.Author?.Login_Name)" class="item-author">@(article.Author?.Nickname)</a>
-                            <span class="item-time">@article.Creation_Time</span>
-                            <span class="fa fa-commenting-o"> 评论(@article.Discussions.Count)</span>
-                            <span class="fa fa-eye"> 浏览(18)</span>
-                        </div>
-                    </div>
-                </li>
+                            <li class="list-item">
+                                <div>
+                                    <h5 class="item-title">
+                                        <a target="_blank" href="/@(article.Author?.Login_Name)/p/@(article.Article_Id).html" title="@article.Title">@article.Title</a>
+                                    </h5>
+                                    <div class="item-body">
+                                        <a href="/@(article.Author?.Login_Name)">
+                                            <img class="item-pic" src='@(article.Author.Photo ?? "/upload/photos/default.png")' alt="加载失败……" />
+                                        </a>
+                                        <p class="item-desc">
+                                            @article.Introduction
+                                        </p>
+                                    </div>
+                                    <div class="item-footer">
+                                        <a target="_blank" href="/@(article.Author?.Login_Name)" class="item-author">@(article.Author?.Nickname)</a>
+                                        <span class="item-time">@article.Creation_Time</span>
+                                        <span class="fa fa-commenting-o"> 评论(@article.Discussions.Count)</span>
+                                        <span class="fa fa-eye"> 浏览(18)</span>
+                                    </div>
+                                </div>
+                            </li>
                         }
                     }
                     else
                     {
-                <div style="padding:50px 0px;">
-                    <p style="text-align: center;">暂无数据！</p>
-                </div>
+                        <div style="padding:50px 0px;">
+                            <p style="text-align: center;">暂无数据！</p>
+                        </div>
                     }
 
                 }
@@ -124,9 +124,9 @@
                 {
                     foreach (var category in categories)
                     {
-            <li>
-                <a href="/cate/@category.CategoryName">@category.Cate_Name</a>
-            </li>
+                        <li>
+                            <a href="/cate/@category.CategoryName">@category.Cate_Name</a>
+                        </li>
                     }
                 }
             }
@@ -183,21 +183,26 @@
             }
         }
         @*<li>
-            <a href="">博客园</a>
-        </li>
-        <li>
-            <a href="">博客园</a>
-        </li>
-        <li>
-            <a href="">博客园</a>
-        </li>
-        <li>
-            <a href="">博客园</a>
-        </li>
-        <li>
-            <a href="">博客园</a>
-        </li>*@
+                <a href="">博客园</a>
+            </li>
+            <li>
+                <a href="">博客园</a>
+            </li>
+            <li>
+                <a href="">博客园</a>
+            </li>
+            <li>
+                <a href="">博客园</a>
+            </li>
+            <li>
+                <a href="">博客园</a>
+            </li>*@
     </ul>
     <p class="copyright">Email : 835290734@qq.com Copyright © 2010-2020 Powered by <a href="/">Nutshell Blog - 果壳园</a> All Rights Reserved</p>
 </footer>
 @RenderSection("script", false)
+@section script{
+    <script>
+        $(function () { getUnreadMessageCount(); });
+    </script>
+}

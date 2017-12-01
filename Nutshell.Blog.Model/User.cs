@@ -44,13 +44,12 @@ namespace Nutshell.Blog.Model
             Photo = "/upload/photos/default.png";
             Registration_Time = DateTime.Now;
             Theme_Id = 1;
-
-            SendMessages = new HashSet<Message>();
+            
             ReceiveMessages = new HashSet<Message>();
         }
 
         [Key]
-        public int User_Id { get; set; }
+        public long User_Id { get; set; }
 
         [Required]
         [MaxLength(10)]
@@ -91,11 +90,7 @@ namespace Nutshell.Blog.Model
 
         [ForeignKey("Theme")]
         public int Theme_Id { get; set; }
-
-        [NotMapped]
-        [JsonIgnore]
-        public virtual ICollection<Message> SendMessages { get; set; }
-        [NotMapped]
+        
         [JsonIgnore]
         public virtual ICollection<Message> ReceiveMessages { get; set; }
 

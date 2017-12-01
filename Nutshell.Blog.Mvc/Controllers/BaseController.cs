@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -23,20 +24,23 @@ namespace Nutshell.Blog.Mvc.Controllers
         protected IFavoritesService favoritesService;
         protected ICommentService commentService;
         protected IFriendLinksService friendLinksService;
+        protected IMessageService messageService;
 
-        protected int PageSize
+        protected string[] allowedProperties =
         {
-            get
-            {
-                var pageSize = 0;
-                var setting = ConfigurationManager.AppSettings["pageSize"];
-                if (!int.TryParse(setting, out pageSize))
-                {
-                    pageSize = 20;
-                }
-                return pageSize;
-            }
-        }
+                "src", "alt",                           /* <img> */
+                "href", "target", "title", "name",       /* <a>   */
+                "class"
+        };
+
+        protected string[] allowedTags = {
+                "p","br",                   /* 段落 换行 */
+                "ul","ol","li",             /* 列表 */
+                "strong","em","u","s",      /* 粗体 斜体 下划线 中划线 */
+                "img","a",                  /* 图像 链接 */
+                "pre",                      /* 代码 */
+                "quote"                /* 引用 */
+        };
 
         protected Account Account
         {
@@ -65,6 +69,14 @@ namespace Nutshell.Blog.Mvc.Controllers
             return null;
         }
 
+        protected string filterHtmlInput(string htmlInput)
+        {
+            return htmlInput
+                .FixTags(allowedTags, allowedProperties)
+                .FixLinks(whitelistHosts);
+                //.ImagesResponsibel();
+        }
+
         protected List<Permission> GetPermission()
         {
             string filePath = HttpContext.Request.FilePath;
@@ -72,5 +84,29 @@ namespace Nutshell.Blog.Mvc.Controllers
             List<Permission> perm = (List<Permission>)Session[filePath + account.User_Id];
             return perm;
         }
+
+        /// <summary>
+        /// 白名单域名
+        /// </summary>
+        protected string[] whitelistHosts = { "localhost", "127.0.0.1", "120.78.88.90" };
+
+        //private static string ImageResponsible(Match imgMatch)
+        //{
+        //    // retrieve the image from the received Match
+        //    string singleImage = imgMatch.Value;
+
+        //    // if the image already has class, return it back as it is
+        //    if (Regex.IsMatch(singleImage,
+        //                      @"zyf-img class\s*?=\s*?['""]?.*?img-responsive.*?['""]?",
+        //                      RegexOptions.IgnoreCase))
+        //    {
+        //        return singleImage;
+        //    }
+
+        //    // if we reached this point, we need to add class="img-responsive" to our image
+        //    string newImage = Regex.Replace(singleImage, "<img", @"<img zyf-img class=""img-responsive""",
+        //                            RegexOptions.IgnoreCase);
+        //    return newImage;
+        //}
     }
 }

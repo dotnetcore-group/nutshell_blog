@@ -6,11 +6,13 @@ using Nutshell.Blog.Model;
 using Nutshell.Blog.Model.ViewModel;
 using Nutshell.Blog.Mvc.Controllers;
 using Nutshell.Blog.Mvc.Hubs;
+using Nutshell.Blog.Mvc.MvcHelper;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -27,7 +29,7 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
             base.customCategoryService = customCategoryService;
         }
 
-        [OnlyAllowAjaxRequest]
+        [SupportFilter(Action = "BlogList")]
         public ActionResult BlogList()
         {
             return PartialView();
@@ -35,7 +37,6 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
 
         // 文章审核
         [SupportFilter(Action = "Examine")]
-        [OnlyAllowAjaxRequest]
         public ActionResult ArticleExamine()
         {
             return PartialView();
@@ -120,6 +121,7 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [SupportFilter(Action = "BlogList")]
         public JsonResult GetBlogs()
         {
             var draw = Convert.ToInt32(Request["draw"] ?? "0");
@@ -127,21 +129,24 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
             var length = Convert.ToInt32(Request["length"] ?? "10");
             var type = Convert.ToInt32(Request["type"] ?? "0");
 
-            var account = GetCurrentAccount();
             int total;
 
-            var temp = articleService.LoadPageEntities((start + length) / length, length, out total, a => a.Author_Id == account.User_Id && a.State != (int)ArticleStateEnum.Deleted, a => a.Creation_Time, false);
+            Expression<Func<Article, bool>> baseWhere = a => a.State != (int)ArticleStateEnum.Deleted && a.State != (int)ArticleStateEnum.Draft;
+
+            //var temp = articleService.LoadPageEntities((start + length) / length, length, out total, a => a.State != (int)ArticleStateEnum.Deleted, a => a.Creation_Time, false);
             if (type != 0)
             {
-                temp = articleService.LoadPageEntities((start + length) / length, length, out total, a => a.Author_Id == account.User_Id && a.State == type, a => a.Creation_Time, false);
+                baseWhere = LinqExtensions.And(baseWhere, a => a.State == type);
+                //temp = articleService.LoadPageEntities((start + length) / length, length, out total, a => a.State == type, a => a.Creation_Time, false);
             }
-            var list = temp.Select(a => new
+            var list = articleService.LoadPageEntities((start + length) / length, length, out total, baseWhere, a => a.Creation_Time, false).Select(a => new
             {
                 a.Article_Id,
                 a.Title,
                 a.Creation_Time,
                 a.State,
-                a.CustomCategory.CategoryName
+                a.CustomCategory.CategoryName,
+                a.Author.Nickname
             });
             return Json(new { data = list, draw, recordsTotal = total, recordsFiltered = total });
         }
@@ -165,6 +170,6 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
             return Json(new { data = list, draw, recordsTotal = total, recordsFiltered = total });
         }
 
-        
+
     }
 }

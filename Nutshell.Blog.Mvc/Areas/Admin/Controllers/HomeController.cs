@@ -1,6 +1,7 @@
 ﻿using Nutshell.Blog.Core.Filters;
 using Nutshell.Blog.IService;
 using Nutshell.Blog.Mvc.Controllers;
+using Nutshell.Blog.Mvc.MvcHelper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,13 +22,12 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
         public ActionResult Index()
         {
             var account = GetCurrentAccount();
-            ViewBag.Menus = moduleService.GetMenuByPersonId(account.User_Id);
             return View(account);
         }
-        [OnlyAllowAjaxRequest]
+        //[OnlyAllowAjaxRequest]
         public ActionResult Desktop()
         {
-            return PartialView();
+            return View();
         }
 
         public JsonResult GetMenu()

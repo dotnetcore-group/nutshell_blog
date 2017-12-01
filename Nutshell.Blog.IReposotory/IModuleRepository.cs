@@ -9,7 +9,7 @@ namespace Nutshell.Blog.IReposotory
 {
     public interface IModuleRepository : IBaseRepository<Module>
     {
-        List<Module> GetMenuByPersonId(int personId);
+        List<Module> GetMenuByPersonId(long personId);
 
         //IQueryable<Module> GetModuleList();
     }

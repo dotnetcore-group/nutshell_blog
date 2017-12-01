@@ -63,7 +63,7 @@ namespace Nutshell.Blog.Core
         {
             try
             {
-                var config = new EmailConfig() { Host = "smtp.mxhichina.com", Password = "ZengAnDe970802", MailFrom = "admin@foxdotnet.top", UserName = "admin@foxdotnet.top", Port= "25" };
+                var config = new EmailConfig() { Host = GlobalConfig.EmailHost, Password = GlobalConfig.EmailFromPassword, MailFrom = GlobalConfig.EmailFrom, UserName = GlobalConfig.EmailFromName, Port= GlobalConfig.EmailPort };
 
                 if (string.IsNullOrEmpty(config.Host) || string.IsNullOrEmpty(config.UserName) ||
                     string.IsNullOrEmpty(config.Port) || string.IsNullOrEmpty(config.Password))

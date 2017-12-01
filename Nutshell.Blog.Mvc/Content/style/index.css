@@ -83,8 +83,6 @@ body {
                 text-decoration: underline;
             }
 
-
-
 .body:after {
     content: "";
     display: table;
@@ -103,14 +101,12 @@ body {
 
 .body-left {
     width: 180px;
-    margin-left: -100%;
-    /*background: #f7f7ff;*/
+    margin-left: -100%; /*background: #f7f7ff;*/
 }
 
 .body-right {
     width: 320px;
-    margin-left: -320px;
-    /*background: #f7f7ff;*/
+    margin-left: -320px; /*background: #f7f7ff;*/
 }
 
 .body-main .body-list {
@@ -204,7 +200,7 @@ body {
     margin-top: -65px;
 }
 
-.item-footer a, span {
+.item-footer a, .item-footer span {
     padding-right: 5px;
 }
 

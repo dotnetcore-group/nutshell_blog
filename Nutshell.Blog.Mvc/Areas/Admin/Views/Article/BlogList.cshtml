@@ -1,101 +1,53 @@
-﻿
-<div class="row-content am-cf">
-    <div class="row">
-        <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
-            <div class="widget am-cf">
-                <div class="widget-head am-cf">
-                    <div class="widget-title  am-cf">文章列表</div>
-
-
-                </div>
-                <div class="widget-body  am-fr">
-
-                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
-                        <div class="am-form-group">
-                            <div class="am-btn-toolbar">
-                                <div class="am-btn-group am-btn-group-xs">
-                                    <button type="button" class="am-btn am-btn-default am-btn-success"><span class="am-icon-plus"></span> 新增</button>
-                                    <button type="button" class="am-btn am-btn-default am-btn-secondary"><span class="am-icon-save"></span> 保存</button>
-                                    <button type="button" class="am-btn am-btn-default am-btn-warning"><span class="am-icon-archive"></span> 审核</button>
-                                    <button type="button" class="am-btn am-btn-default am-btn-danger"><span class="am-icon-trash-o"></span> 删除</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-3">
-                        <div class="am-form-group tpl-table-list-select">
-                            <select data-am-selected="{btnSize: 'sm'}"id="type">
-                                <option value="0">所有文章</option>
-                                <option value="2">未审核</option>
-                                <option value="3">已发布</option>
-                                <option value="4">未通过</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
-                        <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
-                            <input type="text" class="am-form-field ">
-                            <span class="am-input-group-btn">
-                                <button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search" type="button"></button>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="am-u-sm-12">
-                        <table class="am-table am-table-compact am-table-striped tpl-table-black " id="list">
-                            <thead>
-                                <tr>
-                                    <th width="40">
-                                        <input type="checkbox" class="checkall" />
-                                    </th>
-                                    <th width="80">ID</th>
-                                    <th>标题</th>
-                                    <th width="150">分类</th>
-                                    <th width="180">更新时间</th>
-                                    <th width="75">状态</th>
-                                    <th width="75">操作</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "文章管理 - 果壳园";
+}
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 文章管理 <span class="c-gray en">&gt;</span> 文章管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+    <div class="text-r">
+        文章类型：
+        <span class="select-box" style="width:240px">
+            <select id="type" class="select">
+                <option selected value="0">全部</option>
+                <option value="3">已发布</option>
+                <option value="2">未审核</option>
+                <option value="4">未通过</option>
+            </select>
+        </span>
     </div>
+    <div class="cl pd-5 bg-1 bk-gray mt-20">
+        <span class="l">
+            <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
+                <i class="Hui-iconfont">&#xe6e2;</i> 批量删除
+            </a>
+            <a href="javascript:;" onclick="admin_permission_add('添加权限节点','admin-permission-add.html','','310')" class="btn btn-primary radius">
+                <i class="Hui-iconfont">&#xe600;</i> 添加权限节点
+            </a>
+        </span>
+    </div>
+    <table class="table table-border table-bordered table-bg" id="list" width="100%">
+        <thead>
+            <tr>
+                <th width="40">
+                    <input type="checkbox" class="checkall" />
+                </th>
+                <th width="80">ID</th>
+                <th>标题</th>
+                <th width="150">分类</th>
+                <th width="150">作者</th>
+                <th width="180">更新时间</th>
+                <th width="75">状态</th>
+                <th width="75">操作</th>
+            </tr>
+        </thead>
+    </table>
 </div>
-
-<script src="~/Content/scripts/article.js"></script>
-<script src="~/Content/amazeui/assets/js/amazeui.min.js"></script>
-<script type="text/javascript">
-        var table = null;
+@section script{
+    <script src="~/Content/hui-admin/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+    <script src="~/Content/scripts/article.js"></script>
+    <script type="text/javascript">
         $(function () {
-            //提示信息
-            var lang = {
-                "sProcessing": "加载中...",
-                "sLengthMenu": "每页 _MENU_ 项",
-                "sZeroRecords": "没有匹配结果",
-                "sInfo": "当前显示第 _START_ 至 _END_ 项，共 _TOTAL_ 项。",
-                "sInfoEmpty": "当前显示第 0 至 0 项，共 0 项",
-                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
-                "sInfoPostFix": "",
-                "sSearch": "搜索:",
-                "sUrl": "",
-                "sEmptyTable": "表中数据为空",
-                "sLoadingRecords": "载入中...",
-                "sInfoThousands": ",",
-                "oPaginate": {
-                    "sFirst": "首页",
-                    "sPrevious": "上页",
-                    "sNext": "下页",
-                    "sLast": "末页",
-                    "sJump": "跳转"
-                },
-                "oAria": {
-                    "sSortAscending": ": 以升序排列此列",
-                    "sSortDescending": ": 以降序排列此列"
-                }
-            };
-
+            var table = null;
             table = $('#list').DataTable({
                 ajax: {
                     url: '@Url.Action("GetBlogs")',
@@ -103,7 +55,6 @@
                 },
                 serverParams: function (aoData) {
                     aoData.type = $("#type").val();
-                    //aoData.push({ name: "type", value: 1 })
                 },
                 language: lang,
                 aLengthMenu: [10, 20, 50, 100],
@@ -120,14 +71,14 @@
                         },
                         sortable: false
                     },
-                    { class: "text-center", data: 'Article_Id' },
+                    { class: "text-c", data: 'Article_Id' },
                     {
                         data: 'Title', render: function (data, type, row, meta) {
                             return data;
                         }
                     },
                     {
-                        data: 'CategoryName', class: "text-center", render: function (data, type, row, meta) {
+                        data: 'CategoryName', class: "text-c", render: function (data, type, row, meta) {
                             if (data == null) {
                                 return "未分类";
                             }
@@ -135,26 +86,29 @@
                         }
                     },
                     {
-                        class: "text-center", data: 'Creation_Time', render: function (data, type, row, meta) {
+                        data: 'Nickname', class: "text-c", render: function (data, type, row, meta) {
+                            return data;
+                        }
+                    },
+                    {
+                        class: "text-c", data: 'Creation_Time', render: function (data, type, row, meta) {
                             data.replace(/Date\([\d+]+\)/, function (a) { eval('d = new ' + a) });
                             return d.format("yyyy-MM-dd hh:mm:ss");
                         }
                     },
                     {
-                        data: 'State', class: "text-center", render: function (data, type, row, meta) {
+                        data: 'State', class: "text-c", render: function (data, type, row, meta) {
                             if (data == 3) {
-                                return '<span class="am-badge am-badge-success">已发布</span>';
+                                return '<span class="label label-primary radius">已发布</span>';
                             } else if (data == 2) {
-                                return '<span class="am-badge">未审核</span>';
-                            } else if (data == 1) {
-                                return '<span class="am-badge am-badge-warning">草稿</span>';
+                                return '<span class="label label-default radius">未审核</span>';
                             } else if (data == 4) {
-                                return '<span class="am-badge am-badge-danger">未通过</span>';
+                                return '<span class="label label-danger radius">未通过</span>';
                             }
                         }
                     },
                     {
-                        data: 'Article_Id', class: "text-center", render: function (data, type, row, meta) {
+                        data: 'Article_Id', class: "text-c", render: function (data, type, row, meta) {
                             return '<div class="tpl-table-black-operation"><a href="javascript:;" onclick="article_delete(' + data + ')" class="tpl-table-black-operation-del"><i class="am-icon-trash"></i> 删除</a></div>';
 
                         }
@@ -173,4 +127,5 @@
                 table.draw();
             })
         })
-</script>
+    </script>
+}

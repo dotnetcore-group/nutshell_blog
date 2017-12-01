@@ -58,19 +58,19 @@ namespace Nutshell.Blog.Service
             return art;
         }
 
-        public List<Archives> GetArchivesByUserId<Archives>(int UserId)
+        public List<Archives> GetArchivesByUserId<Archives>(long UserId)
         {
             return currentRepository.ExecuteSelectQuery<Archives>("[dbo].[PROC_GET_ARCHIVES] @User_Id=@User_Id", new System.Data.SqlClient.SqlParameter("@User_Id", UserId));
         }
 
-        public int GetArticlesTotalCount(int UserId)
+        public int GetArticlesTotalCount(long UserId)
         {
             string sql = "SELECT COUNT(*) AS [Count] FROM [dbo].[article] WHERE Author_Id=@Author_Id AND State=3";
             SqlParameter parameter = new SqlParameter("@Author_Id", UserId);
             return currentRepository.ExecuteSelectQuery<int>(sql, parameter).FirstOrDefault();
         }
 
-        public List<CustomCategories> GetCustomCategoriesByUserId<CustomCategories>(int UserId)
+        public List<CustomCategories> GetCustomCategoriesByUserId<CustomCategories>(long UserId)
         {
             return currentRepository.ExecuteSelectQuery<CustomCategories>("PROC_GET_CustomCategories @User_Id=@User_Id", new SqlParameter("@User_Id", UserId));
         }

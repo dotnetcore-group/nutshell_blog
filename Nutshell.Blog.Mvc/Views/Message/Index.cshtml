@@ -3,3 +3,33 @@
     ViewBag.Title = "消息中心";
     Layout = "~/Views/Shared/_UserHomeLayout.cshtml";
 }
+@model List<Nutshell.Blog.Model.Message>
+
+<div class="tabs">
+    <div class="tabs-header">
+        <ul class="tabs-nav">
+            <li id="photo" class="active"><a href="javascript:void(0);">全部消息</a></li>
+        </ul>
+    </div>
+    <div class="tabs-content">
+        <!--消息列表开始-->
+        <div class="tab-panel active">
+            <ol>
+                @foreach (var message in Model)
+                {
+                    <li>
+                        <h3>
+                            @if (!message.IsRead)
+                            {
+                                <span>[未读] </span>
+                            }
+                            @message.Title
+                        </h3>
+                    </li>
+                }
+            </ol>
+        </div>
+        <!--消息列表结束-->
+    </div>
+</div>
+

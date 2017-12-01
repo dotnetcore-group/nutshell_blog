@@ -10,6 +10,6 @@ namespace Nutshell.Blog.IService
 {
     public interface ICustomCategoryService : IBaseService<CustomCategory>
     {
-        List<CustomCategories> GetCustomCategoriesByUserId(int UserId);
+        List<CustomCategories> GetCustomCategoriesByUserId(long UserId);
     }
 }

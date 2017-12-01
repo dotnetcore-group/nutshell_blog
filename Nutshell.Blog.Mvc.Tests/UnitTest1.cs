@@ -15,12 +15,12 @@ namespace Nutshell.Blog.Mvc.Tests
         {
             using (NutshellBlogContext db = new NutshellBlogContext())
             {
-                var send = db.User.Where(u => u.User_Id == 3).FirstOrDefault();
-                var receive = db.User.Where(u => u.User_Id == 1001).FirstOrDefault();
+                //var send = db.User.Where(u => u.User_Id == 3).FirstOrDefault();
+                //var receive = db.User.Where(u => u.User_Id == 1001).FirstOrDefault();
 
-                db.Message.Add(new Message { Sender = send, Recipient = receive, Title = "消息头部", Content = "这是一条消息" });
-                var res = db.SaveChanges();
-                Assert.AreEqual(1, res);
+                //db.Message.Add(new Message { Sender = send, Recipient = receive, Title = "消息头部", Content = "这是一条消息" });
+                //var res = db.SaveChanges();
+                //Assert.AreEqual(1, res);
             }
         }
 

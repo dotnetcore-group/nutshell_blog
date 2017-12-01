@@ -11,6 +11,6 @@ namespace Nutshell.Blog.IService
     {
         User ValidationUser(string userName, string password, out string msg);
 
-        User ChangePassword(int userId, string oldPwd, string newPwd, out string msg);
+        User ChangePassword(long userId, string oldPwd, string newPwd, out string msg);
     }
 }

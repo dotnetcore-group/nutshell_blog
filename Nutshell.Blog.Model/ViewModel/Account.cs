@@ -31,7 +31,7 @@ namespace Nutshell.Blog.Model.ViewModel
 {
     public class Account
     {
-        public int User_Id { get; set; }
+        public long User_Id { get; set; }
 
         public string UserName { get; set; }
 

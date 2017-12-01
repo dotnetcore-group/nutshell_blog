@@ -5,23 +5,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Nutshell.Blog.Mvc.MvcHelper;
 
 namespace Nutshell.Blog.Mvc.Controllers
 {
     public class MessageController : BaseController
     {
-        IMessageService msgService;
-        public MessageController(IModuleService moduleService)
+        public MessageController(IMessageService msgService)
         {
-            base.moduleService = moduleService;
+            messageService = msgService;
         }
 
         // GET: Message
         [CheckUserLogin]
         public ActionResult Index()
         {
-            //var account = GetCurrentAccount();
-            return View();
+            var messages = messageService.LoadEntities(m => m.Recipient.User_Id == Account.User_Id).ToList();
+            return View(messages);
+        }
+
+        [CheckUserLogin]
+        [HttpPost]
+        public JsonResult GetUnreadMessageCount()
+        {
+            var unreadMessages = messageService.LoadEntities(m => m.Recipient.User_Id == Account.User_Id && !m.IsRead);
+            return Json(unreadMessages.Count());
         }
     }
 }

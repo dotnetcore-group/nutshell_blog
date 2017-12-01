@@ -17,12 +17,12 @@ namespace Nutshell.Blog.Service
             this.moduleRepository = moduleRepository;
         }
 
-        public List<Module> GetMenuByPersonId(int personId)
+        public List<Module> GetMenuByPersonId(long personId)
         {
             return moduleRepository.GetMenuByPersonId(personId);
         }
 
-        public List<Module> GetModuleList(int? parentId)
+        public List<Module> GetModuleList(long? parentId)
         {
             if (!parentId.HasValue)
             {

@@ -49,13 +49,13 @@ namespace Nutshell.Blog.Service
         /// <param name="user_id"></param>
         /// <param name="article_id"></param>
         /// <returns></returns>
-        public bool HaveCollection(int user_id, int article_id)
+        public bool HaveCollection(long user_id, long article_id)
         {
             var fav = CurrentUserFavorites(user_id).Where(f => f.Article_Id == article_id);
             return fav != null && fav.Count() > 0;
         }
 
-        public List<Favorites> CurrentUserFavorites(int userId)
+        public List<Favorites> CurrentUserFavorites(long userId)
         {
             List<Favorites> favorites = null;
             var obj = MemcacheHelper.Get(userId.ToString());

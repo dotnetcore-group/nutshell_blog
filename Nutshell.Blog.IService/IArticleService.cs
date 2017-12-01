@@ -13,11 +13,11 @@ namespace Nutshell.Blog.IService
     {
         Article AddArticle(Article article);
 
-        List<Archives> GetArchivesByUserId<Archives>(int UserId);
+        List<Archives> GetArchivesByUserId<Archives>(long UserId);
 
-        List<CustomCategories> GetCustomCategoriesByUserId<CustomCategories>(int UserId);
+        List<CustomCategories> GetCustomCategoriesByUserId<CustomCategories>(long UserId);
 
-        int GetArticlesTotalCount(int UserId);
+        int GetArticlesTotalCount(long UserId);
 
         List<Article> LoadPageEntities(Expression<Func<Article, bool>> where, int pageIndex, int pageSize);
     }

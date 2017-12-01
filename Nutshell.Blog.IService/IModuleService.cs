@@ -9,8 +9,8 @@ namespace Nutshell.Blog.IService
 {
     public interface IModuleService : IBaseService<Module>
     {
-        List<Module> GetMenuByPersonId(int personId);
+        List<Module> GetMenuByPersonId(long personId);
 
-        List<Module> GetModuleList(int? parentId);
+        List<Module> GetModuleList(long? parentId);
     }
 }

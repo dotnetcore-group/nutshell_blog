@@ -15,11 +15,10 @@ namespace Nutshell.Blog.Model
         {
             IsRead = false;
             SendTime = DateTime.Now;
-            Id = Guid.NewGuid();
         }
 
         [Key]
-        public Guid Id { get; set; }
+        public long Id { get; set; }
 
         [Required]
         public string Title { get; set; }
@@ -30,11 +29,7 @@ namespace Nutshell.Blog.Model
         public DateTime SendTime { get; set; }
 
         public bool IsRead { get; set; }
-
-        /// <summary>
-        /// 发送者
-        /// </summary>
-        public virtual User Sender { get; set; }
+        
         /// <summary>
         /// 接收者
         /// </summary>

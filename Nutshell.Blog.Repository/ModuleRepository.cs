@@ -11,7 +11,7 @@ namespace Nutshell.Blog.Repository
 {
     public class ModuleRepository : BaseRepository<Module>, IModuleRepository
     {
-        public List<Module> GetMenuByPersonId(int personId)
+        public List<Module> GetMenuByPersonId(long personId)
         {
             string sql = "PROC_GET_UserMenus @User_Id=@User_Id";
             var sqlParameter = new SqlParameter("@User_Id", personId);

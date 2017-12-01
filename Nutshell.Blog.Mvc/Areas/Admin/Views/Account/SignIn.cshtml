@@ -45,16 +45,11 @@
 @section script{
     <script>
         function login_begin() {
-            login_loading();
+            btn_loading('登录中');
         }
-        function login_loading() {
-            $("#btnLogin").removeClass("btn-submit");
-            $("#btnLogin").addClass("btn-disable");
-            $("#btnLogin").attr("disabled", true);
-            $("#btnLogin").val('登录中');
-        }
+        
         var login_success = function (data) {
-            login_loaded();
+            btn_loaded('登录');
             if (data.code == 0) {
                 location = data.url;
             } else if (data.code == 4) {
@@ -66,15 +61,9 @@
             }
         }
         function login_failure() {
-            login_loaded();
+            btn_loaded('登录');
         }
-        function login_loaded() {
-            $("#btnLogin").removeClass("btn-disable");
-            $("#btnLogin").addClass("btn-submit");
-            $("#btnLogin").val('登录');
-            $("#btnLogin").attr("disabled", false);
-        }
-
+        
         
     </script>
 }
