@@ -69,6 +69,7 @@ namespace Nutshell.Blog.Model
         [AntiXss]
         public string Introduction { get; set; }
 
+        [JsonConverter(typeof(LongDateTimeConvert))]
         public DateTime Creation_Time { get; set; }
 
         public DateTime? Edit_Time { get; set; }

@@ -50,7 +50,7 @@ namespace Nutshell.Blog.Service
             {
                 if (!user.IsLock)
                 {
-                    if (user.Login_Password.Equals(password.Md5_32()))
+                    if (user.Login_Password.Equals(password.Md5_32(), StringComparison.CurrentCultureIgnoreCase))
                     {
                         msg = "登录成功！";
                     }

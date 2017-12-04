@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Nutshell.Blog.Model.Attributes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -26,6 +28,7 @@ namespace Nutshell.Blog.Model
         [Required]
         public string Content { get; set; }
 
+        [JsonConverter(typeof(LongDateTimeConvert))]
         public DateTime SendTime { get; set; }
 
         public bool IsRead { get; set; }

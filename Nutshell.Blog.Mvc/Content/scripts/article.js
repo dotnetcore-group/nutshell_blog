@@ -60,9 +60,6 @@ function article_shenhe(id) {
                 if (data.code == 0) {
                     layer.msg(data.msg, { icon: 6, time: 1000 });
                     table.ajax.reload();
-                    $.connection.hub.start().done(function () {
-                        hub.server.auditPassed("1001");
-                    })
                 } else {
                     layer.msg(data.msg, { icon: 5, time: 1000 });
                 }

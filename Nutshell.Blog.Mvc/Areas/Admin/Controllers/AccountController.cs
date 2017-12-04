@@ -36,10 +36,10 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 var code = user.ValidCode;
-                if (Session[Keys.ValidCode] == null || !Session[Keys.ValidCode].ToString().Equals(code, StringComparison.CurrentCultureIgnoreCase))
+                if (TempData[Keys.ValidCode] == null || !TempData[Keys.ValidCode].ToString().Equals(code, StringComparison.CurrentCultureIgnoreCase))
                 {
                     data = new { code = 1, msg = "验证码错误", url = "" };
-                    Session[Keys.ValidCode] = null;
+                    //Session[Keys.ValidCode] = null;
                     return Json(data);
                 }
                 var userinfo = userService.ValidationUser(user.UserName, user.Password, out msg);
@@ -49,7 +49,7 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
                 {
                     if (!userinfo.IsValid)
                     {
-                        Session[Keys.ValidCode] = null;
+                        //Session[Keys.ValidCode] = null;
                         Session["_email"] = userinfo.Email;
                         data = new { code = 4, msg = "您的账号绑定的邮箱未验证，请先通过验证。", url = "/account/valid" };
                     }
@@ -248,10 +248,10 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
             var data = new { code = 1, msg = "修改失败" };
             if (!string.IsNullOrEmpty(active) && ModelState.IsValid)
             {
-                if (Session[Keys.ValidCode] == null || !Session[Keys.ValidCode].ToString().Equals(resetPwd.Code, StringComparison.CurrentCultureIgnoreCase))
+                if (TempData[Keys.ValidCode] == null || !TempData[Keys.ValidCode].ToString().Equals(resetPwd.Code, StringComparison.CurrentCultureIgnoreCase))
                 {
                     data = new { code = 1, msg = "验证码错误" };
-                    Session[Keys.ValidCode] = null;
+                    //Session[Keys.ValidCode] = null;
                     return Json(data);
                 }
                 var obj = MemcacheHelper.Get(active);
@@ -276,7 +276,8 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
         public FileResult GetValidCode()
         {
             var code = ValidCodeHelper.CreateValidateCode(6);
-            Session[Keys.ValidCode] = code;
+            //Session[Keys.ValidCode] = code;
+            TempData[Keys.ValidCode] = code;
             byte[] buffer = ValidCodeHelper.CreateValidateGraphic(code);//把验证码画到画布
             return File(buffer, "image/jpeg");
         }

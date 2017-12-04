@@ -52,6 +52,7 @@
     <Compile Include="IModuleRepository.cs" />
     <Compile Include="IRightRepository.cs" />
     <Compile Include="IRoleRepository.cs" />
+    <Compile Include="ISettingRepository.cs" />
     <Compile Include="IUserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

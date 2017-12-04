@@ -1993,6 +1993,7 @@
     <Content Include="Content\hui-admin\lib\webuploader\0.1.5\images\progress.psd" />
     <Content Include="Content\hui-admin\lib\webuploader\0.1.5\README.md" />
     <Content Include="Content\hui-admin\temp\Thumbs.db" />
+    <Content Include="Areas\Admin\Views\System\Settings.cshtml" />
     <None Include="Content\scripts\jquery-1.8.0.intellisense.js" />
     <Content Include="Content\style\font-awesome.css" />
     <Content Include="Content\style\font-awesome.min.css" />
@@ -2078,6 +2079,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AccountController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SystemController.cs" />
     <Compile Include="Content\hui-admin\lib\ueditor\1.4.3\net\App_Code\Config.cs" />
     <Compile Include="Content\hui-admin\lib\ueditor\1.4.3\net\App_Code\ConfigHandler.cs" />
     <Compile Include="Content\hui-admin\lib\ueditor\1.4.3\net\App_Code\CrawlerHandler.cs" />

@@ -68,6 +68,7 @@
     <Compile Include="ArticleState.cs" />
     <Compile Include="Article_Category.cs" />
     <Compile Include="Attributes\AntiXssAttribute.cs" />
+    <Compile Include="Attributes\LongDateTimeConvert.cs" />
     <Compile Include="Dictionaries.cs" />
     <Compile Include="Discussion.cs" />
     <Compile Include="Favorites.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="Right.cs" />
     <Compile Include="RightOperate.cs" />
     <Compile Include="Role.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="Theme.cs" />
     <Compile Include="User.cs" />
     <Compile Include="CustomCategory.cs" />

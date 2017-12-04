@@ -13,6 +13,7 @@ namespace Nutshell.Blog.Core.Filters
     /// <summary>
     /// 权限过滤
     /// </summary>
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
     public class SupportFilterAttribute : CheckUserLoginAttribute
     {
         public string Action { get; set; }
@@ -64,7 +65,7 @@ namespace Nutshell.Blog.Core.Filters
                 {
                     if (filterContext.HttpContext.Request.IsAjaxRequest())
                     {
-                        filterContext.Result = new JsonResult() { Data = new { code=1,msg= "你没有操作权限，请联系管理员！" } };
+                        filterContext.Result = new JsonResult() { Data = new { code = 1, msg = "你没有操作权限，请联系管理员！" } };
                         return;
                     }
                     filterContext.HttpContext.Response.StatusCode = 403;

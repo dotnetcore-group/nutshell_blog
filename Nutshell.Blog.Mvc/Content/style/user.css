@@ -101,7 +101,7 @@
     float: left;
 }
 
-    #top a:hover, #left_bar a:hover {
+    #top a:hover, #left_bar a:hover{
         color: #FF6600;
         text-decoration: underline;
     }

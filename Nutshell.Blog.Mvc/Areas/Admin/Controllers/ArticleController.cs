@@ -22,8 +22,9 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
     [CheckUserLogin]
     public class ArticleController : BaseController
     {
-        public ArticleController(IArticleService articleService, IUserService userService, ICustomCategoryService customCategoryService)
+        public ArticleController(IArticleService articleService, IUserService userService, ICustomCategoryService customCategoryService, IMessageService messageService)
         {
+            base.messageService = messageService;
             base.userService = userService;
             base.articleService = articleService;
             base.customCategoryService = customCategoryService;
@@ -68,6 +69,7 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
                 var res = articleService.SaveChanges();
                 if (res)
                 {
+                    SendExamineMessage(article);
                     data = new { code = 0, msg = "审核通过，已发布！" };
                 }
             }
@@ -80,7 +82,7 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
 
         [SupportFilter(Action = "Examine")]
         [HttpPost]
-        public JsonResult ExamineOut(int id)
+        public JsonResult ExamineOut(int id, string msg)
         {
             var data = new { code = 1, msg = "审核失败，请重试！" };
             var article = articleService.LoadEntity(a => a.Article_Id == id);
@@ -91,6 +93,7 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
                 var res = articleService.SaveChanges();
                 if (res)
                 {
+                    SendExamineMessage(article, msg);
                     data = new { code = 0, msg = "该文章不通过！" };
                 }
             }
@@ -99,6 +102,24 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
                 data = new { code = 1, msg = "该文章不存在，请重试！" };
             }
             return Json(data);
+        }
+
+        private void SendExamineMessage(Article article, string msg = "")
+        {
+            var message = new Message();
+            message.Recipient = article.Author;
+            if (article.State == (int)ArticleStateEnum.Published)
+            {
+                message.Title = "文章通过审核";
+                message.Content = $"您的文章 <a target='_blank' href='/{article.Author.Login_Name}/p/{article.Article_Id}.html'>{article.Title}</a> 通过了审核，已发布。";
+            }
+            else
+            {
+                message.Title = "文章未通过审核";
+                message.Content = $"您的文章 <a target='_blank' href='/{article.Author.Login_Name}/p/{article.Article_Id}.html'>{article.Title}</a> 未通过了审核，原因为：{msg}。请修改后提交，点击<a target='_blank' href='/article/edit?postid={article.Article_Id}'>这里</a>修改。";
+            }
+            messageService.AddEntity(message);
+            messageService.SaveChanges();
         }
 
         [SupportFilter(Action = "Delete")]

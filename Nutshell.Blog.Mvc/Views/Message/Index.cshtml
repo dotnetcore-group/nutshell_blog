@@ -4,6 +4,47 @@
     Layout = "~/Views/Shared/_UserHomeLayout.cshtml";
 }
 @model List<Nutshell.Blog.Model.Message>
+@section style{
+    <style>
+        .message_box {
+        }
+
+            .message_box .message_item {
+                border-bottom: 1px solid #ccc;
+                padding: 0px 3px 10px 3px;
+                margin-bottom: 10px;
+            }
+
+            .message_box .message_title {
+                font-size: 13px;
+                margin-bottom: 6px;
+                display: block;
+            }
+        .message_title .message_title_isread{
+            font-weight:normal;
+        }
+        .message_title a {
+            color: #075db3;
+            font-weight: bold;
+        }
+            .message_title a:hover {
+                text-decoration:underline;
+            }
+            .message_title .message_title_time {
+                color: #999;
+                margin: 0px 10px;
+                font-size: 12px;
+                font-weight: normal;
+            }
+
+        .message_box .message_body {
+            padding-left: 3px;
+            font-size: 12px;
+            line-height: 24px;
+            color: #666;
+        }
+    </style>
+}
 
 <div class="tabs">
     <div class="tabs-header">
@@ -14,20 +55,37 @@
     <div class="tabs-content">
         <!--消息列表开始-->
         <div class="tab-panel active">
-            <ol>
-                @foreach (var message in Model)
-                {
-                    <li>
-                        <h3>
-                            @if (!message.IsRead)
-                            {
-                                <span>[未读] </span>
-                            }
-                            @message.Title
-                        </h3>
-                    </li>
-                }
-            </ol>
+            <div class="message_box">
+                <ul>
+                    @foreach (var message in Model)
+                    {
+                        <li class="message_item">
+                            <div>
+                                <h2 class="message_title">
+                                    @if (message.IsRead)
+                                    {
+                                        <a href="#" class="message_title_isread">
+                                            @message.Title
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a href="#">
+                                            @message.Title
+                                        </a>
+                                    }
+                                    <span class="message_title_time">
+                                        @message.SendTime.ToString("yyyy-MM-dd HH:mm:ss")
+                                    </span>
+                                </h2>
+                                <p class="message_body">
+                                    @Html.Raw(message.Content)
+                                </p>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
         </div>
         <!--消息列表结束-->
     </div>

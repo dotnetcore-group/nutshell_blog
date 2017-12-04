@@ -2,6 +2,7 @@
     Layout = "~/Views/Shared/_UserHomeLayout.cshtml";
     var isEditMode = (bool)ViewBag.IsEditMode;
 }
+@using Nutshell.Blog.Common
 @model Nutshell.Blog.Model.Article
 
 @section style{
@@ -125,6 +126,13 @@
                                 <i class="am-icon-save"></i>
                                 保存修改
                             </a>
+                            if (Model.State == (int)ArticleStateEnum.NotPass)
+                            {
+                                <a href="#" id="btnPublish" class="btn_primary btn">
+                                    <i class="am-icon-save"></i>
+                                    提交审核
+                                </a>
+                            }
                         }
                         else
                         {
@@ -187,9 +195,6 @@
                     $.post("/article/postArticle", { Title: title, Body: body, Content: editor_body.text(), CustomCategory_Id: customCate, SystemCategory_Id: sysCate, isEdit: '@isEditMode', articleid:'@(Model?.Article_Id)' }, function (data) {
                         console.log(data);
                         if (data.code == 0) {
-                            //layer.alert('提交成功，点击确认关闭窗口。', { icon: 6 }, function () {
-                            //    CloseWebPage();
-                            //});
                             layer.msg(data.msg, { icon: 6 });
                         } else {
                             layer.msg(data.msg, { icon: 5 });
@@ -197,6 +202,15 @@
                     })
                 };
                 return false;
+            });
+            $("#btnPublish").click(function () {
+                $.post('/article/publish', { id:@(Model?.Article_Id)}, function (data) {
+                    if (data.code == 0) {
+                        layer.msg(data.msg, { icon: 6 });
+                    } else {
+                        layer.msg(data.msg, { icon: 5 });
+                    }
+                });
             });
             $("#btnSaveDraft").click(function () {
                 var title = $title.val();
