@@ -3,14 +3,14 @@
     var user = ViewBag.UserInfo as Nutshell.Blog.Model.User;
     ViewBag.Title = $"{ user?.Nickname} - 果壳园";
 }
-@model IEnumerable<IGrouping<DateTime, Nutshell.Blog.Model.Article>>
+@model Nutshell.Blog.ViewModel.Article.BlogsModel
 @section style{
 
 }
 
 @*置顶文章列表*@
 @{
-    var topList = ViewBag.TopList as IQueryable<Nutshell.Blog.Model.Article>;
+    var topList = Model.TopArticles;
     if (topList != null && topList.Count() > 0)
     {
         <div class="blog-item">
@@ -40,9 +40,9 @@
 }
 
 @*其他文章，以时间为组*@
-@if (Model != null && Model.Count() > 0)
+@if (Model != null && Model.GroupingArticles.Count() > 0)
 {
-    foreach (var group in Model)
+    foreach (var group in Model.GroupingArticles)
     {
         <div class="blog-item">
             <div class="date">
@@ -68,6 +68,7 @@
         </div>
     }
 }
+
 <div class="topicListFooter">
     @{
         if (ViewBag.HasPre ?? false)
@@ -81,3 +82,12 @@
     }
 </div>
 
+@section categories{
+    @Html.Partial("Article/_Categories", Model.CustomCategories, new ViewDataDictionary() {
+        new KeyValuePair<string, object>("UserName", user.Login_Name)
+    })
+}
+
+@section archives{
+    @Html.Partial("Article/_Archives", Model.Archives)
+}

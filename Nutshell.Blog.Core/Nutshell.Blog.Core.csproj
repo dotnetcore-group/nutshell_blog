@@ -162,6 +162,10 @@
       <Project>{d6baaa4b-8680-4dcf-872f-060804f32eaf}</Project>
       <Name>Nutshell.Blog.Repository</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Nutshell.Blog.ViewModel\Nutshell.Blog.ViewModel.csproj">
+      <Project>{de3c1c33-314c-435a-b92d-934669b17f95}</Project>
+      <Name>Nutshell.Blog.ViewModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

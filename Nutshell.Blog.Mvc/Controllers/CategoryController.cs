@@ -3,6 +3,7 @@ using Nutshell.Blog.IService;
 using Nutshell.Blog.Model;
 using Nutshell.Blog.Model.ViewModel;
 using Nutshell.Blog.Mvc.MvcHelper;
+using Nutshell.Blog.ViewModel;
 using System.Web.Mvc;
 
 namespace Nutshell.Blog.Mvc.Controllers

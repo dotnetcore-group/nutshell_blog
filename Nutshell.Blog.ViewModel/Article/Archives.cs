@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nutshell.Blog.Model.ViewModel
+namespace Nutshell.Blog.ViewModel.Article
 {
     public class Archives
     {

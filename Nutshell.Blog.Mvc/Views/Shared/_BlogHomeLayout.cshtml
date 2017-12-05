@@ -63,9 +63,7 @@
                                 <div class="sidebar-block" id="sidebar_postcategory">
                                     <h3 class="catListTitle">文章分类</h3>
                                     <ul>
-                                        @*<li><a href="">项目管理（1）</a></li>
-                                            <li><a href="">Asp.Net MVC（3）</a></li>*@
-                                        @{
+                                        @*@{
                                             var categories = ViewBag.Categories as List<Nutshell.Blog.Model.ViewModel.CustomCategories>;
                                             if (categories != null)
                                             {
@@ -78,23 +76,27 @@
                                                     </li>
                                                 }
                                             }
-                                        }
+                                        }*@
+                                        @RenderSection("categories", false)
                                     </ul>
+                                    @*@Html.Action("_Categories", "Article");*@
+                                    
                                 </div>
                                 <div class="sidebar-block" id="sidebar_postarchive">
                                     <h3 class="catListTitle">文章档案</h3>
                                     <ul>
+                                        @RenderSection("archives", false)
                                         @*<li><a href="">2017-10-26（5）</a></li>
                                             <li><a href="">2017-10-25（1）</a></li>*@
                                         @{
-                                            var archives = ViewBag.Archives as List<Nutshell.Blog.Model.ViewModel.Archives>;
+                                            @*var archives = ViewBag.Archives as List<Nutshell.Blog.Model.ViewModel.Archives>;
                                             if (archives != null)
                                             {
                                                 foreach (var item in archives)
                                                 {
                                                     <li><a href="">@item.date（@item.count）</a></li>
                                                 }
-                                            }
+                                            }*@
                                         }
                                     </ul>
                                 </div>

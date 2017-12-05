@@ -27,7 +27,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nutshell.Blog.Model.ViewModel
+namespace Nutshell.Blog.ViewModel
 {
     /// <summary>
     ///  返回json值对象

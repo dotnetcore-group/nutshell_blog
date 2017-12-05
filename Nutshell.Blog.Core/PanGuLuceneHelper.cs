@@ -29,7 +29,7 @@ using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
 using Nutshell.Blog.Core.Model;
-using Nutshell.Blog.Model.ViewModel;
+using Nutshell.Blog.ViewModel.Article;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;

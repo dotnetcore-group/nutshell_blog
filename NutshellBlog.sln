@@ -35,7 +35,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nutshell.Blog.Core", "Nutsh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nutshell.Blog.Core.Tests", "Nutshell.Blog.Core.Tests\Nutshell.Blog.Core.Tests.csproj", "{A248BE3F-135A-4505-93D0-6B8638E25FD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{30A01D44-8C75-4C43-9918-CDC68EC84718}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{30A01D44-8C75-4C43-9918-CDC68EC84718}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nutshell.Blog.ViewModel", "Nutshell.Blog.ViewModel\Nutshell.Blog.ViewModel.csproj", "{DE3C1C33-314C-435A-B92D-934669B17F95}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,6 +93,10 @@ Global
 		{30A01D44-8C75-4C43-9918-CDC68EC84718}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30A01D44-8C75-4C43-9918-CDC68EC84718}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30A01D44-8C75-4C43-9918-CDC68EC84718}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE3C1C33-314C-435A-B92D-934669B17F95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE3C1C33-314C-435A-B92D-934669B17F95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE3C1C33-314C-435A-B92D-934669B17F95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE3C1C33-314C-435A-B92D-934669B17F95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -108,6 +114,7 @@ Global
 		{B3FE965C-515D-4157-A56B-8E6F5D8973B5} = {56D21FEF-86F6-408B-AA33-112F3F71F935}
 		{A248BE3F-135A-4505-93D0-6B8638E25FD3} = {6A8A35EE-F176-4750-8509-48535ADFC0E0}
 		{30A01D44-8C75-4C43-9918-CDC68EC84718} = {6A8A35EE-F176-4750-8509-48535ADFC0E0}
+		{DE3C1C33-314C-435A-B92D-934669B17F95} = {56D21FEF-86F6-408B-AA33-112F3F71F935}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B18471EF-72ED-4DE6-90DF-FAA2E9DF96AF}

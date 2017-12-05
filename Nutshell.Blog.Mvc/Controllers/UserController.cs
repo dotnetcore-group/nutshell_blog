@@ -11,6 +11,8 @@ using System.Web.Mvc;
 using Nutshell.Blog.Model;
 using System.Linq.Expressions;
 using Nutshell.Blog.Mvc.MvcHelper;
+using Nutshell.Blog.ViewModel.Article;
+using Nutshell.Blog.ViewModel;
 
 namespace Nutshell.Blog.Mvc.Controllers
 {

@@ -2140,6 +2140,8 @@
     <Content Include="Views\Favorite\Add.cshtml" />
     <Content Include="Views\Favorite\Edit.cshtml" />
     <Content Include="Views\Job\Search.cshtml" />
+    <Content Include="Views\Shared\Article\_Categories.cshtml" />
+    <Content Include="Views\Shared\Article\_Archives.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2171,6 +2173,10 @@
     <ProjectReference Include="..\Nutshell.Blog.Model\Nutshell.Blog.Model.csproj">
       <Project>{e3d7da59-99b7-4efb-98cf-739fb2796a21}</Project>
       <Name>Nutshell.Blog.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nutshell.Blog.ViewModel\Nutshell.Blog.ViewModel.csproj">
+      <Project>{de3c1c33-314c-435a-b92d-934669b17f95}</Project>
+      <Name>Nutshell.Blog.ViewModel</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

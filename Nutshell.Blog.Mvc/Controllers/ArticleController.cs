@@ -1,7 +1,6 @@
 ﻿using Nutshell.Blog.Core;
 using Nutshell.Blog.IService;
 using Nutshell.Blog.Model;
-using Nutshell.Blog.Model.ViewModel;
 using Nutshell.Blog.Core.Filters;
 using System;
 using System.Collections;
@@ -9,12 +8,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using Nutshell.Blog.Common;
-using Nutshell.Blog.Mvc.MvcHelper;
+using Nutshell.Blog.ViewModel.Article;
+using Nutshell.Blog.ViewModel;
 
 namespace Nutshell.Blog.Mvc.Controllers
 {
@@ -31,6 +29,7 @@ namespace Nutshell.Blog.Mvc.Controllers
             base.categoryService = categoryService;
         }
 
+        #region GET : /article/edit?postid={postid}
         // 写文章 / 编辑文章
         // 当 postid 为null 写文章
         // 不为null 判断此文章是否为此登录用户的
@@ -67,7 +66,9 @@ namespace Nutshell.Blog.Mvc.Controllers
             }
             return View();
         }
+        #endregion
 
+        #region GET : /article/search?q={q}
         [HttpGet]
         [AllowAnonymous]
         public ActionResult Search(string q)
@@ -108,7 +109,9 @@ namespace Nutshell.Blog.Mvc.Controllers
             ViewBag.Time = watch.ElapsedMilliseconds;
             return View(list);
         }
+        #endregion
 
+        #region GET : /{author}/{?page}
         // 用户博客
         // GET:/username
         [AllowAnonymous]
@@ -120,11 +123,13 @@ namespace Nutshell.Blog.Mvc.Controllers
                 var pageIndex = page.HasValue ? (page.Value <= 0 ? 1 : page.Value) : 1;
                 var pageSize = GlobalConfig.PageSize;
 
-                // 文章档案
-                ViewBag.Archives = articleService.GetArchivesByUserId<Archives>(user.User_Id);
-                // 文章分类
-                ViewBag.Categories = articleService.GetCustomCategoriesByUserId<CustomCategories>(user.User_Id);
                 ViewBag.UserInfo = user;
+
+                // 文章档案
+                //ViewBag.Archives = articleService.GetArchivesByUserId<Archives>(user.User_Id);
+                //// 文章分类
+                //ViewBag.Categories = articleService.GetCustomCategoriesByUserId<CustomCategories>(user.User_Id);
+
 
                 // 上一页、下一页
                 var totalCount = articleService.GetArticlesTotalCount(user.User_Id);
@@ -143,14 +148,16 @@ namespace Nutshell.Blog.Mvc.Controllers
                 {
                     pageIndex = 1;
                 }
+                var model = LoadRightMenusData<BlogsModel>(user.User_Id);
                 // TODO : 可以优化
                 // 置顶文章只在第一页（置顶文章数量最多20）
                 if (pageIndex <= 1)
                 {
                     // 置顶文章
                     var topList = articleService.LoadEntities(a => a.Author_Id == user.User_Id && a.IsTop)
-                        .OrderByDescending(a => a.Creation_Time);
-                    ViewBag.TopList = topList;
+                        .OrderByDescending(a => a.Creation_Time)?.ToList();
+                    //ViewBag.TopList = topList;
+                    model.TopArticles = topList;
 
                     // 其他文章数量 = 设定数量 - 置顶文章数量
                     pageSize -= topList.Count();
@@ -165,7 +172,9 @@ namespace Nutshell.Blog.Mvc.Controllers
                                 var date = Convert.ToDateTime(a.Creation_Time.ToShortDateString());
                                 return date;
                             }));
-                        return View(articles);
+                        //return View(articles);
+                        model.GroupingArticles = articles;
+                        return View(model);
                     }
                 }
                 // 其他非置顶文章（排序：置顶在前，跳过第一页）
@@ -178,14 +187,16 @@ namespace Nutshell.Blog.Mvc.Controllers
                             var date = Convert.ToDateTime(a.Creation_Time.ToShortDateString());
                             return date;
                         }));
-                    return View(articles);
+                    //return View(articles);
+                    model.GroupingArticles = articles;
+                    return View(model);
                 }
-                return View();
             }
             throw new HttpException(404, "Not Found!");
         }
+        #endregion
 
-        // GET:/username/p/1.html
+        #region GET : /{author}/p/{id}.html
         [AllowAnonymous]
         public ActionResult Detail(string author, int? id)
         {
@@ -202,10 +213,7 @@ namespace Nutshell.Blog.Mvc.Controllers
                 //return HttpNotFound();
             }
             var user = article.Author;
-            // 随笔档案
-            ViewBag.Archives = articleService.GetArchivesByUserId<Archives>(user.User_Id);
-            // 随笔分类
-            ViewBag.Categories = articleService.GetCustomCategoriesByUserId<CustomCategories>(user.User_Id);
+
             ViewBag.UserInfo = user;
 
             // 上一篇 下一篇
@@ -217,10 +225,13 @@ namespace Nutshell.Blog.Mvc.Controllers
             {
                 ViewBag.HavaCollection = favoritesService.HaveCollection(account.User_Id, id.Value);
             }
-
-            return View(article);
+            var model = LoadRightMenusData<DetailModel>(user.User_Id);
+            model.Article = article;
+            return View(model);
         }
+        #endregion
 
+        #region Post JsonResult
         [HttpPost]
         public JsonResult Comment(string content, int? id)
         {
@@ -378,8 +389,8 @@ namespace Nutshell.Blog.Mvc.Controllers
         [HttpPost]
         public JsonResult Publish(int id)
         {
-            var data = new { code=1, msg="发布失败！"};
-            var article = articleService.LoadEntity(a=>a.Article_Id==id && a.Author_Id==Account.User_Id);
+            var data = new { code = 1, msg = "发布失败！" };
+            var article = articleService.LoadEntity(a => a.Article_Id == id && a.Author_Id == Account.User_Id);
             if (article != null)
             {
                 article.State = (int)ArticleStateEnum.NotAudited;
@@ -414,6 +425,44 @@ namespace Nutshell.Blog.Mvc.Controllers
                 }
             }
             return Json(data);
+        } 
+        #endregion
+
+        #region Child Actions
+
+        #endregion
+
+        #region Private Methods
+        /// <summary>
+        /// 加载右侧档案与分类列表数据
+        /// </summary>
+        /// <param name="userId">用户id</param>
+        /// <returns>文章详情页模型</returns>
+        private T LoadRightMenusData<T>(long userId) where T : class, new()
+        {
+            if (typeof(T) == typeof(DetailModel))
+            {
+                var model = new DetailModel();
+                // 随笔档案
+                model.Archives = articleService.GetArchivesByUserId<Archives>(userId);
+                // 随笔分类
+                model.CustomCategories = articleService.GetCustomCategoriesByUserId<CustomCategories>(userId);
+                return model as T;
+            }
+            else if (typeof(T) == typeof(BlogsModel))
+            {
+                var model = new BlogsModel();
+                // 随笔档案
+                model.Archives = articleService.GetArchivesByUserId<Archives>(userId);
+                // 随笔分类
+                model.CustomCategories = articleService.GetCustomCategoriesByUserId<CustomCategories>(userId);
+                return model as T;
+            }
+            else
+            {
+                return null;
+            }
         }
+        #endregion
     }
 }

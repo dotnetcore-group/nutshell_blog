@@ -88,14 +88,10 @@
     <Compile Include="User.cs" />
     <Compile Include="CustomCategory.cs" />
     <Compile Include="ViewModel\Account.cs" />
-    <Compile Include="ViewModel\Archives.cs" />
-    <Compile Include="ViewModel\CustomCategories.cs" />
     <Compile Include="ViewModel\ForgetPwd.cs" />
     <Compile Include="ViewModel\HubUser.cs" />
-    <Compile Include="ViewModel\JsonModel.cs" />
     <Compile Include="ViewModel\Permission.cs" />
     <Compile Include="ViewModel\ResetPwd.cs" />
-    <Compile Include="ViewModel\SearchArticleResult.cs" />
     <Compile Include="ViewModel\UserLogin.cs" />
     <Compile Include="ViewModel\UserRegister.cs" />
   </ItemGroup>

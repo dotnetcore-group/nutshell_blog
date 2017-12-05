@@ -1,16 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8B4C50FB-A28C-4663-BDCC-7AF7D1163E3F}</ProjectGuid>
+    <ProjectGuid>{DE3C1C33-314C-435A-B92D-934669B17F95}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Nutshell.Blog.IService</RootNamespace>
-    <AssemblyName>Nutshell.Blog.IService</AssemblyName>
+    <RootNamespace>Nutshell.Blog.ViewModel</RootNamespace>
+    <AssemblyName>Nutshell.Blog.ViewModel</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,41 +41,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IArticleService.cs" />
-    <Compile Include="IBaseService.cs" />
-    <Compile Include="ICategoryService.cs" />
-    <Compile Include="ICommentService.cs" />
-    <Compile Include="ICustomCategoryService.cs" />
-    <Compile Include="IFavoritesService.cs" />
-    <Compile Include="IFriendLinksService.cs" />
-    <Compile Include="IMessageService.cs" />
-    <Compile Include="IModuleOperateService.cs" />
-    <Compile Include="IModuleService.cs" />
-    <Compile Include="IRoleService.cs" />
-    <Compile Include="ISettingService.cs" />
-    <Compile Include="IUserService.cs" />
+    <Compile Include="Article\Archives.cs" />
+    <Compile Include="Article\BlogsModel.cs" />
+    <Compile Include="Article\CustomCategories.cs" />
+    <Compile Include="Article\DetailModel.cs" />
+    <Compile Include="Article\SearchArticleResult.cs" />
+    <Compile Include="JsonModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Nutshell.Blog.IReposotory\Nutshell.Blog.IReposotory.csproj">
-      <Project>{4d01793a-4d09-48b4-aabb-973cdc30ae66}</Project>
-      <Name>Nutshell.Blog.IReposotory</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Nutshell.Blog.Model\Nutshell.Blog.Model.csproj">
       <Project>{e3d7da59-99b7-4efb-98cf-739fb2796a21}</Project>
       <Name>Nutshell.Blog.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Nutshell.Blog.ViewModel\Nutshell.Blog.ViewModel.csproj">
-      <Project>{de3c1c33-314c-435a-b92d-934669b17f95}</Project>
-      <Name>Nutshell.Blog.ViewModel</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

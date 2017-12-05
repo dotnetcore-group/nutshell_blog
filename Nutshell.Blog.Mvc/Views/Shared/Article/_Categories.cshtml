@@ -1,0 +1,16 @@
+﻿@model IList<Nutshell.Blog.ViewModel.Article.CustomCategories>
+@{ 
+    var userName = ViewData["UserName"];
+}
+
+@if (Model != null)
+{
+    foreach (var category in Model)
+    {
+        <li>
+            <a href="/@userName/category/@(category.Id).html">
+                @category.CategoryName (@category.Count)
+            </a>
+        </li>
+    }
+}

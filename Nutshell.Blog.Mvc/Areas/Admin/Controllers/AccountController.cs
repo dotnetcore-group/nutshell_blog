@@ -6,6 +6,7 @@ using Nutshell.Blog.Model;
 using Nutshell.Blog.Model.ViewModel;
 using Nutshell.Blog.Mvc.Controllers;
 using Nutshell.Blog.Mvc.MvcHelper;
+using Nutshell.Blog.ViewModel;
 using System;
 using System.Collections.Specialized;
 using System.Web.Mvc;
@@ -19,6 +20,7 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
             base.userService = userService;
         }
 
+        #region View
         // GET: Account
         public ActionResult SignIn(string returnUrl)
         {
@@ -26,6 +28,63 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
             return View();
         }
 
+        public ActionResult Register(string returnUrl)
+        {
+            ViewBag.Return = returnUrl;
+            return View();
+        }
+
+        public ActionResult Valid(string confirmatio)
+        {
+            ViewBag.Model = confirmatio;
+            var email = Session["_email"]?.ToString();
+            if (!string.IsNullOrEmpty(email) && string.IsNullOrEmpty(confirmatio))
+            {
+                var id = Guid.NewGuid().ToString("N");
+                var user = userService.LoadEntity(u => u.Email.Equals(email));
+                if (SendValidEmail(email, id) && user != null)
+                {
+                    MemcacheHelper.Set(id, SerializerHelper.SerializeToString(user), DateTime.Now.AddHours(1));
+                }
+                ViewBag.Model = id;
+                ViewBag.Email = email;
+            }
+            return View();
+        }
+
+        public ActionResult ResetPassword(string active)
+        {
+            if (!string.IsNullOrEmpty(active))
+            {
+                var obj = MemcacheHelper.Get(active);
+                if (obj != null)
+                {
+                    var user = SerializerHelper.DeserializeToObject<User>(obj.ToString());
+                    if (user != null)
+                    {
+                        ViewBag.Active = active;
+                        return View();
+                    }
+                }
+            }
+            ViewBag.Error = "重置密码链接失效，请重新找回密码";
+            return View("ForgetPassword");
+        }
+
+        public ActionResult ForgetPassword()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult ForgetPasswordWay(string email)
+        {
+            ViewBag.Email = email;
+            return View();
+        }
+        #endregion
+
+        #region JsonResult
         [HttpPost]
         [ValidateAntiForgeryToken]
         public JsonResult SignIn(UserLogin user)
@@ -65,48 +124,6 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
             }
             return Json(data);
         }
-
-        void ValidatedUser(Account account)
-        {
-            try
-            {
-                var sessionid = Guid.NewGuid().ToString();
-                MemcacheHelper.Set(sessionid, SerializerHelper.SerializeToString(account), DateTime.Now.AddHours(1));
-                Response.Cookies[Keys.SessionId].Value = sessionid;
-                Response.Cookies[Keys.SessionId].Expires = DateTime.Now.AddHours(1);
-                Response.Cookies[Keys.SessionId].HttpOnly = true;
-                //Response.Cookies[Keys.UserId].Value = account.User_Id.ToString();
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-        }
-
-        public ActionResult Register(string returnUrl)
-        {
-            ViewBag.Return = returnUrl;
-            return View();
-        }
-
-        public ActionResult Valid(string confirmatio)
-        {
-            ViewBag.Model = confirmatio;
-            var email = Session["_email"]?.ToString();
-            if (!string.IsNullOrEmpty(email) && string.IsNullOrEmpty(confirmatio))
-            {
-                var id = Guid.NewGuid().ToString("N");
-                var user = userService.LoadEntity(u => u.Email.Equals(email));
-                if (SendValidEmail(email, id) && user != null)
-                {
-                    MemcacheHelper.Set(id, SerializerHelper.SerializeToString(user), DateTime.Now.AddHours(1));
-                }
-                ViewBag.Model = id;
-                ViewBag.Email = email;
-            }
-            return View();
-        }
-
         // 验证邮箱
         [HttpPost]
         public JsonResult ValidEmail(string confirmatio)
@@ -146,11 +163,6 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
             return Json(data);
         }
 
-        public ActionResult ForgetPassword()
-        {
-            return View();
-        }
-
         [HttpPost]
         public JsonResult ForgetPassword(ForgetPwd forgetPwd)
         {
@@ -159,7 +171,7 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
             var url = "";
             if (!ModelState.IsValid)
             {
-                return Json(new { code=1,msg="输入的数据有误，请重新输入。"});
+                return Json(new { code = 1, msg = "输入的数据有误，请重新输入。" });
             }
             if (string.IsNullOrEmpty(forgetPwd.Code))
             {
@@ -167,10 +179,10 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
             }
             else
             {
-                if(Session[Keys.ValidCode] == null || !Session[Keys.ValidCode].ToString().Equals(forgetPwd.Code, StringComparison.CurrentCultureIgnoreCase))
+                if (TempData[Keys.ValidCode] == null || !TempData[Keys.ValidCode].ToString().Equals(forgetPwd.Code, StringComparison.CurrentCultureIgnoreCase))
                 {
                     msg = "验证码错误";
-                    Session[Keys.ValidCode] = null;
+                    //Session[Keys.ValidCode] = null;
                 }
                 else
                 {
@@ -188,13 +200,6 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
             }
             var data = new { code = res, msg = msg, res = url };
             return Json(data);
-        }
-
-        [HttpGet]
-        public ActionResult ForgetPasswordWay(string email)
-        {
-            ViewBag.Email = email;
-            return View();
         }
 
         [HttpPost]
@@ -223,24 +228,6 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
             return Json(data);
         }
 
-        public ActionResult ResetPassword(string active)
-        {
-            if (!string.IsNullOrEmpty(active))
-            {
-                var obj = MemcacheHelper.Get(active);
-                if (obj != null)
-                {
-                    var user = SerializerHelper.DeserializeToObject<User>(obj.ToString());
-                    if (user != null)
-                    {
-                        ViewBag.Active = active;
-                        return View();
-                    }
-                }
-            }
-            ViewBag.Error = "重置密码链接失效，请重新找回密码";
-            return View("ForgetPassword");
-        }
 
         [HttpPost]
         public JsonResult ResetPassword(string active, ResetPwd resetPwd)
@@ -416,5 +403,25 @@ namespace Nutshell.Blog.Mvc.Areas.Admin.Controllers
             var user = userService.LoadEntity(u => u.Email.Equals(Email, StringComparison.CurrentCultureIgnoreCase));
             return user == null ? Json(true) : Json(false);
         }
+        #endregion
+
+        #region Private Methods
+        void ValidatedUser(Account account)
+        {
+            try
+            {
+                var sessionid = Guid.NewGuid().ToString();
+                MemcacheHelper.Set(sessionid, SerializerHelper.SerializeToString(account), DateTime.Now.AddHours(1));
+                Response.Cookies[Keys.SessionId].Value = sessionid;
+                Response.Cookies[Keys.SessionId].Expires = DateTime.Now.AddHours(1);
+                Response.Cookies[Keys.SessionId].HttpOnly = true;
+                //Response.Cookies[Keys.UserId].Value = account.User_Id.ToString();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        } 
+        #endregion
     }
 }

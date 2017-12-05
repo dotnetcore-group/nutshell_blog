@@ -1,28 +1,28 @@
-﻿@model Nutshell.Blog.Model.Article
+﻿@model Nutshell.Blog.ViewModel.Article.DetailModel
 @{
     Layout = "~/Views/Shared/_BlogHomeLayout.cshtml";
-    ViewBag.Title = $"{Model.Title} - {Model.Author?.Nickname} - 果壳园";
+    ViewBag.Title = $"{Model.Article.Title} - {Model.Article.Author?.Nickname} - 果壳园";
 }
 
 @section style{
     <link href="~/Content/style/detail-common.css" rel="stylesheet" />
 }
-<input id="article" type="hidden" value="@Model.Article_Id" />
+<input id="article" type="hidden" value="@Model.Article.Article_Id" />
 <div id="post_detail">
     <div id="topics">
         <div class="post">
             <h1 class="postTitle">
-                <a href="#">@Model.Title</a>
+                <a href="#">@Model.Article.Title</a>
             </h1>
             <div class="postBody">
                 <div id="post_body">
-                    @Html.Raw(HttpUtility.HtmlDecode(Model.Body))
+                    @Html.Raw(HttpUtility.HtmlDecode(Model.Article.Body))
                 </div>
                 <div id="blog_post_info_block">
                     <div id="BlogPostCategory">
                         分类：
                         <a href="#">
-                            @(Model.CustomCategory?.CategoryName)
+                            @(Model.Article.CustomCategory?.CategoryName)
                         </a>
                     </div>
                     <div id="blog_post_info">
@@ -33,11 +33,11 @@
                                 // 已收藏
                                 if (hava)
                                 {
-                                    <span>已收藏</span>
+                            <span>已收藏</span>
                                 }
                                 else
                                 {
-                                    <a href="javascript:void(0);" id="green_channel_favorite">收藏该文</a>
+                            <a href="javascript:void(0);" id="green_channel_favorite">收藏该文</a>
                                 }
                             }
                         </div>
@@ -48,7 +48,7 @@
                                 <img src="/upload/photos/default.png" alt="加载失败" class="author_avatar" />
                             </a>
                             <div id="" class="author_profile_info">
-                                <a href="/@Model.Author.Login_Name">@Model.Author.Nickname</a>
+                                <a href="/@Model.Article.Author.Login_Name">@Model.Article.Author.Nickname</a>
                                 <br />
                                 <a href="#">关注</a>
                                 <br />
@@ -65,19 +65,19 @@
                             var next = ViewBag.Next as Nutshell.Blog.Model.Article;
                             if (before != null)
                             {
-                                <a href="/@before.Author.Login_Name/p/@(before.Article_Id).html" class="fa fa-angle-double-left">上一篇： @before.Title</a>
-                                <br />
+                        <a href="/@before.Author.Login_Name/p/@(before.Article_Id).html" class="fa fa-angle-double-left">上一篇： @before.Title</a>
+                        <br />
                             }
                             if (next != null)
                             {
-                                <a href="/@next.Author.Login_Name/p/@(next.Article_Id).html" class="fa fa-angle-double-right">下一篇： @next.Title</a>
+                        <a href="/@next.Author.Login_Name/p/@(next.Article_Id).html" class="fa fa-angle-double-right">下一篇： @next.Title</a>
                             }
                         }
                     </div>
                 </div>
             </div>
             <div class="postDesc">
-                posted @@ <span class="post-date">@Model.Creation_Time</span> @Model.Author.Nickname 阅读(0) 评论(0) <a href="#">编辑</a> <a href="#">收藏</a>
+                posted @@ <span class="post-date">@Model.Article.Creation_Time</span> @Model.Article.Author.Nickname 阅读(0) 评论(0) <a href="#">编辑</a> <a href="#">收藏</a>
             </div>
         </div>
     </div>
@@ -139,6 +139,16 @@
     </div>
 </div>
 
+@section categories{
+    @Html.Partial("Article/_Categories", Model.CustomCategories, new ViewDataDictionary() {
+        new KeyValuePair<string, object>("UserName", Model.Article.Author.Login_Name)
+    })
+}
+
+@section archives{
+    @Html.Partial("Article/_Archives", Model.Archives)
+}
+
 @section script{
     <script>
         $(function () {
@@ -165,7 +175,7 @@
             $("#green_channel_favorite").click(function () {
                 layer.open({
                     type: 2,
-                    title:'添加收藏',
+                    title: '添加收藏',
                     area: ['450px', '400px'],
                     fixed: false, //不固定
                     content: '/favorite/add?articleId=' + id

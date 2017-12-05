@@ -1,0 +1,9 @@
+﻿@model IList<Nutshell.Blog.ViewModel.Article.Archives>
+
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+        <li><a href="">@item.date（@item.count）</a></li>
+    }
+}
